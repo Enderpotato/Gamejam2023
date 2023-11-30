@@ -1,5 +1,5 @@
 export default class Scene {
-  constructor() {
-    this.objects = [];
+  constructor(objects) {
+    this.objects = [...objects];
   }
 }
