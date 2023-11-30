@@ -10,7 +10,7 @@ const FOV = 60 * (Math.PI / 180);
 export const NEAR = 1 / Math.tan(FOV / 2);
 
 function setup() {
-  canvas = createCanvas(400, 400);
+  canvas = createCanvas(400, 400, WEBGL);
   canvas.parent("canvas");
 }
 

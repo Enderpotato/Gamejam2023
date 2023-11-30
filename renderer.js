@@ -7,13 +7,9 @@ export default class Renderer {
   render(scene) {
     fill(255, 0, 0);
     text("Renderer working!", 100, 50);
-
-    push();
-    translate(width / 2, height / 2);
     scene.objects.forEach((object) => {
       if (object instanceof Cube) Renderer.renderCube(object);
     });
-    pop();
   }
 }
 
