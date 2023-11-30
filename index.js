@@ -1,4 +1,4 @@
-import Renderer from "./Renderer.js";
+import Renderer from "./renderer.js";
 import Scene from "./Scene.js";
 import Cube from "./shapes/Cube.js";
 import Vector3 from "./structs/Vector3.js";
