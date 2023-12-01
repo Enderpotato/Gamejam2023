@@ -2,6 +2,8 @@ import Vector3 from "./structs/Vector3.js";
 import { camera } from "./index.js";
 import { matrixPointAt, matrixQuickInverse } from "./testfuncs.js";
 
+const PosElement = document.getElementById("camera-pos");
+
 export default class Camera {
   constructor(position, lookDir) {
     this.position = position; // vector3
@@ -48,4 +50,8 @@ export function cameraControl() {
   }
   camera.inputVel = camera.inputVel.normalize();
   // console.log(camera.inputVel);
+  PosElement.innerHTML = `Camera Position: 
+  ${camera.position.x.toFixed()},
+   ${camera.position.y.toFixed()},
+    ${camera.position.z.toFixed()}`;
 }

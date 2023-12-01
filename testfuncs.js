@@ -81,14 +81,14 @@ export function Matrix_MultiplyVector(m, i) {
 
 export function matrixPointAt(pos, target, up) {
   // Calculate new forward direction
-  let newForward = target.subtract(pos).normalize();
+  let newForward = Vector3.subtract(target, pos).normalize();
 
   // Calculate new Up direction
-  let a = newForward.elementMult(up.dot(newForward));
-  let newUp = up.subtract(a).normalize();
+  let a = newForward.elementMult(Vector3.dot(up, newForward));
+  let newUp = Vector3.subtract(up, a).normalize();
 
   // New Right direction is easy, its just cross product
-  let newRight = newUp.cross(newForward);
+  let newRight = Vector3.cross(newUp, newForward);
 
   // Construct Dimensioning and Translation Matrix
   let matrix = [
@@ -107,13 +107,12 @@ export function matrixQuickInverse(m) {
     [m[0][0], m[1][0], m[2][0], 0],
     [m[0][1], m[1][1], m[2][1], 0],
     [m[0][2], m[1][2], m[2][2], 0],
-    [
-      -(m[3][0] * m[0][0] + m[3][1] * m[0][1] + m[3][2] * m[2][0]),
-      -(m[3][0] * m[1][0] + m[3][1] * m[1][1] + m[3][2] * m[2][1]),
-      -(m[3][0] * m[2][0] + m[3][1] * m[2][1] + m[3][2] * m[2][2]),
-      1,
-    ],
+    [],
   ];
+  matrix[3][0] = -(m[3][0] * m[0][0] + m[3][1] * m[1][0] + m[3][2] * m[2][0]);
+  matrix[3][1] = -(m[3][0] * m[0][1] + m[3][1] * m[1][1] + m[3][2] * m[2][1]);
+  matrix[3][2] = -(m[3][0] * m[0][2] + m[3][1] * m[1][2] + m[3][2] * m[2][2]);
+  matrix[3][3] = 1;
 
   return matrix;
 }
