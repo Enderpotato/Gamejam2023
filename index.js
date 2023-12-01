@@ -16,7 +16,7 @@ function setup() {
 
 function draw() {
   background(0);
-  scene.update(deltaTime);
+  // scene.update(deltaTime);
   renderer.render(scene);
 }
 
