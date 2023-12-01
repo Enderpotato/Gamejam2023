@@ -51,7 +51,7 @@ export function projectTriangle(tri, Renderer) {
     ]),
   ];
   clippedTriangles = triangleClipAgainstPlane(
-    new Vector3(0, 0, 0.5),
+    new Vector3(0, 0, 0.2),
     new Vector3(0, 0, 1),
     tri,
     clipped[0],
@@ -61,22 +61,12 @@ export function projectTriangle(tri, Renderer) {
   for (let n = 0; n < clippedTriangles; n++) {
     // Project triangles from 3D --> 2D
     let triProjected = new Triangle([]);
-    // console.log(clipped[n]);
     triProjected.vertices[0] = perspectiveProject(clipped[n].vertices[0]);
     triProjected.vertices[1] = perspectiveProject(clipped[n].vertices[1]);
     triProjected.vertices[2] = perspectiveProject(clipped[n].vertices[2]);
     triProjected.normal = tri.normal;
     Renderer.trianglesToRaster.push(triProjected);
   }
-
-  // let triProjected = new Triangle([]);
-  // // view space -> projection space
-  // triProjected.vertices[0] = perspectiveProject(triViewed.vertices[0]);
-  // triProjected.vertices[1] = perspectiveProject(triViewed.vertices[1]);
-  // triProjected.vertices[2] = perspectiveProject(triViewed.vertices[2]);
-
-  // triProjected.normal = tri.normal;
-  // Renderer.trianglesToRaster.push(triProjected);
 }
 
 export function rasterTriangle(tri) {
@@ -84,7 +74,7 @@ export function rasterTriangle(tri) {
   strokeWeight(1);
   noStroke();
   let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
-  fill(lightIntensity * 255);
+  fill(tri.color.elementMult(lightIntensity).toColor());
 
   triangle(
     tri.vertices[0].x,

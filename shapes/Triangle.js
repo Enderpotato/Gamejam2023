@@ -4,6 +4,8 @@ export default class Triangle {
   constructor(vertices) {
     this.vertices = vertices; // array of Vector3
     this.normal = null; // Vector3
+
+    this.color = new Vector3(255, 255, 255);
   }
 }
 

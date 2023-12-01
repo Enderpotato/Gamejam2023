@@ -138,6 +138,10 @@ Vector3.prototype.distance = function (b) {
   );
 };
 
+Vector3.prototype.toColor = function () {
+  return color(this.x, this.y, this.z);
+};
+
 Vector3.prototype.to4dTensor = function () {
   return tf.tensor2d([[this.x, this.y, this.z, 1]]);
 };

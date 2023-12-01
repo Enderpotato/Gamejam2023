@@ -72,6 +72,10 @@ export function triangleClipAgainstPlane(
     triOut1.vertices[1] = triIn.vertices[1];
     triOut1.vertices[2] = triIn.vertices[2];
     triOut1.normal = triIn.normal;
+    // triOut1.color = triIn.color;
+    // set color to red
+    triOut1.color = new Vector3(255, 0, 0);
+
     return 1; // Just the one returned original triangle is valid
   }
 
@@ -80,7 +84,11 @@ export function triangleClipAgainstPlane(
     // the plane, the triangle simply becomes a smaller triangle
 
     // Copy appearance info to new triangle
+    triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
+
+    // set color to green
+    triOut1.color = new Vector3(0, 255, 0);
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
@@ -109,6 +117,13 @@ export function triangleClipAgainstPlane(
     // represent a quad with two new triangles
 
     // Copy appearance info to new triangles
+    triOut1.color = triIn.color;
+    triOut2.color = triIn.color;
+
+    // set color to blue
+    triOut1.color = new Vector3(0, 0, 255);
+    triOut2.color = new Vector3(0, 0, 255);
+
     triOut1.normal = triIn.normal;
     triOut2.normal = triIn.normal;
 

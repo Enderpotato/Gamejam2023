@@ -64,17 +64,9 @@ export function cameraControl(deltaTime) {
 
   // q and e key
   if (keyIsDown(81)) {
-    camera.position = camera.position.add(
-      Vector3.cross(camera.lookDir, new Vector3(1, 0, 0))
-        .normalize()
-        .elementMult(0.05 * deltaTime)
-    );
+    camera.position = camera.position.add(new Vector3(0, 0.05 * deltaTime, 0));
   } else if (keyIsDown(69)) {
-    camera.position = camera.position.add(
-      Vector3.cross(camera.lookDir, new Vector3(1, 0, 0))
-        .normalize()
-        .elementMult(-0.05 * deltaTime)
-    );
+    camera.position = camera.position.add(new Vector3(0, -0.05 * deltaTime, 0));
   }
 
   // left and right arrow key for rotation
