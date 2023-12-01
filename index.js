@@ -32,7 +32,7 @@ export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
-var map_ = new Map(-WIDTH/2, -HEIGHT/2, 50, 40);
+var map_ = new Map();
 
 createPerspectiveMatrix();
 let canvas;
@@ -54,7 +54,7 @@ function draw() {
   background(0);
   renderer.render(scene);
   renderer.clear();
-  map_.draw();
+  map_.draw(-WIDTH/2, -HEIGHT/2, 50, 40);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
