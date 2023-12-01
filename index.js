@@ -9,12 +9,10 @@ import Mesh from "./shapes/Mesh.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
-let canvas;
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
 let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
 spaceshipMesh.createFromObj("./assets/VideoShip.obj");
-console.log(spaceshipMesh);
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
@@ -29,10 +27,17 @@ export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
 
 createPerspectiveMatrix();
+let canvas;
+export let frame;
+let gl;
 
 function setup() {
   canvas = createCanvas(HEIGHT, WIDTH, WEBGL);
   canvas.parent("canvas");
+
+  frame = createGraphics(HEIGHT, WIDTH);
+  gl = canvas.GL;
+  console.log(gl);
 }
 
 function draw() {
@@ -40,6 +45,7 @@ function draw() {
 
   background(0);
   renderer.render(scene);
+  renderer.clear();
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);

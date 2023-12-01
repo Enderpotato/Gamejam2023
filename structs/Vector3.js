@@ -123,6 +123,14 @@ Vector3.prototype.quaternionRotate = function (q) {
   return Vector3.fromArray(rotatedArray);
 };
 
+Vector3.prototype.distance = function (b) {
+  return Math.sqrt(
+    (this.x - b.x) * (this.x - b.x) +
+      (this.y - b.y) * (this.y - b.y) +
+      (this.z - b.z) * (this.z - b.z)
+  );
+};
+
 Vector3.prototype.to4dTensor = function () {
   return tf.tensor2d([[this.x, this.y, this.z, 1]]);
 };
