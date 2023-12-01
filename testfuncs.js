@@ -69,3 +69,42 @@ export function perspectiveProject(vect) {
   // ).elementMult(width);
   return multiplyPMatrix(vect).elementMult(width);
 }
+
+export function matrixPointAt(pos, target, up) {
+  // Calculate new forward direction
+  let newForward = target.subtract(pos).normalize();
+
+  // Calculate new Up direction
+  let a = newForward.elementMult(up.dot(newForward));
+  let newUp = up.subtract(a).normalize();
+
+  // New Right direction is easy, its just cross product
+  let newRight = newUp.cross(newForward);
+
+  // Construct Dimensioning and Translation Matrix
+  let matrix = [
+    [newRight.x, newRight.y, newRight.z, 0],
+    [newUp.x, newUp.y, newUp.z, 0],
+    [newForward.x, newForward.y, newForward.z, 0],
+    [pos.x, pos.y, pos.z, 1],
+  ];
+
+  return matrix;
+}
+
+export function matrixQuickInverse(m) {
+  //only for rotation/translation matrices
+  let matrix = [
+    [m[0][0], m[1][0], m[2][0], 0],
+    [m[0][1], m[1][1], m[2][1], 0],
+    [m[0][2], m[1][2], m[2][2], 0],
+    [
+      -(m[3][0] * m[0][0] + m[3][1] * m[0][1] + m[3][2] * m[0][2]),
+      -(m[3][0] * m[1][0] + m[3][1] * m[1][1] + m[3][2] * m[1][2]),
+      -(m[3][0] * m[2][0] + m[3][1] * m[2][1] + m[3][2] * m[2][2]),
+      1,
+    ],
+  ];
+
+  return matrix;
+}

@@ -6,6 +6,7 @@ import Cube from "./shapes/TestShapes/Cube.js";
 import { createPerspectiveMatrix } from "./testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
+import { cameraControl } from "./Camera.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -26,6 +27,9 @@ export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 const HEIGHT = 500;
 const WIDTH = 500;
 const MAP_WIDTH = 400;
+const upDir = new Vector3(0, 1, 0);
+const targetDir = camera.position.add(camera.lookDir);
+camera.calcCameraMatrix(camera.position, targetDir, upDir);
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
@@ -53,28 +57,14 @@ function draw() {
   renderer.render(scene);
   renderer.clear();
 
+  camera.update(deltaTime);
+
   if (keyIsDown(32)) {
     scene.update(deltaTime);
   }
-}
 
-document.addEventListener("keypress", function (event) {
-  keyPressed[event.key] = true;
-  if (keyPressed["w"]) {
-    camera.position.z += 10;
-  } else if (keyPressed["s"]) {
-    camera.position.z -= 10;
-  }
-  if (keyPressed["a"]) {
-    camera.position.x += 10;
-  }
-  if (keyPressed["d"]) {
-    camera.position.x -= 10;
-  }
-});
-document.addEventListener("keyup", function (event) {
-  keyPressed[event] = false;
-});
+  cameraControl();
+}
 
 window.setup = setup;
 window.draw = draw;
