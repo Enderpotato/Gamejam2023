@@ -16,15 +16,15 @@ let x_angle = 0; //the player can only angle the camera in the x direction
 
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
-let spaceshipMesh = new Mesh(new Vector3(0, 0, 100));
+let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
 spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
 export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 
-const HEIGHT = 400;
-const WIDTH = 400;
+const HEIGHT = 500;
+const WIDTH = 500;
 const MAP_WIDTH = 400;
 
 export const invFov = 1 / Math.tan(FOV / 2);
@@ -38,10 +38,10 @@ export let frame;
 let gl;
 
 function setup() {
-  canvas = createCanvas(WIDTH + MAP_WIDTH, HEIGHT, WEBGL);
+  canvas = createCanvas(WIDTH, HEIGHT, WEBGL);
   canvas.parent("canvas");
 
-  frame = createGraphics(HEIGHT, WIDTH);
+  frame = createGraphics(WIDTH, HEIGHT);
   gl = canvas.GL;
   console.log(gl);
 }

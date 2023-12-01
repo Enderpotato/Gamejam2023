@@ -21,12 +21,9 @@ export default class Renderer {
         return bDist - aDist;
       });
 
-      push();
-      translate(-width / 4, 0);
       this.trianglesToRender.forEach((tri) => {
         Renderer.renderTriangle(tri);
       });
-      pop();
     });
   }
 
