@@ -5,12 +5,17 @@ import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import Cube from "./shapes/TestShapes/Cube.js";
 import { createPerspectiveMatrix } from "./testfuncs.js";
 import Camera from "./camera.js";
+import Mesh from "./shapes/Mesh.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
 let canvas;
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
+let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
+spaceshipMesh.createFromObj("./assets/VideoShip.obj");
+console.log(spaceshipMesh);
+const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
 export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
