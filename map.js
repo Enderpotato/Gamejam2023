@@ -16,7 +16,7 @@ export default class Map{
     }
 
     from_coords(pos){
-        return [pos.z * this.map_width/width + this.map_start_x ,pos.x * this.map_height/height + this.map_start_y]
+        return [pos.z * this.map_width/width + this.map_start_x + this.map_width/2 ,pos.x * this.map_height/height + this.map_start_y + this.map_height/2]
     }
 
     draw_map(){
