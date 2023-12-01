@@ -6,6 +6,7 @@ import Cube from "./shapes/TestShapes/Cube.js";
 import { createPerspectiveMatrix } from "./testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
+import Map from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -31,6 +32,7 @@ export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
+var map_ = new Map(-WIDTH/2, -HEIGHT/2, 50, 40);
 
 createPerspectiveMatrix();
 let canvas;
@@ -52,6 +54,7 @@ function draw() {
   background(0);
   renderer.render(scene);
   renderer.clear();
+  map_.draw();
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
