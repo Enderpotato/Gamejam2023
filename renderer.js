@@ -1,16 +1,15 @@
 import { transformWorldtoScreen } from "./testfuncs.js";
-import Cube from "./shapes/Cube.js";
+import Cube from "./shapes/TestShapes/Cube.js";
 import Triangle from "./shapes/Triangle.js";
+import MeshCube from "./shapes/TestShapes/MeshCube.js";
 
 export default class Renderer {
   constructor() {}
 
   render(scene) {
-    fill(255, 0, 0);
-    text("Renderer working!", 100, 50);
     scene.objects.forEach((object) => {
       if (object instanceof Cube) Renderer.renderCube(object);
-      if (object instanceof Triangle) Renderer.renderTriangle(object);
+      if (object instanceof MeshCube) Renderer.renderMesh(object);
     });
   }
 }
@@ -48,7 +47,8 @@ Renderer.renderTriangle = function (tri) {
     transformedVertices.push(transformedVertex);
   });
 
-  fill(255, 255, 255);
+  stroke(255, 255, 255);
+  noFill();
   triangle(
     transformedVertices[0].x,
     transformedVertices[0].y,
@@ -57,4 +57,10 @@ Renderer.renderTriangle = function (tri) {
     transformedVertices[2].x,
     transformedVertices[2].y
   );
+};
+
+Renderer.renderMesh = function (mesh) {
+  mesh.triangles.forEach((tri) => {
+    Renderer.renderTriangle(tri);
+  });
 };

@@ -1,5 +1,5 @@
-import Vector3 from "../structs/Vector3.js";
-import ShapeMorph from "./ShapeMorph.js";
+import Vector3 from "../../structs/Vector3.js";
+import ShapeMorph from "../ShapeMorph.js";
 
 export default class Cube {
   constructor(center, width) {

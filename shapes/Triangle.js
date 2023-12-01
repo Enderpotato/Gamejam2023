@@ -1,5 +1,14 @@
 export default class Triangle {
   constructor(vertices, edges) {
     this.vertices = vertices; // array of Vector3
+    this.normal = null; // Vector3
   }
 }
+
+// since triangle is on a plane as it's 2D, we can calc the normal using the cross product
+// of two vectors on the plane
+Triangle.prototype.calcNormal = function () {
+  let v1 = this.vertices[1].subtract(this.vertices[0]);
+  let v2 = this.vertices[2].subtract(this.vertices[0]);
+  this.normal = v1.cross(v2).normalize();
+};
