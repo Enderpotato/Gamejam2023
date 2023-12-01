@@ -8,8 +8,6 @@ import Vector3 from "../structs/Vector3.js";
 import { triangleClipAgainstPlane } from "../helperFuncs/clipping.js";
 import Triangle from "../shapes/Triangle.js";
 
-const LightDir = new Vector3(1, 0, 0).normalize();
-
 export function RenderCube(cube) {
   let transformedVertices = [];
 
@@ -73,29 +71,44 @@ export function rasterTriangle(tri) {
       let test = triList.shift();
       nNewTriangles--;
 
+      stroke(255, 0, 0);
+      strokeWeight(5);
+      point(0, -height / 2);
+
+      // *******************************************************************
+      // triangleClipAgainstPlane have issues !!! only right plane works properly!!!
+      // *******************************************************************
+
       // Clip it against a plane. We only need to test each
       // subsequent plane, against subsequent new triangles
       // as all triangles after a plane clip are guaranteed
       // to lie on the inside of the plane.
       switch (p) {
+        // top plane
         case 0:
           trisToAdd = triangleClipAgainstPlane(
-            new Vector3(-width / 2, -height / 2, 0),
+            new Vector3(0, -height / 2, 0),
             new Vector3(0, 1, 0),
             test,
             clipped[0],
             clipped[1]
           );
           break;
+
+        // bottom plane
         case 1:
           trisToAdd = triangleClipAgainstPlane(
-            new Vector3(width / 2, height / 2 - 1, 0),
+            new Vector3(0, height / 2, 0),
             new Vector3(0, -1, 0),
             test,
             clipped[0],
             clipped[1]
           );
+          // clipped[0] = test;
+          // trisToAdd = 1;
           break;
+
+        // left plane
         case 2:
           trisToAdd = triangleClipAgainstPlane(
             new Vector3(-width / 2, 0, 0),
@@ -104,7 +117,11 @@ export function rasterTriangle(tri) {
             clipped[0],
             clipped[1]
           );
+          // clipped[0] = test;
+          // trisToAdd = 1;
           break;
+
+        // right plane
         case 3:
           trisToAdd = triangleClipAgainstPlane(
             new Vector3(width / 2, 0, 0),
@@ -133,9 +150,9 @@ export function rasterTriangle(tri) {
   triList.forEach((tri) => {
     stroke(0);
     strokeWeight(1);
-    noStroke();
-    let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
-    let fillColor = tri.color.elementMult(lightIntensity).toColor();
+    // noStroke();
+
+    let fillColor = tri.color.toColor();
     fill(fillColor);
 
     triangle(

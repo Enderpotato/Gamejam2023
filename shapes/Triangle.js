@@ -32,7 +32,7 @@ Triangle.prototype.clone = function () {
     vertices.push(v.clone());
   });
   let tri = new Triangle(vertices);
-  if (this.normal != null) tri.normal = this.normal.clone();
+  tri.normal = tri.normal ? this.normal.clone() : 0;
   tri.color = this.color.clone();
   return tri;
 };

@@ -9,10 +9,11 @@ export default class Mesh {
   }
 
   update(dt) {
+    console.log("update");
     this.triangles.forEach((triangle) => {
       ShapeMorph.rotateTriangle(
         triangle,
-        Quaternion.fromEulerLogical(0.01, 0.01, 0.01, "XYZ"),
+        Quaternion.fromEulerLogical(0.0, 0.01, 0.0, "XYZ"),
         this.position
       );
     });

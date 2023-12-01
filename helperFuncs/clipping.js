@@ -32,6 +32,8 @@ export function triangleClipAgainstPlane(
   // If distance sign is positive, point lies on "inside" of plane
   let insidePoints = [];
   let outsidePoints = [];
+  let insidePointCount = 0;
+  let outsidePointCount = 0;
 
   // Get signed distance of each point in triangle to plane
   let d0 = dist(triIn.vertices[0]);
@@ -39,53 +41,47 @@ export function triangleClipAgainstPlane(
   let d2 = dist(triIn.vertices[2]);
 
   if (d0 >= 0) {
-    insidePoints.push(triIn.vertices[0]);
+    insidePoints[insidePointCount++] = triIn.vertices[0];
   } else {
-    outsidePoints.push(triIn.vertices[0]);
+    outsidePoints[outsidePointCount++] = triIn.vertices[0];
   }
   if (d1 >= 0) {
-    insidePoints.push(triIn.vertices[1]);
+    insidePoints[insidePointCount++] = triIn.vertices[1];
   } else {
-    outsidePoints.push(triIn.vertices[1]);
+    outsidePoints[outsidePointCount++] = triIn.vertices[1];
   }
   if (d2 >= 0) {
-    insidePoints.push(triIn.vertices[2]);
+    insidePoints[insidePointCount++] = triIn.vertices[2];
   } else {
-    outsidePoints.push(triIn.vertices[2]);
+    outsidePoints[outsidePointCount++] = triIn.vertices[2];
   }
 
   // Now classify triangle points, and break the input triangle into
   // smaller output triangles if required. There are four possible
   // outcomes...
-
-  triOut1.color = triIn.color;
-  triOut2.color = triIn.color;
-  if (insidePoints.length === 0) {
+  if (insidePointCount === 0) {
     // All points lie on the outside of plane, so clip whole triangle
     // It ceases to exist
 
     return 0; // No returned triangles are valid
   }
 
-  function checkBlack(c) {
-    if (c.x === 0 && c.y === 0 && c.z === 0) console.log("niger");
-  }
-  if (insidePoints.length === 3) {
+  if (insidePointCount === 3) {
+    triOut1.color = triIn.color;
+    triOut1.normal = triIn.normal;
+    // set color to red
+    triOut1.color = new Vector3(255, 0, 0);
+
     // All points lie on the inside of plane, so do nothing
     // and allow the triangle to simply pass through
     triOut1.vertices[0] = triIn.vertices[0];
     triOut1.vertices[1] = triIn.vertices[1];
     triOut1.vertices[2] = triIn.vertices[2];
-    triOut1.normal = triIn.normal;
-
-    triOut1.color = triIn.color;
-    // set color to red
-    // triOut1.color = new Vector3(255, 0, 0);
 
     return 1; // Just the one returned original triangle is valid
   }
 
-  if (insidePoints.length === 1 && outsidePoints.length === 2) {
+  if (insidePointCount === 1) {
     // Triangle should be clipped. As two points lie outside
     // the plane, the triangle simply becomes a smaller triangle
 
@@ -93,8 +89,7 @@ export function triangleClipAgainstPlane(
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
 
-    // set color to green
-    // triOut1.color = new Vector3(0, 255, 0);
+    triOut1.color = new Vector3(0, 255, 0);
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
@@ -117,7 +112,7 @@ export function triangleClipAgainstPlane(
     return 1; // Return the newly formed single triangle
   }
 
-  if (insidePoints.length === 2 && outsidePoints.length === 1) {
+  if (insidePointCount === 2 && outsidePointCount === 1) {
     // Triangle should be clipped. As two points lie inside the plane,
     // the clipped triangle becomes a "quad". Fortunately, we can
     // represent a quad with two new triangles
@@ -127,8 +122,8 @@ export function triangleClipAgainstPlane(
     triOut2.color = triIn.color;
 
     // set color to blue
-    // triOut1.color = new Vector3(0, 0, 255);
-    // triOut2.color = new Vector3(0, 0, 255);
+    triOut1.color = new Vector3(0, 0, 255);
+    triOut2.color = new Vector3(0, 0, 255);
 
     triOut1.normal = triIn.normal;
     triOut2.normal = triIn.normal;

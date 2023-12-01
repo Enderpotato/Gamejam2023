@@ -9,6 +9,7 @@ import Mesh from "../shapes/Mesh.js";
 import { camera } from "../index.js";
 import Triangle from "../shapes/Triangle.js";
 import { Matrix_MultiplyVector } from "../helperFuncs/testfuncs.js";
+import Vector3 from "../structs/Vector3.js";
 
 export default class Renderer {
   constructor() {
@@ -53,6 +54,7 @@ Renderer.projectTriangle = projectTriangle;
 
 Renderer.rasterTriangle = rasterTriangle;
 
+const LightDir = new Vector3(1, 0, 0).normalize();
 Renderer.prototype.loadMesh = function (mesh) {
   mesh.triangles.forEach((tri) => {
     tri.calcNormal();
@@ -62,6 +64,8 @@ Renderer.prototype.loadMesh = function (mesh) {
     let dot = cameraToTriangle.dot(tri.normal);
     if (dot > 0) return;
     let triViewed = Triangle.init();
+    let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
+    triViewed.color = tri.color.elementMult(lightIntensity);
 
     // world space -> view space
     triViewed.vertices[0] = Matrix_MultiplyVector(
