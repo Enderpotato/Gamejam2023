@@ -12,9 +12,8 @@ import Map from "./map.js";
 const FPSElement = document.getElementById("fps-debug");
 
 let keyPressed = {};
-let angle;
+let view_angle = 0;
 let player_pos;
-let x_angle = 0; //the player can only angle the camera in the x direction
 
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
@@ -30,6 +29,7 @@ const WIDTH = 500;
 const MAP_WIDTH = 400;
 const upDir = new Vector3(0, 1, 0);
 const targetDir = camera.position.add(camera.lookDir);
+
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
@@ -67,7 +67,14 @@ function draw() {
     scene.update(deltaTime);
   }
   cameraControl();
+
+  if (keyIsDown(39)){
+    view_angle += radians(3.);
+  } else if (keyIsDown(37)){
+    view_angle -= radians(3);
+  }
 }
+
 
 window.setup = setup;
 window.draw = draw;
