@@ -26,7 +26,7 @@ export default class Camera {
       this.yawAngle,
       0,
       "XYZ"
-    ).normalize();
+    );
     this.lookDir = new Vector3(0, 0, 1).quaternionRotate(rotQuat).normalize();
     this.position = this.position.add(this.vel.elementMult(dt));
   }
