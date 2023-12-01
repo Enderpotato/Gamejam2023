@@ -33,5 +33,6 @@ Triangle.prototype.clone = function () {
   });
   let tri = new Triangle(vertices);
   if (this.normal != null) tri.normal = this.normal.clone();
+  tri.color = this.color.clone();
   return tri;
 };

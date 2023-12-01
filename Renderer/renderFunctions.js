@@ -38,20 +38,9 @@ export function RenderCube(cube) {
 export function projectTriangle(tri, Renderer) {
   // Clip viewed triangle against near plane, this could form two additional triangles.
   let clippedTriangles = 0;
-  let clipped = [
-    new Triangle([
-      new Vector3(0, 0, 0),
-      new Vector3(0, 0, 0),
-      new Vector3(0, 0, 0),
-    ]),
-    new Triangle([
-      new Vector3(0, 0, 0),
-      new Vector3(0, 0, 0),
-      new Vector3(0, 0, 0),
-    ]),
-  ];
+  let clipped = [Triangle.init(), Triangle.init()];
   clippedTriangles = triangleClipAgainstPlane(
-    new Vector3(0, 0, 0.2),
+    new Vector3(0, 0, 5.2),
     new Vector3(0, 0, 1),
     tri,
     clipped[0],
@@ -60,7 +49,7 @@ export function projectTriangle(tri, Renderer) {
 
   for (let n = 0; n < clippedTriangles; n++) {
     // Project triangles from 3D --> 2D
-    let triProjected = new Triangle([]);
+    let triProjected = clipped[n].clone();
     triProjected.vertices[0] = perspectiveProject(clipped[n].vertices[0]);
     triProjected.vertices[1] = perspectiveProject(clipped[n].vertices[1]);
     triProjected.vertices[2] = perspectiveProject(clipped[n].vertices[2]);
@@ -70,20 +59,94 @@ export function projectTriangle(tri, Renderer) {
 }
 
 export function rasterTriangle(tri) {
-  stroke(0);
-  strokeWeight(1);
-  noStroke();
-  let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
-  fill(tri.color.elementMult(lightIntensity).toColor());
+  let clipped = [Triangle.init(), Triangle.init()];
+  let triList = [tri];
+  let nNewTriangles = 1;
 
-  triangle(
-    tri.vertices[0].x,
-    tri.vertices[0].y,
-    tri.vertices[1].x,
-    tri.vertices[1].y,
-    tri.vertices[2].x,
-    tri.vertices[2].y
-  );
+  // Clip each triangle against screen edges. ClipTriangle() may yield
+  // a variable number of triangles, so create a queue that we traverse
+  // to ensure we process all triangles from original game state this frame
+  for (let p = 0; p < 4; p++) {
+    let trisToAdd = 0;
+    while (nNewTriangles > 0) {
+      // Take triangle from front of queue
+      let test = triList.shift();
+      nNewTriangles--;
+
+      // Clip it against a plane. We only need to test each
+      // subsequent plane, against subsequent new triangles
+      // as all triangles after a plane clip are guaranteed
+      // to lie on the inside of the plane.
+      switch (p) {
+        case 0:
+          trisToAdd = triangleClipAgainstPlane(
+            new Vector3(-width / 2, -height / 2, 0),
+            new Vector3(0, 1, 0),
+            test,
+            clipped[0],
+            clipped[1]
+          );
+          break;
+        case 1:
+          trisToAdd = triangleClipAgainstPlane(
+            new Vector3(width / 2, height / 2 - 1, 0),
+            new Vector3(0, -1, 0),
+            test,
+            clipped[0],
+            clipped[1]
+          );
+          break;
+        case 2:
+          trisToAdd = triangleClipAgainstPlane(
+            new Vector3(-width / 2, 0, 0),
+            new Vector3(1, 0, 0),
+            test,
+            clipped[0],
+            clipped[1]
+          );
+          break;
+        case 3:
+          trisToAdd = triangleClipAgainstPlane(
+            new Vector3(width / 2, 0, 0),
+            new Vector3(-1, 0, 0),
+            test,
+            clipped[0],
+            clipped[1]
+          );
+          break;
+
+        default:
+          console.log("lol");
+          break;
+      }
+
+      // Clipping may yield a variable number of triangles, so
+      // add these new ones to the back of the queue for subsequent
+      // clipping against next planes
+      for (let w = 0; w < trisToAdd; w++) {
+        triList.push(clipped[w]);
+      }
+    }
+    nNewTriangles = triList.length;
+  }
+
+  triList.forEach((tri) => {
+    stroke(0);
+    strokeWeight(1);
+    noStroke();
+    let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
+    let fillColor = tri.color.elementMult(lightIntensity).toColor();
+    fill(fillColor);
+
+    triangle(
+      tri.vertices[0].x,
+      tri.vertices[0].y,
+      tri.vertices[1].x,
+      tri.vertices[1].y,
+      tri.vertices[2].x,
+      tri.vertices[2].y
+    );
+  });
 }
 
 function drawNormal(tri) {

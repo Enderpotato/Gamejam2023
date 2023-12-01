@@ -40,7 +40,8 @@ Camera.prototype.calcCameraMatrix = function (pos, target, up) {
 export function cameraControl(deltaTime) {
   // reset input velocity
   camera.inputVel = new Vector3(0, 0, 0);
-  let forwardW = camera.lookDir.clone().elementMult(0.05 * deltaTime);
+  const speed = 0.02 * deltaTime;
+  let forwardW = camera.lookDir.clone().elementMult(speed);
   // w and s key
   if (keyIsDown(87)) {
     camera.position = camera.position.add(forwardW);
@@ -52,21 +53,21 @@ export function cameraControl(deltaTime) {
     camera.position = camera.position.add(
       Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
         .normalize()
-        .elementMult(-0.05 * deltaTime)
+        .elementMult(-speed)
     );
   } else if (keyIsDown(68)) {
     camera.position = camera.position.add(
       Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
         .normalize()
-        .elementMult(0.05 * deltaTime)
+        .elementMult(speed)
     );
   }
 
   // q and e key
   if (keyIsDown(81)) {
-    camera.position = camera.position.add(new Vector3(0, 0.05 * deltaTime, 0));
+    camera.position = camera.position.add(new Vector3(0, speed, 0));
   } else if (keyIsDown(69)) {
-    camera.position = camera.position.add(new Vector3(0, -0.05 * deltaTime, 0));
+    camera.position = camera.position.add(new Vector3(0, -speed, 0));
   }
 
   // left and right arrow key for rotation
