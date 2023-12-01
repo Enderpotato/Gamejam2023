@@ -13,3 +13,13 @@ Triangle.prototype.calcNormal = function () {
   let v2 = this.vertices[2].subtract(this.vertices[0]);
   this.normal = v1.cross(v2).normalize();
 };
+
+Triangle.prototype.clone = function () {
+  let vertices = [];
+  this.vertices.forEach((v) => {
+    vertices.push(v.clone());
+  });
+  let tri = new Triangle(vertices);
+  if (this.normal != null) tri.normal = this.normal.clone();
+  return tri;
+};

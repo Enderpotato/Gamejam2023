@@ -1,4 +1,8 @@
-import { RenderCube, renderTriangle } from "./renderFunctions.js";
+import {
+  RenderCube,
+  projectTriangle,
+  rasterTriangle,
+} from "./renderFunctions.js";
 import Cube from "../shapes/TestShapes/Cube.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Mesh from "../shapes/Mesh.js";
@@ -6,7 +10,8 @@ import { camera } from "../index.js";
 
 export default class Renderer {
   constructor() {
-    this.trianglesToRender = [];
+    this.trianglesToProject = [];
+    this.trianglesToRaster = [];
   }
 
   render(scene) {
@@ -15,26 +20,36 @@ export default class Renderer {
       if (object instanceof Mesh) this.loadMesh(object);
 
       // sort triangles by distance from camera
-      this.trianglesToRender.sort((a, b) => {
-        let aDist = a.vertices[0].distance(camera.position);
-        let bDist = b.vertices[0].distance(camera.position);
-        return bDist - aDist;
+      this.trianglesToProject.sort((a, b) => {
+        // let aDist = a.vertices[0].distance(camera.position);
+        // let bDist = b.vertices[0].distance(camera.position);
+        // return aDist - aDist;
+        let z1 = (a.vertices[0].z + a.vertices[1].z + a.vertices[2].z) / 3;
+        let z2 = (b.vertices[0].z + b.vertices[1].z + b.vertices[2].z) / 3;
+
+        return z2 - z1;
+      });
+      this.trianglesToProject.forEach((tri) => {
+        Renderer.projectTriangle(tri, this);
       });
 
-      this.trianglesToRender.forEach((tri) => {
-        Renderer.renderTriangle(tri);
+      this.trianglesToRaster.forEach((tri) => {
+        Renderer.rasterTriangle(tri);
       });
     });
   }
 
   clear() {
-    this.trianglesToRender = [];
+    this.trianglesToProject = [];
+    this.trianglesToRaster = [];
   }
 }
 
 Renderer.renderCube = RenderCube;
 
-Renderer.renderTriangle = renderTriangle;
+Renderer.projectTriangle = projectTriangle;
+
+Renderer.rasterTriangle = rasterTriangle;
 
 Renderer.prototype.loadMesh = function (mesh) {
   mesh.triangles.forEach((tri) => {
@@ -44,6 +59,6 @@ Renderer.prototype.loadMesh = function (mesh) {
     let cameraToTriangle = tri.vertices[0].subtract(camera.position);
     let dot = cameraToTriangle.dot(tri.normal);
     if (dot > 0) return;
-    this.trianglesToRender.push(tri);
+    this.trianglesToProject.push(tri);
   });
 };

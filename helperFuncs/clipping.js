@@ -1,3 +1,5 @@
+import Vector3 from "../structs/Vector3.js";
+
 export function vectorIntersectPlane(planeP, planeN, lineStart, lineEnd) {
   planeN = planeN.normalize();
   let planeD = -Vector3.dot(planeN, planeP);
@@ -58,6 +60,7 @@ export function triangleClipAgainstPlane(
   // smaller output triangles if required. There are four possible
   // outcomes...
 
+  // console.log(insidePointsCount);
   if (insidePointsCount === 0) {
     // All points lie on the outside of plane, so clip whole triangle
     // It ceases to exist
@@ -77,7 +80,10 @@ export function triangleClipAgainstPlane(
     // the plane, the triangle simply becomes a smaller triangle
 
     // Copy appearance info to new triangle
-    triOut1.color = triIn.color;
+    // triOut1.color = triIn.color;
+
+    // Copy normal
+    triOut1.normal = triIn.normal;
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
@@ -106,8 +112,12 @@ export function triangleClipAgainstPlane(
     // represent a quad with two new triangles
 
     // Copy appearance info to new triangles
-    triOut1.color = triIn.color;
-    triOut2.color = triIn.color;
+    // triOut1.color = triIn.color;
+    // triOut2.color = triIn.color;
+
+    // Copy normal
+    triOut1.normal = triIn.normal;
+    triOut2.normal = triIn.normal;
 
     // The first triangle consists of the two inside points and a new
     // point determined by the location where one side of the triangle
