@@ -14,7 +14,6 @@ let canvas;
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
 let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
 spaceshipMesh.createFromObj("./assets/VideoShip.obj");
-console.log(spaceshipMesh);
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);

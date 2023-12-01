@@ -1,6 +1,9 @@
 import { transformWorldtoScreen, perspectiveProject } from "../testfuncs.js";
 import Renderer from "./Renderer.js";
 import { camera } from "../index.js";
+import Vector3 from "../structs/Vector3.js";
+
+const LightDir = new Vector3(0, 1, 0).normalize();
 
 export function RenderCube(cube) {
   let transformedVertices = [];
@@ -45,9 +48,13 @@ export function renderTriangle(tri) {
 
   //   stroke(255, 255, 255);
   //   noFill();
-  stroke(0, 0, 0);
-  strokeWeight(2);
-  fill(255, 255, 255);
+  //   stroke(0, 0, 0);
+  //   strokeWeight(2);
+  noStroke();
+
+  let lightIntensity = tri.normal.dot(LightDir) + 1;
+
+  fill(lightIntensity * 255);
   triangle(
     transformedVertices[0].x,
     transformedVertices[0].y,
