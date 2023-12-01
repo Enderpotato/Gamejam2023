@@ -62,10 +62,10 @@ function draw() {
   }
 }
 
-document.addEventListener("keypress", function (event) {
+document.addEventListener("keydown", function (event) {
   keyPressed[event.key] = true;
   if (keyPressed["w"]) {
-    camera.position.z += 10;
+    camera.position.z += 10 ;
   }
   if (keyPressed["s"]) {
     camera.position.z -= 10;
