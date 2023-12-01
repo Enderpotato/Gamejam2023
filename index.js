@@ -4,6 +4,7 @@ import Vector3 from "./structs/Vector3.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import Cube from "./shapes/TestShapes/Cube.js";
 import { createPerspectiveMatrix } from "./testfuncs.js";
+import Camera from "./camera.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -12,6 +13,7 @@ let canvas;
 const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
+export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 
 const HEIGHT = 400;
 const WIDTH = 400;

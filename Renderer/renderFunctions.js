@@ -1,5 +1,6 @@
 import { transformWorldtoScreen, perspectiveProject } from "../testfuncs.js";
 import Renderer from "./Renderer.js";
+import { camera } from "../index.js";
 
 export function RenderCube(cube) {
   let transformedVertices = [];
@@ -29,7 +30,12 @@ export function RenderCube(cube) {
 export function renderTriangle(tri) {
   tri.calcNormal();
 
-  drawNormal(tri);
+  //   drawNormal(tri);
+
+  // normal culling
+  let cameraToTriangle = tri.vertices[0].subtract(camera.position);
+  let dot = cameraToTriangle.dot(tri.normal);
+  if (dot > 0) return;
 
   let transformedVertices = [];
   tri.vertices.forEach((vertex) => {

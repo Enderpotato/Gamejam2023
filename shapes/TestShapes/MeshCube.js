@@ -113,7 +113,7 @@ export default class MeshCube {
     this.triangles.forEach((triangle) => {
       ShapeMorph.rotateTriangle(
         triangle,
-        Quaternion.fromEulerLogical(0.01, 0.01, 0.01, "XYZ"),
+        Quaternion.fromEulerLogical(-0.01, 0.01, 0.01, "XYZ"),
         this.position
       );
     });
