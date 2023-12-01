@@ -7,6 +7,7 @@ import { createPerspectiveMatrix } from "./testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
+import Map from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -34,6 +35,7 @@ export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
+var map_ = new Map(50, 40,-WIDTH/2, -HEIGHT/2);
 
 createPerspectiveMatrix();
 let canvas;
@@ -58,11 +60,12 @@ function draw() {
 
   renderer.render(scene);
   renderer.clear();
+  map_.draw_map();
+  map_.draw_obj(camera);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
   }
-
   cameraControl();
 }
 
