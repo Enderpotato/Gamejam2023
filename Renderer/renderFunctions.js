@@ -31,15 +31,6 @@ export function RenderCube(cube) {
 }
 
 export function renderTriangle(tri) {
-  tri.calcNormal();
-
-  //   drawNormal(tri);
-
-  // normal culling
-  let cameraToTriangle = tri.vertices[0].subtract(camera.position);
-  let dot = cameraToTriangle.dot(tri.normal);
-  if (dot > 0) return;
-
   let transformedVertices = [];
   tri.vertices.forEach((vertex) => {
     let transformedVertex = perspectiveProject(vertex);
@@ -63,12 +54,6 @@ export function renderTriangle(tri) {
     transformedVertices[2].x,
     transformedVertices[2].y
   );
-}
-
-export function renderMesh(mesh) {
-  mesh.triangles.forEach((tri) => {
-    Renderer.renderTriangle(tri);
-  });
 }
 
 function drawNormal(tri) {
