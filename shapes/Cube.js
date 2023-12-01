@@ -1,4 +1,5 @@
 import Vector3 from "../structs/Vector3.js";
+import ShapeMorph from "./ShapeMorph.js";
 
 export default class Cube {
   constructor(center, width) {
@@ -35,18 +36,6 @@ export default class Cube {
 
   update(dt) {
     let q = Quaternion.fromEulerLogical(-0.1, 0, 0.01, "XYZ");
-    this.rotate(q);
+    ShapeMorph.rotate(this, q);
   }
 }
-
-Cube.prototype.rotate = function (q) {
-  this.vertices = this.vertices.map((vertex) => {
-    vertex = vertex.subtract(this.position);
-    let rotated = vertex.quaternionRotate(q);
-    vertex.x = rotated.x;
-    vertex.y = rotated.y;
-    vertex.z = rotated.z;
-
-    return vertex.add(this.position);
-  });
-};
