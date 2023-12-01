@@ -11,8 +11,8 @@ const FPSElement = document.getElementById("fps-debug");
 
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
-let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
-spaceshipMesh.createFromObj("./assets/VideoShip.obj");
+let spaceshipMesh = new Mesh(new Vector3(0, -1, 20));
+spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
