@@ -9,95 +9,102 @@ export default class MeshCube {
     this.position = position;
 
     // use 12 triangles to make a cube
+    // triangle consists of 3 vertices in clockwise order
     let halfWidth = width / 2;
-    // front
+
+    // front face
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, -halfWidth).add(this.position),
       ])
     );
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, -halfWidth).add(this.position),
       ])
     );
-    // back
+
+    // back face
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(position),
-      ])
-    );
-    // left
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
       ])
     );
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(position),
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, halfWidth).add(this.position),
       ])
     );
-    // right
+
+    // left face
     this.triangles.push(
       new Triangle([
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(position),
-      ])
-    );
-    // top
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, -halfWidth).add(this.position),
       ])
     );
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(position),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(position),
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(-halfWidth, -halfWidth, halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, halfWidth).add(this.position),
       ])
     );
-    // bottom
+
+    // right face
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(position),
+        new Vector3(halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
       ])
     );
     this.triangles.push(
       new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(position),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(position),
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(position),
+        new Vector3(halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, halfWidth).add(this.position),
+      ])
+    );
+
+    // top face
+    this.triangles.push(
+      new Triangle([
+        new Vector3(-halfWidth, halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, -halfWidth).add(this.position),
+      ])
+    );
+    this.triangles.push(
+      new Triangle([
+        new Vector3(-halfWidth, halfWidth, -halfWidth).add(this.position),
+        new Vector3(-halfWidth, halfWidth, halfWidth).add(this.position),
+        new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
+      ])
+    );
+
+    // bottom face
+    this.triangles.push(
+      new Triangle([
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, halfWidth).add(this.position),
+      ])
+    );
+    this.triangles.push(
+      new Triangle([
+        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(this.position),
+        new Vector3(halfWidth, -halfWidth, halfWidth).add(this.position),
+        new Vector3(-halfWidth, -halfWidth, halfWidth).add(this.position),
       ])
     );
   }

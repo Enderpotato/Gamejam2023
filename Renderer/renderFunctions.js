@@ -27,15 +27,21 @@ export function RenderCube(cube) {
 }
 
 export function renderTriangle(tri) {
-  let transformedVertices = [];
+  tri.calcNormal();
 
+  drawNormal(tri);
+
+  let transformedVertices = [];
   tri.vertices.forEach((vertex) => {
     let transformedVertex = perspectiveProject(vertex);
     transformedVertices.push(transformedVertex);
   });
 
-  stroke(255, 255, 255);
-  noFill();
+  //   stroke(255, 255, 255);
+  //   noFill();
+  stroke(0, 0, 0);
+  strokeWeight(2);
+  fill(255, 255, 255);
   triangle(
     transformedVertices[0].x,
     transformedVertices[0].y,
@@ -50,4 +56,28 @@ export function renderMesh(mesh) {
   mesh.triangles.forEach((tri) => {
     Renderer.renderTriangle(tri);
   });
+}
+
+function drawNormal(tri) {
+  //draw out the normal
+  let normal = tri.normal;
+
+  //get center of triangle
+  let center = tri.vertices[0]
+    .add(tri.vertices[1])
+    .add(tri.vertices[2])
+    .elementDiv(3);
+
+  let normalVertex = center.add(normal);
+
+  let transformedNormal = perspectiveProject(normalVertex);
+  let transformedCenter = perspectiveProject(center);
+  stroke(255, 0, 0);
+  strokeWeight(4);
+  line(
+    transformedCenter.x,
+    transformedCenter.y,
+    transformedNormal.x,
+    transformedNormal.y
+  );
 }

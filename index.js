@@ -32,8 +32,11 @@ function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
   background(0);
-  scene.update(deltaTime);
   renderer.render(scene);
+
+  if (keyIsDown(32)) {
+    scene.update(deltaTime);
+  }
 }
 
 function keyPressed() {}
