@@ -121,6 +121,10 @@ Vector3.prototype.toArray = function () {
   return [this.x, this.y, this.z];
 };
 
+Vector3.prototype.clone = function () {
+  return new Vector3(this.x, this.y, this.z);
+};
+
 Vector3.prototype.quaternionRotate = function (q) {
   let rotatedArray = q.rotateVector(this.toArray());
   return Vector3.fromArray(rotatedArray);

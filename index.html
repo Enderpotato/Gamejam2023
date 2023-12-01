@@ -4,6 +4,7 @@
     <script src="libaries/quaternion.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
     <script src="index.js" type="module"></script>
+    <link rel="stylesheet" href="style.css" />
     <title>P5.js Project</title>
   </head>
   <body>
@@ -12,7 +13,11 @@
       <div>
         <button id="stop-game" onclick="noLoop()">Kill game</button>
         <p>Frame rate: <span id="fps-debug"></span></p>
-        <div>Player Position: <span id="camera-pos"></span></div>
+        <div id="debug-text">
+          <div><span id="camera-pos"></span></div>
+          <div><span id="camera-rot"></span></div>
+          <div><span id="camera-look"></span></div>
+        </div>
       </div>
     </main>
   </body>

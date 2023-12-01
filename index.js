@@ -19,23 +19,22 @@ let x_angle = 0; //the player can only angle the camera in the x direction
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
 let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
-spaceshipMesh.createFromObj("./assets/testObjs/axis.obj");
+spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
 export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 
-const HEIGHT = 500;
 const WIDTH = 500;
+const HEIGHT = 450;
 const MAP_WIDTH = 400;
 const upDir = new Vector3(0, 1, 0);
-const targetDir = camera.position.add(camera.lookDir);
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
-var map_ = new Map(50, 40,-WIDTH/2, -HEIGHT/2);
+var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
 createPerspectiveMatrix();
 let canvas;
@@ -56,6 +55,7 @@ function draw() {
 
   background(0);
   camera.update(deltaTime);
+  let targetDir = Vector3.add(camera.position, camera.lookDir);
   camera.calcCameraMatrix(camera.position, targetDir, upDir);
 
   renderer.render(scene);
@@ -66,7 +66,7 @@ function draw() {
   if (keyIsDown(32)) {
     scene.update(deltaTime);
   }
-  cameraControl();
+  cameraControl(deltaTime);
 }
 
 window.setup = setup;
