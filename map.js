@@ -1,6 +1,6 @@
+import Camera from "./Camera.js";
 export default class Map{
-    constructor(){ //map_start x and y will recieve the starting points of the topleft of the map
-        //player starts in the middle
+    constructor(map_width, map_height, map_start_x, map_start_y){ 
         this.map = [[0, 0, 0, 0, 1, 0, 0, 0],
                     [0, 0, 0, 0, 1, 0, 0, 0],
                     [0, 0, 0, 0, 1, 0, 0, 0],
@@ -9,18 +9,21 @@ export default class Map{
                     [0, 0, 1, 0, 1, 1, 1, 0],
                     [0, 0, 1, 0, 0, 0, 0, 0],
                     [0, 0, 1, 0, 0, 0, 1, 0]];
-    }
-
-    draw(map_start_x, map_start_y,map_width, map_height){
-        //player starts in the middle
-        this.map_start_x = map_start_x;
-        this.map_start_y = map_start_y;
         this.map_width = map_width;
         this.map_height = map_height;
+        this.map_start_x = map_start_x;
+        this.map_start_y = map_start_y;
+    }
+
+    from_coords(pos){
+        return [pos.z * this.map_width/width + this.map_start_x ,pos.x * this.map_height/height + this.map_start_y]
+    }
+
+    draw_map(){
         this.w = 8;
         this.h = 8;
-        this.block_w = map_width/this.w;
-        this.block_h = map_height/this.h
+        this.block_w = this.map_width/this.w;
+        this.block_h = this.map_height/this.h
         this.middle = [Math.floor(this.w/2),Math.floor(this.h/2)]
         fill(255);
         rect(this.map_start_x, this.map_start_y, this.map_width, this.map_height);
@@ -34,6 +37,11 @@ export default class Map{
         }
     }
 
-
-    
+    draw_obj(obj){
+        let obj_on_map_coords = this.from_coords(obj.position, width, height);
+        if (obj instanceof Camera){
+            fill(255,0,0);
+            circle(obj_on_map_coords[0], obj_on_map_coords[1], 10);
+        }
+    }
 }

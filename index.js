@@ -32,7 +32,7 @@ export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
-var map_ = new Map();
+var map_ = new Map(50, 40,-WIDTH/2, -HEIGHT/2);
 
 createPerspectiveMatrix();
 let canvas;
@@ -54,7 +54,8 @@ function draw() {
   background(0);
   renderer.render(scene);
   renderer.clear();
-  map_.draw(-WIDTH/2, -HEIGHT/2, 50, 40);
+  map_.draw_map();
+  map_.draw_obj(camera);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
@@ -65,7 +66,8 @@ document.addEventListener("keypress", function (event) {
   keyPressed[event.key] = true;
   if (keyPressed["w"]) {
     camera.position.z += 10;
-  } else if (keyPressed["s"]) {
+  }
+  if (keyPressed["s"]) {
     camera.position.z -= 10;
   }
   if (keyPressed["a"]) {
