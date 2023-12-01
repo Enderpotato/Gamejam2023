@@ -13,6 +13,7 @@ export default class Renderer {
       if (object instanceof Mesh) Renderer.renderMesh(object);
     });
   }
+
 }
 
 Renderer.renderCube = RenderCube;
