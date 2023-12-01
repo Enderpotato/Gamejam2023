@@ -3,103 +3,60 @@ import Vector3 from "../structs/Vector3.js";
 import ShapeMorph from "./ShapeMorph.js";
 
 export default class Mesh {
-  constructor(center, width) {
-    // initialize triangles using center and width
+  constructor(position) {
     this.triangles = [];
-
-    // use 12 triangles to make a cube
-    let halfWidth = width / 2;
-    // front
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(center),
-      ])
-    );
-    // back
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    // left
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(center),
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(center),
-      ])
-    );
-    // right
-    this.triangles.push(
-      new Triangle([
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(center),
-      ])
-    );
-    // top
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, halfWidth, halfWidth).add(center),
-        new Vector3(-halfWidth, halfWidth, halfWidth).add(center),
-      ])
-    );
-    // bottom
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(center),
-      ])
-    );
-    this.triangles.push(
-      new Triangle([
-        new Vector3(-halfWidth, -halfWidth, -halfWidth).add(center),
-        new Vector3(halfWidth, -halfWidth, halfWidth).add(center),
-        new Vector3(-halfWidth, -halfWidth, halfWidth).add(center),
-      ])
-    );
+    this.position = position;
   }
 
-  update(dt) {}
+  update(dt) {
+    this.triangles.forEach((triangle) => {
+      ShapeMorph.rotateTriangle(
+        triangle,
+        Quaternion.fromEulerLogical(0.01, 0.01, 0.01, "XYZ"),
+        this.position
+      );
+    });
+  }
 }
+
+Mesh.prototype.createFromObj = function (filename) {
+  // fetch file
+  fetch(filename)
+    .then((response) => response.text())
+    .then((data) => {
+      let lines = data.split("\n");
+      let vertices = [];
+      let faces = [];
+      lines.forEach((line) => {
+        let tokens = line.split(" ");
+        if (tokens[0] === "v") {
+          vertices.push(
+            new Vector3(
+              parseFloat(tokens[1]),
+              parseFloat(tokens[2]),
+              parseFloat(tokens[3])
+            )
+          );
+        } else if (tokens[0] === "f") {
+          faces.push([
+            parseInt(tokens[1]),
+            parseInt(tokens[2]),
+            parseInt(tokens[3]),
+          ]);
+        }
+      });
+      faces.forEach((face) => {
+        let triangle = new Triangle([
+          vertices[face[0] - 1],
+          vertices[face[1] - 1],
+          vertices[face[2] - 1],
+        ]);
+
+        // add position to triangle
+        triangle.vertices = triangle.vertices.map((vertex) => {
+          return vertex.add(this.position);
+        });
+        this.triangles.push(triangle);
+      });
+    });
+};

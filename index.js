@@ -1,31 +1,49 @@
-import Renderer from "./renderer.js";
+import Renderer from "./Renderer/Renderer.js";
 import Scene from "./Scene.js";
-import Cube from "./shapes/Cube.js";
 import Vector3 from "./structs/Vector3.js";
-import Triangle from "./shapes/Triangle.js";
+import MeshCube from "./shapes/TestShapes/MeshCube.js";
+import Cube from "./shapes/TestShapes/Cube.js";
+import { createPerspectiveMatrix } from "./testfuncs.js";
+import Camera from "./camera.js";
+import Mesh from "./shapes/Mesh.js";
+
+const FPSElement = document.getElementById("fps-debug");
 
 let canvas;
-const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-// const scene = new Scene([
-//   new Triangle([
-//     new Vector3(0, 0, 5),
-//     new Vector3(1, 0, 5),
-//     new Vector3(0, 1, 5),
-//   ]),
-// ]);
+// const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
+let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
+spaceshipMesh.createFromObj("./assets/VideoShip.obj");
+console.log(spaceshipMesh);
+const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
-export const NEAR = 1 / Math.tan(FOV / 2);
+export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+
+const HEIGHT = 400;
+const WIDTH = 400;
+
+export const invFov = 1 / Math.tan(FOV / 2);
+export const ZNEAR = 1;
+export const ZFAR = 1000;
+export const AspectRatio = HEIGHT / WIDTH;
+
+createPerspectiveMatrix();
 
 function setup() {
-  canvas = createCanvas(400, 400, WEBGL);
+  canvas = createCanvas(HEIGHT, WIDTH, WEBGL);
   canvas.parent("canvas");
 }
 
 function draw() {
+  FPSElement.innerHTML = Math.round(frameRate());
+
   background(0);
-  // scene.update(deltaTime);
   renderer.render(scene);
+
+  if (keyIsDown(32)) {
+    scene.update(deltaTime);
+  }
 }
 
 function keyPressed() {}
