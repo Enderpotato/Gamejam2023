@@ -1,4 +1,4 @@
-import { transformWorldtoScreen, perspectiveProject } from "../testfuncs.js";
+import { Matrix_MultiplyVector, perspectiveProject } from "../testfuncs.js";
 import Renderer from "./Renderer.js";
 import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
@@ -33,7 +33,11 @@ export function RenderCube(cube) {
 export function renderTriangle(tri) {
   let transformedVertices = [];
   tri.vertices.forEach((vertex) => {
-    let transformedVertex = perspectiveProject(vertex);
+    // world space -> view space
+    let viewVertex = Matrix_MultiplyVector(camera.matView, vertex);
+
+    // view space -> projection space
+    let transformedVertex = perspectiveProject(viewVertex);
     transformedVertices.push(transformedVertex);
   });
 

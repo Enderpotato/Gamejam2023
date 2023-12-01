@@ -32,7 +32,7 @@ function multiplyPMatrix(vec) {
   result.z =
     // vec.x * perspMatrix[0][2] +
     // vec.y * perspMatrix[1][2] +
-    vec.z * perspMatrix[2][2] + perspMatrix[3][2];
+    vec.z * perspMatrix[2][2] + perspMatrix[3][2] * vec.w;
   let w =
     vec.x * perspMatrix[0][3] +
     vec.y * perspMatrix[1][3] +
@@ -70,6 +70,15 @@ export function perspectiveProject(vect) {
   return multiplyPMatrix(vect).elementMult(width);
 }
 
+export function Matrix_MultiplyVector(m, i) {
+  let v = new Vector3(0, 0, 0);
+  v.x = i.x * m[0][0] + i.y * m[1][0] + i.z * m[2][0] + i.w * m[3][0];
+  v.y = i.x * m[0][1] + i.y * m[1][1] + i.z * m[2][1] + i.w * m[3][1];
+  v.z = i.x * m[0][2] + i.y * m[1][2] + i.z * m[2][2] + i.w * m[3][2];
+  v.w = i.x * m[0][3] + i.y * m[1][3] + i.z * m[2][3] + i.w * m[3][3];
+  return v;
+}
+
 export function matrixPointAt(pos, target, up) {
   // Calculate new forward direction
   let newForward = target.subtract(pos).normalize();
@@ -99,8 +108,8 @@ export function matrixQuickInverse(m) {
     [m[0][1], m[1][1], m[2][1], 0],
     [m[0][2], m[1][2], m[2][2], 0],
     [
-      -(m[3][0] * m[0][0] + m[3][1] * m[0][1] + m[3][2] * m[0][2]),
-      -(m[3][0] * m[1][0] + m[3][1] * m[1][1] + m[3][2] * m[1][2]),
+      -(m[3][0] * m[0][0] + m[3][1] * m[0][1] + m[3][2] * m[2][0]),
+      -(m[3][0] * m[1][0] + m[3][1] * m[1][1] + m[3][2] * m[2][1]),
       -(m[3][0] * m[2][0] + m[3][1] * m[2][1] + m[3][2] * m[2][2]),
       1,
     ],

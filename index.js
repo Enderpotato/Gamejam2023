@@ -29,7 +29,6 @@ const WIDTH = 500;
 const MAP_WIDTH = 400;
 const upDir = new Vector3(0, 1, 0);
 const targetDir = camera.position.add(camera.lookDir);
-camera.calcCameraMatrix(camera.position, targetDir, upDir);
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
@@ -54,10 +53,11 @@ function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
   background(0);
+  camera.update(deltaTime);
+  camera.calcCameraMatrix(camera.position, targetDir, upDir);
+
   renderer.render(scene);
   renderer.clear();
-
-  camera.update(deltaTime);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);

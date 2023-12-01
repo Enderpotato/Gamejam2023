@@ -15,8 +15,8 @@ export default class Camera {
   }
 
   update(dt) {
-    this.vel = this.vel.add(this.inputVel.normalize());
-    this.position.add(this.vel.elementMult(dt));
+    this.vel = this.inputVel.elementMult(0.1);
+    this.position = this.position.add(this.vel.elementMult(dt));
   }
 }
 
@@ -30,14 +30,22 @@ export function cameraControl() {
   camera.inputVel = new Vector3(0, 0, 0);
   // w and s key
   if (keyIsDown(87)) {
-    camera.inputVel.z = -1;
-  } else if (keyIsDown(83)) {
     camera.inputVel.z = 1;
+  } else if (keyIsDown(83)) {
+    camera.inputVel.z = -1;
   }
   // a and d key
   if (keyIsDown(65)) {
-    camera.inputVel.x = -1;
-  } else if (keyIsDown(68)) {
     camera.inputVel.x = 1;
+  } else if (keyIsDown(68)) {
+    camera.inputVel.x = -1;
   }
+  // q and e key
+  if (keyIsDown(81)) {
+    camera.inputVel.y = 1;
+  } else if (keyIsDown(69)) {
+    camera.inputVel.y = -1;
+  }
+  camera.inputVel = camera.inputVel.normalize();
+  // console.log(camera.inputVel);
 }
