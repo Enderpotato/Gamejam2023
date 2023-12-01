@@ -1,6 +1,6 @@
 import Vector3 from "./structs/Vector3.js";
 import { camera } from "./index.js";
-import { matrixPointAt, matrixQuickInverse } from "./testfuncs.js";
+import { matrixPointAt, matrixQuickInverse } from "./helperFuncs/testfuncs.js";
 
 const PosElement = document.getElementById("camera-pos");
 const RotElement = document.getElementById("camera-rot");

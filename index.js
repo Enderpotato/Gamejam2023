@@ -3,7 +3,7 @@ import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import Cube from "./shapes/TestShapes/Cube.js";
-import { createPerspectiveMatrix } from "./testfuncs.js";
+import { createPerspectiveMatrix } from "./helperFuncs/testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";

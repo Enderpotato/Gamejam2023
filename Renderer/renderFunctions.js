@@ -1,4 +1,7 @@
-import { Matrix_MultiplyVector, perspectiveProject } from "../testfuncs.js";
+import {
+  Matrix_MultiplyVector,
+  perspectiveProject,
+} from "../helperFuncs/testfuncs.js";
 import Renderer from "./Renderer.js";
 import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
