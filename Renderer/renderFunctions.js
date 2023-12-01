@@ -30,7 +30,7 @@ export function RenderCube(cube) {
 export function renderTriangle(tri) {
   tri.calcNormal();
 
-  //   drawNormal(tri);
+    // drawNormal(tri);
 
   // normal culling
   let cameraToTriangle = tri.vertices[0].subtract(camera.position);
