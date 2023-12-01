@@ -122,3 +122,7 @@ Vector3.prototype.quaternionRotate = function (q) {
   let rotatedArray = q.rotateVector(this.toArray());
   return Vector3.fromArray(rotatedArray);
 };
+
+Vector3.prototype.to4dTensor = function () {
+  return tf.tensor2d([[this.x, this.y, this.z, 1]]);
+};

@@ -1,11 +1,11 @@
-import { transformWorldtoScreen } from "../testfuncs.js";
+import { transformWorldtoScreen, perspectiveProject } from "../testfuncs.js";
 import Renderer from "./Renderer.js";
 
 export function RenderCube(cube) {
   let transformedVertices = [];
 
   cube.vertices.forEach((vertex) => {
-    let transformedVertex = transformWorldtoScreen(vertex);
+    let transformedVertex = perspectiveProject(vertex);
     transformedVertices.push(transformedVertex);
     fill(255, 255, 255);
     rectMode(CENTER);
@@ -30,7 +30,7 @@ export function renderTriangle(tri) {
   let transformedVertices = [];
 
   tri.vertices.forEach((vertex) => {
-    let transformedVertex = transformWorldtoScreen(vertex);
+    let transformedVertex = perspectiveProject(vertex);
     transformedVertices.push(transformedVertex);
   });
 
