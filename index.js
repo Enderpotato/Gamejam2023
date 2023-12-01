@@ -9,18 +9,14 @@ import Mesh from "./shapes/Mesh.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
-
-
 let keyPressed = {};
 let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
-
-
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
-let spaceshipMesh = new Mesh(new Vector3(0, -1, 20));
+let spaceshipMesh = new Mesh(new Vector3(0, 0, 100));
 spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
@@ -29,7 +25,7 @@ export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 
 const HEIGHT = 400;
 const WIDTH = 400;
-const MAP_WIDTH = 400
+const MAP_WIDTH = 400;
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
@@ -62,24 +58,23 @@ function draw() {
   }
 }
 
-document.addEventListener('keypress', function(event){
+document.addEventListener("keypress", function (event) {
   keyPressed[event.key] = true;
-  if (keyPressed['w']){
-    camera.position.z += 10.;
-  } 
-  else if (keyPressed['s']){
-    camera.position.z -= 10.;
-  } 
-  if (keyPressed['a']){
-    camera.position.x += 10.;
-  } 
-  if (keyPressed['d']){
-    camera.position.x -= 10.;
-  } 
-})
-document.addEventListener('keyup', function(event){
+  if (keyPressed["w"]) {
+    camera.position.z += 10;
+  } else if (keyPressed["s"]) {
+    camera.position.z -= 10;
+  }
+  if (keyPressed["a"]) {
+    camera.position.x += 10;
+  }
+  if (keyPressed["d"]) {
+    camera.position.x -= 10;
+  }
+});
+document.addEventListener("keyup", function (event) {
   keyPressed[event] = false;
-})
+});
 
 window.setup = setup;
 window.draw = draw;
