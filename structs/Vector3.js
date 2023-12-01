@@ -3,6 +3,7 @@ export default class Vector3 {
     this.x = x;
     this.y = y;
     this.z = z;
+    this.w = 1;
   }
 }
 
@@ -48,6 +49,7 @@ Vector3.magSq = function (a) {
 
 Vector3.normalize = function (a) {
   let mag = Vector3.mag(a);
+  if (mag === 0) return new Vector3(0, 0, 0);
   return new Vector3(a.x / mag, a.y / mag, a.z / mag);
 };
 
@@ -111,6 +113,7 @@ Vector3.prototype.magSq = function () {
 
 Vector3.prototype.normalize = function () {
   let mag = this.mag();
+  if (mag === 0) return new Vector3(0, 0, 0);
   return new Vector3(this.x / mag, this.y / mag, this.z / mag);
 };
 
