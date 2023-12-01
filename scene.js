@@ -6,6 +6,7 @@ export default class Scene {
   update(dt) {
     this.objects.forEach((object) => {
       object.update(dt);
+      // console.log(object)
     });
   }
 }

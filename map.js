@@ -1,3 +1,0 @@
-class Map{
-    constructor(s)
-}
