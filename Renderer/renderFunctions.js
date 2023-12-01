@@ -3,7 +3,7 @@ import Renderer from "./Renderer.js";
 import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
 
-const LightDir = new Vector3(0, 1, 0).normalize();
+const LightDir = new Vector3(1, 0, 0).normalize();
 
 export function RenderCube(cube) {
   let transformedVertices = [];
