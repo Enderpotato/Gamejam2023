@@ -1,20 +1,7 @@
-import { transformWorldtoScreen } from "./testfuncs.js";
-import Cube from "./shapes/TestShapes/Cube.js";
-import Triangle from "./shapes/Triangle.js";
-import MeshCube from "./shapes/TestShapes/MeshCube.js";
+import { transformWorldtoScreen } from "../testfuncs.js";
+import Renderer from "./Renderer.js";
 
-export default class Renderer {
-  constructor() {}
-
-  render(scene) {
-    scene.objects.forEach((object) => {
-      if (object instanceof Cube) Renderer.renderCube(object);
-      if (object instanceof MeshCube) Renderer.renderMesh(object);
-    });
-  }
-}
-
-Renderer.renderCube = function (cube) {
+export function RenderCube(cube) {
   let transformedVertices = [];
 
   cube.vertices.forEach((vertex) => {
@@ -37,9 +24,9 @@ Renderer.renderCube = function (cube) {
       transformedVertex2.y
     );
   });
-};
+}
 
-Renderer.renderTriangle = function (tri) {
+export function renderTriangle(tri) {
   let transformedVertices = [];
 
   tri.vertices.forEach((vertex) => {
@@ -57,10 +44,10 @@ Renderer.renderTriangle = function (tri) {
     transformedVertices[2].x,
     transformedVertices[2].y
   );
-};
+}
 
-Renderer.renderMesh = function (mesh) {
+export function renderMesh(mesh) {
   mesh.triangles.forEach((tri) => {
     Renderer.renderTriangle(tri);
   });
-};
+}

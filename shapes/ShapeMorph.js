@@ -17,3 +17,9 @@ ShapeMorph.rotateTriangle = function (tri, quaternion, position) {
     return rotated.add(position);
   });
 };
+
+ShapeMorph.translate = function (object, vector) {
+  object.vertices = object.vertices.map((vertex) => {
+    return vertex.add(vector);
+  });
+};

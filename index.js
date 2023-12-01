@@ -1,7 +1,8 @@
-import Renderer from "./renderer.js";
+import Renderer from "./Renderer/Renderer.js";
 import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
+import Cube from "./shapes/TestShapes/Cube.js";
 
 let canvas;
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
