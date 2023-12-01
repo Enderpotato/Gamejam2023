@@ -6,6 +6,7 @@ import Cube from "./shapes/TestShapes/Cube.js";
 import { createPerspectiveMatrix } from "./testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
+import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
@@ -18,7 +19,7 @@ let x_angle = 0; //the player can only angle the camera in the x direction
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
 let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
-spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
+spaceshipMesh.createFromObj("./assets/testObjs/axis.obj");
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
@@ -27,6 +28,8 @@ export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 const HEIGHT = 500;
 const WIDTH = 500;
 const MAP_WIDTH = 400;
+const upDir = new Vector3(0, 1, 0);
+const targetDir = camera.position.add(camera.lookDir);
 
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
@@ -52,6 +55,9 @@ function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
   background(0);
+  camera.update(deltaTime);
+  camera.calcCameraMatrix(camera.position, targetDir, upDir);
+
   renderer.render(scene);
   renderer.clear();
   map_.draw_map();
@@ -60,26 +66,8 @@ function draw() {
   if (keyIsDown(32)) {
     scene.update(deltaTime);
   }
+  cameraControl();
 }
-
-document.addEventListener("keypress", function (event) {
-  keyPressed[event.key] = true;
-  if (keyPressed["w"]) {
-    camera.position.z += 10;
-  }
-  if (keyPressed["s"]) {
-    camera.position.z -= 10;
-  }
-  if (keyPressed["a"]) {
-    camera.position.x += 10;
-  }
-  if (keyPressed["d"]) {
-    camera.position.x -= 10;
-  }
-});
-document.addEventListener("keyup", function (event) {
-  keyPressed[event] = false;
-});
 
 window.setup = setup;
 window.draw = draw;
