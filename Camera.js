@@ -24,7 +24,7 @@ export default class Camera {
     let rotQuat = Quaternion.fromEulerLogical(
       this.pitchAngle,
       this.yawAngle,
-      0,
+      PI,
       "XYZ"
     );
     this.lookDir = new Vector3(0, 0, 1).quaternionRotate(rotQuat).normalize();
@@ -47,31 +47,48 @@ export function cameraControl(deltaTime) {
   } else if (keyIsDown(83)) {
     camera.position = camera.position.add(forwardW.elementMult(-1));
   }
-  // // a and d key
-  // if (keyIsDown(65)) {
-  //   camera.inputVel.x = 1;
-  // } else if (keyIsDown(68)) {
-  //   camera.inputVel.x = -1;
-  // }
-  // // q and e key
-  // if (keyIsDown(81)) {
-  //   camera.inputVel.y = 1;
-  // } else if (keyIsDown(69)) {
-  //   camera.inputVel.y = -1;
-  // }
+  // a and d key
+  if (keyIsDown(65)) {
+    camera.position = camera.position.add(
+      Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
+        .normalize()
+        .elementMult(-0.05 * deltaTime)
+    );
+  } else if (keyIsDown(68)) {
+    camera.position = camera.position.add(
+      Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
+        .normalize()
+        .elementMult(0.05 * deltaTime)
+    );
+  }
+
+  // q and e key
+  if (keyIsDown(81)) {
+    camera.position = camera.position.add(
+      Vector3.cross(camera.lookDir, new Vector3(1, 0, 0))
+        .normalize()
+        .elementMult(0.05 * deltaTime)
+    );
+  } else if (keyIsDown(69)) {
+    camera.position = camera.position.add(
+      Vector3.cross(camera.lookDir, new Vector3(1, 0, 0))
+        .normalize()
+        .elementMult(-0.05 * deltaTime)
+    );
+  }
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
-    camera.yawAngle += 0.001 * deltaTime;
-  } else if (keyIsDown(RIGHT_ARROW)) {
     camera.yawAngle += -0.001 * deltaTime;
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    camera.yawAngle += 0.001 * deltaTime;
   }
 
   // up and down arrow key for rotation
   if (keyIsDown(UP_ARROW)) {
-    camera.pitchAngle += -0.001 * deltaTime;
-  } else if (keyIsDown(DOWN_ARROW)) {
     camera.pitchAngle += 0.001 * deltaTime;
+  } else if (keyIsDown(DOWN_ARROW)) {
+    camera.pitchAngle += -0.001 * deltaTime;
   }
 
   // console.log(camera.inputVel);

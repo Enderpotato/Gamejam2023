@@ -36,52 +36,47 @@ export function RenderCube(cube) {
 }
 
 export function projectTriangle(tri, Renderer) {
-  let triViewed = new Triangle([]);
-
-  // world space -> view space
-  triViewed.vertices[0] = Matrix_MultiplyVector(
-    camera.matView,
-    tri.vertices[0]
-  );
-  triViewed.vertices[1] = Matrix_MultiplyVector(
-    camera.matView,
-    tri.vertices[1]
-  );
-  triViewed.vertices[2] = Matrix_MultiplyVector(
-    camera.matView,
-    tri.vertices[2]
-  );
-
   // Clip viewed triangle against near plane, this could form two additional triangles.
-  // let clippedTriangles = 0;
-  // let clipped = [
-  //   new Triangle([
-  //     new Vector3(0, 0, 0),
-  //     new Vector3(0, 0, 0),
-  //     new Vector3(0, 0, 0),
-  //   ]),
-  //   new Triangle([
-  //     new Vector3(0, 0, 0),
-  //     new Vector3(0, 0, 0),
-  //     new Vector3(0, 0, 0),
-  //   ]),
-  // ];
-  // clippedTriangles = triangleClipAgainstPlane(
-  //   new Vector3(0, 0, 0.95),
-  //   new Vector3(0, 0, 1),
-  //   triViewed,
-  //   clipped[0],
-  //   clipped[1]
-  // );
+  let clippedTriangles = 0;
+  let clipped = [
+    new Triangle([
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+    ]),
+    new Triangle([
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+    ]),
+  ];
+  clippedTriangles = triangleClipAgainstPlane(
+    new Vector3(0, 0, 0.5),
+    new Vector3(0, 0, 1),
+    tri,
+    clipped[0],
+    clipped[1]
+  );
 
-  let triProjected = new Triangle([]);
-  // view space -> projection space
-  triProjected.vertices[0] = perspectiveProject(triViewed.vertices[0]);
-  triProjected.vertices[1] = perspectiveProject(triViewed.vertices[1]);
-  triProjected.vertices[2] = perspectiveProject(triViewed.vertices[2]);
+  for (let n = 0; n < clippedTriangles; n++) {
+    // Project triangles from 3D --> 2D
+    let triProjected = new Triangle([]);
+    // console.log(clipped[n]);
+    triProjected.vertices[0] = perspectiveProject(clipped[n].vertices[0]);
+    triProjected.vertices[1] = perspectiveProject(clipped[n].vertices[1]);
+    triProjected.vertices[2] = perspectiveProject(clipped[n].vertices[2]);
+    triProjected.normal = tri.normal;
+    Renderer.trianglesToRaster.push(triProjected);
+  }
 
-  triProjected.normal = tri.normal;
-  Renderer.trianglesToRaster.push(triProjected);
+  // let triProjected = new Triangle([]);
+  // // view space -> projection space
+  // triProjected.vertices[0] = perspectiveProject(triViewed.vertices[0]);
+  // triProjected.vertices[1] = perspectiveProject(triViewed.vertices[1]);
+  // triProjected.vertices[2] = perspectiveProject(triViewed.vertices[2]);
+
+  // triProjected.normal = tri.normal;
+  // Renderer.trianglesToRaster.push(triProjected);
 }
 
 export function rasterTriangle(tri) {

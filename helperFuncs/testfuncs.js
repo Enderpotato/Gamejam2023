@@ -67,7 +67,9 @@ export function perspectiveProject(vect) {
   //   result2[1][0] / w,
   //   result2[2][0] / w
   // ).elementMult(width);
-  return multiplyPMatrix(vect).elementMult(width);
+  let projected = multiplyPMatrix(vect);
+
+  return new Vector3(projected.x * width, projected.y * height, projected.z);
 }
 
 export function Matrix_MultiplyVector(m, i) {

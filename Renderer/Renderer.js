@@ -7,6 +7,8 @@ import Cube from "../shapes/TestShapes/Cube.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Mesh from "../shapes/Mesh.js";
 import { camera } from "../index.js";
+import Triangle from "../shapes/Triangle.js";
+import { Matrix_MultiplyVector } from "../helperFuncs/testfuncs.js";
 
 export default class Renderer {
   constructor() {
@@ -59,6 +61,23 @@ Renderer.prototype.loadMesh = function (mesh) {
     let cameraToTriangle = tri.vertices[0].subtract(camera.position);
     let dot = cameraToTriangle.dot(tri.normal);
     if (dot > 0) return;
-    this.trianglesToProject.push(tri);
+    let triViewed = Triangle.init();
+
+    // world space -> view space
+    triViewed.vertices[0] = Matrix_MultiplyVector(
+      camera.matView,
+      tri.vertices[0]
+    );
+    triViewed.vertices[1] = Matrix_MultiplyVector(
+      camera.matView,
+      tri.vertices[1]
+    );
+    triViewed.vertices[2] = Matrix_MultiplyVector(
+      camera.matView,
+      tri.vertices[2]
+    );
+
+    triViewed.normal = tri.normal;
+    this.trianglesToProject.push(triViewed);
   });
 };

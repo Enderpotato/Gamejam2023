@@ -1,9 +1,19 @@
+import Vector3 from "../structs/Vector3.js";
+
 export default class Triangle {
   constructor(vertices) {
     this.vertices = vertices; // array of Vector3
     this.normal = null; // Vector3
   }
 }
+
+Triangle.init = function () {
+  return new Triangle([
+    new Vector3(0, 0, 0),
+    new Vector3(0, 0, 0),
+    new Vector3(0, 0, 0),
+  ]);
+};
 
 // since triangle is on a plane as it's 2D, we can calc the normal using the cross product
 // of two vectors on the plane
