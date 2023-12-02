@@ -57,23 +57,23 @@ export function projectTriangle(tri, Renderer) {
 }
 
 export function rasterTriangle(tri) {
-  let clipped = [Triangle.init(), Triangle.init()];
   let triList = [tri];
-  let nNewTriangles = 1;
+
+  let planes = [
+    [new Vector3(0, -1, 0), new Vector3(0, 1, 0)],
+    [new Vector3(0, 1, 0), new Vector3(0, -1, 0)],
+    [new Vector3(-1, 0, 0), new Vector3(1, 0, 0)],
+    [new Vector3(1, 0, 0), new Vector3(-1, 0, 0)],
+  ];
 
   // Clip each triangle against screen edges. ClipTriangle() may yield
   // a variable number of triangles, so create a queue that we traverse
   // to ensure we process all triangles from original game state this frame
+  let newTriList = [];
   for (let p = 0; p < 4; p++) {
-    let trisToAdd = 0;
-    while (nNewTriangles > 0) {
+    while (triList.length > 0) {
       // Take triangle from front of queue
       let test = triList.shift();
-      nNewTriangles--;
-
-      stroke(255, 0, 0);
-      strokeWeight(5);
-      point(0, -height / 2);
 
       // *******************************************************************
       // triangleClipAgainstPlane have issues !!! only right plane works properly!!!
@@ -83,68 +83,24 @@ export function rasterTriangle(tri) {
       // subsequent plane, against subsequent new triangles
       // as all triangles after a plane clip are guaranteed
       // to lie on the inside of the plane.
-      switch (p) {
-        // top plane
-        case 0:
-          trisToAdd = triangleClipAgainstPlane(
-            new Vector3(0, -height / 2, 0),
-            new Vector3(0, 1, 0),
-            test,
-            clipped[0],
-            clipped[1]
-          );
-          break;
-
-        // bottom plane
-        case 1:
-          trisToAdd = triangleClipAgainstPlane(
-            new Vector3(0, height / 2, 0),
-            new Vector3(0, -1, 0),
-            test,
-            clipped[0],
-            clipped[1]
-          );
-          // clipped[0] = test;
-          // trisToAdd = 1;
-          break;
-
-        // left plane
-        case 2:
-          trisToAdd = triangleClipAgainstPlane(
-            new Vector3(-width / 2, 0, 0),
-            new Vector3(1, 0, 0),
-            test,
-            clipped[0],
-            clipped[1]
-          );
-          // clipped[0] = test;
-          // trisToAdd = 1;
-          break;
-
-        // right plane
-        case 3:
-          trisToAdd = triangleClipAgainstPlane(
-            new Vector3(width / 2, 0, 0),
-            new Vector3(-1, 0, 0),
-            test,
-            clipped[0],
-            clipped[1]
-          );
-          break;
-
-        default:
-          console.log("lol");
-          break;
-      }
+      let clipped = [Triangle.init(), Triangle.init()];
+      let trisToAdd = triangleClipAgainstPlane(
+        planes[p][0],
+        planes[p][1],
+        test,
+        clipped[0],
+        clipped[1]
+      );
 
       // Clipping may yield a variable number of triangles, so
       // add these new ones to the back of the queue for subsequent
       // clipping against next planes
       for (let w = 0; w < trisToAdd; w++) {
-        triList.push(clipped[w]);
+        newTriList.push(clipped[w]);
       }
     }
-    nNewTriangles = triList.length;
+    triList = newTriList;
+    newTriList = [];
   }
 
   triList.forEach((tri) => {
@@ -154,14 +110,13 @@ export function rasterTriangle(tri) {
 
     let fillColor = tri.color.toColor();
     fill(fillColor);
-
     triangle(
-      tri.vertices[0].x,
-      tri.vertices[0].y,
-      tri.vertices[1].x,
-      tri.vertices[1].y,
-      tri.vertices[2].x,
-      tri.vertices[2].y
+      (tri.vertices[0].x * width) / 2,
+      (tri.vertices[0].y * height) / 2,
+      (tri.vertices[1].x * width) / 2,
+      (tri.vertices[1].y * height) / 2,
+      (tri.vertices[2].x * width) / 2,
+      (tri.vertices[2].y * height) / 2
     );
   });
 }

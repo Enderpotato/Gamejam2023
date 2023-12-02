@@ -36,25 +36,33 @@ export function triangleClipAgainstPlane(
   let outsidePointCount = 0;
 
   // Get signed distance of each point in triangle to plane
+  // console.log("Plane normal:", planeN);
+
   let d0 = dist(triIn.vertices[0]);
   let d1 = dist(triIn.vertices[1]);
   let d2 = dist(triIn.vertices[2]);
 
-  if (d0 >= 0) {
+  // console.log("Signed distances:", d0, d1, d2);
+
+  let epsilon = 0.0001;
+
+  if (d0 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[0];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[0];
   }
-  if (d1 >= 0) {
+  if (d1 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[1];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[1];
   }
-  if (d2 >= 0) {
+  if (d2 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[2];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[2];
   }
+
+  // console.log(insidePointCount, outsidePointCount);
 
   // Now classify triangle points, and break the input triangle into
   // smaller output triangles if required. There are four possible
