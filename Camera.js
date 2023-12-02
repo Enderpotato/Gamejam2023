@@ -21,6 +21,11 @@ export default class Camera {
   }
 
   update(dt) {
+    if (this.pitchAngle > TAU) this.pitchAngle -= TAU;
+    if (this.pitchAngle < -TAU) this.pitchAngle += TAU;
+
+    if (this.yawAngle > TAU) this.yawAngle -= TAU;
+    if (this.yawAngle < -TAU) this.yawAngle += TAU;
     let rotQuat = Quaternion.fromEulerLogical(
       this.pitchAngle,
       this.yawAngle,

@@ -16,11 +16,11 @@ let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
-let spaceshipMesh = new Mesh(new Vector3(0, 0, 30));
-spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj", { flipY: 1 });
+let customMesh = new Mesh(new Vector3(0, 0, 30));
+customMesh.createFromObj("./assets/testObjs/teapot.obj", { flipY: 1 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
-// const scene = new Scene([spaceshipMesh]);
+// const scene = new Scene([customMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
 export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));

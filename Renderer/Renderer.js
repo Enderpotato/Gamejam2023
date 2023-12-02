@@ -67,7 +67,7 @@ Renderer.prototype.loadMesh = function (mesh) {
     let triViewed = tri.clone();
 
     // using normal in world space to calculate light intensity
-    let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
+    let lightIntensity = Vector3.dot(tri.normal, LightDir);
     triViewed.color = tri.color.elementMult(lightIntensity);
 
     // world space -> view space

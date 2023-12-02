@@ -1,13 +1,20 @@
 import Vector3 from "../structs/Vector3.js";
+import { Vector2T } from "../structs/Vector2.js";
 
-export function vectorIntersectPlane(planeP, planeN, lineStart, lineEnd) {
+export function vectorIntersectPlane(
+  planeP,
+  planeN,
+  lineStart,
+  lineEnd,
+  t = []
+) {
   planeN = planeN.normalize();
   let planeD = -Vector3.dot(planeN, planeP);
   let ad = Vector3.dot(lineStart, planeN);
   let bd = Vector3.dot(lineEnd, planeN);
-  let t = (-planeD - ad) / (bd - ad);
+  t[0] = (-planeD - ad) / (bd - ad);
   let lineStartToEnd = Vector3.subtract(lineEnd, lineStart);
-  let lineToIntersect = lineStartToEnd.elementMult(t);
+  let lineToIntersect = lineStartToEnd.elementMult(t[0]);
   return Vector3.add(lineStart, lineToIntersect);
 }
 
@@ -31,9 +38,14 @@ export function triangleClipAgainstPlane(
   // Create two temporary storage arrays to classify points either side of plane
   // If distance sign is positive, point lies on "inside" of plane
   let insidePoints = [];
-  let outsidePoints = [];
   let insidePointCount = 0;
+  let outsidePoints = [];
   let outsidePointCount = 0;
+
+  let insideTex = [];
+  let insideTexCount = 0;
+  let outsideTex = [];
+  let outsideTexCount = 0;
 
   // Get signed distance of each point in triangle to plane
   // console.log("Plane normal:", planeN);

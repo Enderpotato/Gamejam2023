@@ -11,7 +11,7 @@ export default class Triangle {
       texture !== null
         ? texture
         : [new Vector2T(0, 0), new Vector2T(0, 0), new Vector2T(0, 0)];
-    this.color = new Vector3(255, 255, 255);
+    this.color = new Vector3(0, 255, 255);
   }
 }
 
