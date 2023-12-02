@@ -8,24 +8,24 @@ import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
+import preloadAssets from "./preload.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
-let keyPressed = {};
 let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
+let customMesh = new Mesh(new Vector3(0, 0, 30));
+customMesh.createFromObj("./assets/testObjs/teapot.obj", { flipY: 1 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-// const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
-let spaceshipMesh = new Mesh(new Vector3(0, 0, 30));
-spaceshipMesh.createFromObj("./assets/testObjs/axis.obj", { flipY: 1 });
-const scene = new Scene([spaceshipMesh]);
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
+const scene = new Scene([customMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
 export const camera = new Camera(new Vector3(0, 0, 0), new Vector3(0, 0, 1));
 
-const WIDTH = 500;
+const WIDTH = 700;
 const HEIGHT = 450;
 const MAP_WIDTH = 400;
 const upDir = new Vector3(0, 1, 0);
@@ -35,6 +35,8 @@ export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
 var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
+
+export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
 
 createPerspectiveMatrix();
 let canvas;
@@ -54,14 +56,17 @@ function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
   background(0);
+  // clear zBuffer
+  zBuffer.fill(0);
+
   camera.update(deltaTime);
   let targetDir = Vector3.add(camera.position, camera.lookDir);
   camera.calcCameraMatrix(camera.position, targetDir, upDir);
 
   renderer.render(scene);
   renderer.clear();
-  map_.draw_map();
-  map_.draw_obj(camera);
+  // map_.draw_map();
+  // map_.draw_obj(camera);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
@@ -69,6 +74,14 @@ function draw() {
   cameraControl(deltaTime);
 }
 
+function keyPressed() {
+  // l key
+  if (keyCode === 76) {
+    console.log(zBuffer);
+  }
+}
+
+window.preload = preloadAssets;
 window.setup = setup;
 window.draw = draw;
 window.keyPressed = keyPressed;

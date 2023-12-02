@@ -1,13 +1,20 @@
 import Vector3 from "../structs/Vector3.js";
+import { Vector2T } from "../structs/Vector2.js";
 
-export function vectorIntersectPlane(planeP, planeN, lineStart, lineEnd) {
+export function vectorIntersectPlane(
+  planeP,
+  planeN,
+  lineStart,
+  lineEnd,
+  t = []
+) {
   planeN = planeN.normalize();
   let planeD = -Vector3.dot(planeN, planeP);
   let ad = Vector3.dot(lineStart, planeN);
   let bd = Vector3.dot(lineEnd, planeN);
-  let t = (-planeD - ad) / (bd - ad);
+  t[0] = (-planeD - ad) / (bd - ad);
   let lineStartToEnd = Vector3.subtract(lineEnd, lineStart);
-  let lineToIntersect = lineStartToEnd.elementMult(t);
+  let lineToIntersect = lineStartToEnd.elementMult(t[0]);
   return Vector3.add(lineStart, lineToIntersect);
 }
 
@@ -31,9 +38,14 @@ export function triangleClipAgainstPlane(
   // Create two temporary storage arrays to classify points either side of plane
   // If distance sign is positive, point lies on "inside" of plane
   let insidePoints = [];
-  let outsidePoints = [];
   let insidePointCount = 0;
+  let outsidePoints = [];
   let outsidePointCount = 0;
+
+  let insideTex = [];
+  let insideTexCount = 0;
+  let outsideTex = [];
+  let outsideTexCount = 0;
 
   // Get signed distance of each point in triangle to plane
   // console.log("Plane normal:", planeN);
@@ -48,18 +60,24 @@ export function triangleClipAgainstPlane(
 
   if (d0 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[0];
+    insideTex[insideTexCount++] = triIn.texture[0];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[0];
+    outsideTex[outsideTexCount++] = triIn.texture[0];
   }
   if (d1 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[1];
+    insideTex[insideTexCount++] = triIn.texture[1];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[1];
+    outsideTex[outsideTexCount++] = triIn.texture[1];
   }
   if (d2 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[2];
+    insideTex[insideTexCount++] = triIn.texture[2];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[2];
+    outsideTex[outsideTexCount++] = triIn.texture[2];
   }
 
   // console.log(insidePointCount, outsidePointCount);
@@ -77,6 +95,7 @@ export function triangleClipAgainstPlane(
   if (insidePointCount === 3) {
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
+    triOut1.texture = triIn.textureClone();
 
     // All points lie on the inside of plane, so do nothing
     // and allow the triangle to simply pass through
@@ -97,21 +116,28 @@ export function triangleClipAgainstPlane(
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
+    triOut1.texture[0] = insideTex[0].clone();
 
     // but the two new points are at the locations where the
     // original sides of the triangle (lines) intersect with the plane
+    let t = [];
     triOut1.vertices[1] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut1.texture[1] = Vector2T.lerp(insideTex[0], outsideTex[0], t[0]);
+
     triOut1.vertices[2] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[1]
+      outsidePoints[1],
+      t
     );
+    triOut1.texture[2] = Vector2T.lerp(insideTex[0], outsideTex[1], t[0]);
 
     return 1; // Return the newly formed single triangle
   }
@@ -133,12 +159,18 @@ export function triangleClipAgainstPlane(
     // intersects with the plane
     triOut1.vertices[0] = insidePoints[0];
     triOut1.vertices[1] = insidePoints[1];
+    triOut1.texture[0] = insideTex[0].clone();
+    triOut1.texture[1] = insideTex[1].clone();
+
+    let t = [];
     triOut1.vertices[2] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut1.texture[2] = Vector2T.lerp(insideTex[0], outsideTex[0], t[0]);
 
     // The second triangle is composed of one of he inside points, a
     // new point determined by the intersection of the other side of the
@@ -149,8 +181,12 @@ export function triangleClipAgainstPlane(
       planeP,
       planeN,
       insidePoints[1],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut2.texture[0] = insideTex[1].clone();
+    triOut2.texture[1] = triOut1.texture[2];
+    triOut2.texture[2] = Vector2T.lerp(insideTex[1], outsideTex[0], t[0]);
 
     return 2; // Return two newly formed triangles which form a quad
   }

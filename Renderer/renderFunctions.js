@@ -7,6 +7,7 @@ import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
 import { triangleClipAgainstPlane } from "../helperFuncs/clipping.js";
 import Triangle from "../shapes/Triangle.js";
+import { texturedTriangle } from "./texture.js";
 
 export function RenderCube(cube) {
   let transformedVertices = [];
@@ -38,7 +39,7 @@ export function projectTriangle(tri, Renderer) {
   let clippedTriangles = 0;
   let clipped = [Triangle.init(), Triangle.init()];
   clippedTriangles = triangleClipAgainstPlane(
-    new Vector3(0, 0, 5.2),
+    new Vector3(0, 0, 0.2),
     new Vector3(0, 0, 1),
     tri,
     clipped[0],
@@ -52,12 +53,13 @@ export function projectTriangle(tri, Renderer) {
     triProjected.vertices[1] = perspectiveProject(clipped[n].vertices[1]);
     triProjected.vertices[2] = perspectiveProject(clipped[n].vertices[2]);
     triProjected.normal = tri.normal;
+    // console.log(triProjected.texture);
     Renderer.trianglesToRaster.push(triProjected);
   }
 }
 
-export function rasterTriangle(tri) {
-  let triList = [tri];
+export function rasterTriangle(triProjected, triOriginal) {
+  let triList = [triProjected];
 
   let planes = [
     [new Vector3(0, -1, 0), new Vector3(0, 1, 0)],
@@ -106,7 +108,9 @@ export function rasterTriangle(tri) {
   triList.forEach((tri) => {
     // stroke(0);
     // strokeWeight(1);
+    // drawNormal(tri);
     noStroke();
+    // texturedTriangle(tri);
 
     let fillColor = tri.color.toColor();
     fill(fillColor);
@@ -121,26 +125,8 @@ export function rasterTriangle(tri) {
   });
 }
 
+//draw out the normal
 function drawNormal(tri) {
-  //draw out the normal
   let normal = tri.normal;
-
-  //get center of triangle
-  let center = tri.vertices[0]
-    .add(tri.vertices[1])
-    .add(tri.vertices[2])
-    .elementDiv(3);
-
-  let normalVertex = center.add(normal);
-
-  let transformedNormal = perspectiveProject(normalVertex);
-  let transformedCenter = perspectiveProject(center);
-  stroke(255, 0, 0);
-  strokeWeight(4);
-  line(
-    transformedCenter.x,
-    transformedCenter.y,
-    transformedNormal.x,
-    transformedNormal.y
-  );
+  let scale = 1 / 3;
 }

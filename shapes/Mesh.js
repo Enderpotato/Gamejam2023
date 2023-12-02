@@ -9,7 +9,6 @@ export default class Mesh {
   }
 
   update(dt) {
-    console.log("update");
     this.triangles.forEach((triangle) => {
       ShapeMorph.rotateTriangle(
         triangle,
