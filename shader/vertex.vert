@@ -2,7 +2,6 @@
 precision mediump float;
 # endif
 
-
 void main() {
-    float a;
+
 }
