@@ -70,18 +70,20 @@ export function cameraControl(deltaTime) {
     camera.position = camera.position.add(new Vector3(0, -speed, 0));
   }
 
+  const rotationSpeed = 0.002 * deltaTime;
+
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
-    camera.yawAngle += -0.001 * deltaTime;
+    camera.yawAngle += -rotationSpeed;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    camera.yawAngle += 0.001 * deltaTime;
+    camera.yawAngle += rotationSpeed;
   }
 
   // up and down arrow key for rotation
   if (keyIsDown(UP_ARROW)) {
-    camera.pitchAngle += 0.001 * deltaTime;
+    camera.pitchAngle += rotationSpeed;
   } else if (keyIsDown(DOWN_ARROW)) {
-    camera.pitchAngle += -0.001 * deltaTime;
+    camera.pitchAngle += -rotationSpeed;
   }
 
   // console.log(camera.inputVel);

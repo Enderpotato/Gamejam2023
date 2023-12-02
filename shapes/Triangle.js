@@ -1,10 +1,16 @@
 import Vector3 from "../structs/Vector3.js";
+import { Vector2T } from "../structs/Vector2.js";
 
 export default class Triangle {
-  constructor(vertices) {
+  constructor(vertices, texture = null) {
     this.vertices = vertices; // array of Vector3
     this.normal = null; // Vector3
 
+    // for texture mapping, type Vector2T[3]
+    this.texture =
+      texture !== null
+        ? texture
+        : [new Vector2T(0, 0), new Vector2T(0, 0), new Vector2T(0, 0)];
     this.color = new Vector3(255, 255, 255);
   }
 }
@@ -26,6 +32,14 @@ Triangle.prototype.calcNormal = function () {
   this.normal = v1.cross(v2).normalize();
 };
 
+Triangle.prototype.textureClone = function () {
+  let texture = [];
+  this.texture.forEach((t) => {
+    texture.push(t.clone());
+  });
+  return texture;
+};
+
 Triangle.prototype.clone = function () {
   let vertices = [];
   this.vertices.forEach((v) => {
@@ -34,5 +48,6 @@ Triangle.prototype.clone = function () {
   let tri = new Triangle(vertices);
   tri.normal = tri.normal ? this.normal.clone() : 0;
   tri.color = this.color.clone();
+  tri.texture = this.textureClone();
   return tri;
 };

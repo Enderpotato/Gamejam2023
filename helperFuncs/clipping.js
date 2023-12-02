@@ -77,6 +77,7 @@ export function triangleClipAgainstPlane(
   if (insidePointCount === 3) {
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
+    triOut1.texture = triIn.textureClone();
 
     // All points lie on the inside of plane, so do nothing
     // and allow the triangle to simply pass through
@@ -94,6 +95,7 @@ export function triangleClipAgainstPlane(
     // Copy appearance info to new triangle
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
+    triOut1.texture = triIn.textureClone();
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
@@ -127,6 +129,9 @@ export function triangleClipAgainstPlane(
 
     triOut1.normal = triIn.normal;
     triOut2.normal = triIn.normal;
+
+    triOut1.texture = triIn.textureClone();
+    triOut2.texture = triIn.textureClone();
 
     // The first triangle consists of the two inside points and a new
     // point determined by the location where one side of the triangle

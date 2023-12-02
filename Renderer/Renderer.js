@@ -20,7 +20,8 @@ export default class Renderer {
   render(scene) {
     scene.objects.forEach((object) => {
       if (object instanceof Cube) Renderer.renderCube(object);
-      if (object instanceof Mesh) this.loadMesh(object);
+      if (object instanceof Mesh || object instanceof MeshCube)
+        this.loadMesh(object);
 
       // sort triangles by distance from camera
       this.trianglesToProject.sort((a, b) => {
@@ -63,7 +64,9 @@ Renderer.prototype.loadMesh = function (mesh) {
     let cameraToTriangle = tri.vertices[0].subtract(camera.position);
     let dot = cameraToTriangle.dot(tri.normal);
     if (dot > 0) return;
-    let triViewed = Triangle.init();
+    let triViewed = tri.clone();
+
+    // using normal in world space to calculate light intensity
     let lightIntensity = Vector3.dot(tri.normal, LightDir) + 1;
     triViewed.color = tri.color.elementMult(lightIntensity);
 
@@ -81,6 +84,7 @@ Renderer.prototype.loadMesh = function (mesh) {
       tri.vertices[2]
     );
 
+    // world space normal to view space normal
     triViewed.normal = tri.normal;
     this.trianglesToProject.push(triViewed);
   });
