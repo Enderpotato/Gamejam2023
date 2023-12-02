@@ -9,17 +9,18 @@ export default class Mesh {
   }
 
   update(dt) {
+    console.log("update");
     this.triangles.forEach((triangle) => {
       ShapeMorph.rotateTriangle(
         triangle,
-        Quaternion.fromEulerLogical(0.01, 0.01, 0.01, "XYZ"),
+        Quaternion.fromEulerLogical(0.0, 0.01, 0.0, "XYZ"),
         this.position
       );
     });
   }
 }
 
-Mesh.prototype.createFromObj = function (filename) {
+Mesh.prototype.createFromObj = function (filename, config = { flipY: 1 }) {
   // fetch file
   fetch(filename)
     .then((response) => response.text())
@@ -33,7 +34,7 @@ Mesh.prototype.createFromObj = function (filename) {
           vertices.push(
             new Vector3(
               parseFloat(tokens[1]),
-              parseFloat(tokens[2]),
+              parseFloat(tokens[2]) * config.flipY,
               parseFloat(tokens[3])
             )
           );

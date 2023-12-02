@@ -3,7 +3,7 @@ import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import Cube from "./shapes/TestShapes/Cube.js";
-import { createPerspectiveMatrix } from "./testfuncs.js";
+import { createPerspectiveMatrix } from "./helperFuncs/testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
@@ -18,8 +18,8 @@ let x_angle = 0; //the player can only angle the camera in the x direction
 
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 10), 2)]);
-let spaceshipMesh = new Mesh(new Vector3(0, 0, 20));
-spaceshipMesh.createFromObj("./assets/testObjs/teapot.obj");
+let spaceshipMesh = new Mesh(new Vector3(0, 0, 30));
+spaceshipMesh.createFromObj("./assets/testObjs/axis.obj", { flipY: 1 });
 const scene = new Scene([spaceshipMesh]);
 const renderer = new Renderer();
 const FOV = 60 * (Math.PI / 180);
