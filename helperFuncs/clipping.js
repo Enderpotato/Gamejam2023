@@ -77,8 +77,6 @@ export function triangleClipAgainstPlane(
   if (insidePointCount === 3) {
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
-    // set color to red
-    triOut1.color = new Vector3(255, 0, 0);
 
     // All points lie on the inside of plane, so do nothing
     // and allow the triangle to simply pass through
@@ -96,8 +94,6 @@ export function triangleClipAgainstPlane(
     // Copy appearance info to new triangle
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
-
-    triOut1.color = new Vector3(0, 255, 0);
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
@@ -128,10 +124,6 @@ export function triangleClipAgainstPlane(
     // Copy appearance info to new triangles
     triOut1.color = triIn.color;
     triOut2.color = triIn.color;
-
-    // set color to blue
-    triOut1.color = new Vector3(0, 0, 255);
-    triOut2.color = new Vector3(0, 0, 255);
 
     triOut1.normal = triIn.normal;
     triOut2.normal = triIn.normal;

@@ -104,9 +104,9 @@ export function rasterTriangle(tri) {
   }
 
   triList.forEach((tri) => {
-    stroke(0);
-    strokeWeight(1);
-    // noStroke();
+    // stroke(0);
+    // strokeWeight(1);
+    noStroke();
 
     let fillColor = tri.color.toColor();
     fill(fillColor);
