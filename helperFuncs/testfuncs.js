@@ -1,6 +1,7 @@
 import Vector3 from "../structs/Vector3.js";
-import Vector2 from "../structs/Vector2.js";
+import Vector2, { Vector2T } from "../structs/Vector2.js";
 import { ZNEAR, ZFAR, AspectRatio, invFov } from "../index.js";
+import Triangle from "../shapes/Triangle.js";
 
 let perspMatrix;
 let perspMatrixTensor;

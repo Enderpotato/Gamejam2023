@@ -36,6 +36,8 @@ export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
 var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
+export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
+
 createPerspectiveMatrix();
 let canvas;
 export let frame;
@@ -54,6 +56,9 @@ function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
   background(0);
+  // clear zBuffer
+  zBuffer.fill(0);
+
   camera.update(deltaTime);
   let targetDir = Vector3.add(camera.position, camera.lookDir);
   camera.calcCameraMatrix(camera.position, targetDir, upDir);

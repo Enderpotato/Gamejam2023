@@ -60,18 +60,24 @@ export function triangleClipAgainstPlane(
 
   if (d0 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[0];
+    insideTex[insideTexCount++] = triIn.texture[0];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[0];
+    outsideTex[outsideTexCount++] = triIn.texture[0];
   }
   if (d1 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[1];
+    insideTex[insideTexCount++] = triIn.texture[1];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[1];
+    outsideTex[outsideTexCount++] = triIn.texture[1];
   }
   if (d2 >= epsilon) {
     insidePoints[insidePointCount++] = triIn.vertices[2];
+    insideTex[insideTexCount++] = triIn.texture[2];
   } else {
     outsidePoints[outsidePointCount++] = triIn.vertices[2];
+    outsideTex[outsideTexCount++] = triIn.texture[2];
   }
 
   // console.log(insidePointCount, outsidePointCount);
@@ -107,25 +113,31 @@ export function triangleClipAgainstPlane(
     // Copy appearance info to new triangle
     triOut1.color = triIn.color;
     triOut1.normal = triIn.normal;
-    triOut1.texture = triIn.textureClone();
 
     // The inside point is valid, so keep that...
     triOut1.vertices[0] = insidePoints[0];
+    triOut1.texture[0] = insideTex[0].clone();
 
     // but the two new points are at the locations where the
     // original sides of the triangle (lines) intersect with the plane
+    let t = [];
     triOut1.vertices[1] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut1.texture[1] = Vector2T.lerp(insideTex[0], outsideTex[0], t[0]);
+
     triOut1.vertices[2] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[1]
+      outsidePoints[1],
+      t
     );
+    triOut1.texture[2] = Vector2T.lerp(insideTex[0], outsideTex[1], t[0]);
 
     return 1; // Return the newly formed single triangle
   }
@@ -142,20 +154,23 @@ export function triangleClipAgainstPlane(
     triOut1.normal = triIn.normal;
     triOut2.normal = triIn.normal;
 
-    triOut1.texture = triIn.textureClone();
-    triOut2.texture = triIn.textureClone();
-
     // The first triangle consists of the two inside points and a new
     // point determined by the location where one side of the triangle
     // intersects with the plane
     triOut1.vertices[0] = insidePoints[0];
     triOut1.vertices[1] = insidePoints[1];
+    triOut1.texture[0] = insideTex[0].clone();
+    triOut1.texture[1] = insideTex[1].clone();
+
+    let t = [];
     triOut1.vertices[2] = vectorIntersectPlane(
       planeP,
       planeN,
       insidePoints[0],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut1.texture[2] = Vector2T.lerp(insideTex[0], outsideTex[0], t[0]);
 
     // The second triangle is composed of one of he inside points, a
     // new point determined by the intersection of the other side of the
@@ -166,8 +181,12 @@ export function triangleClipAgainstPlane(
       planeP,
       planeN,
       insidePoints[1],
-      outsidePoints[0]
+      outsidePoints[0],
+      t
     );
+    triOut2.texture[0] = insideTex[1].clone();
+    triOut2.texture[1] = triOut1.texture[2];
+    triOut2.texture[2] = Vector2T.lerp(insideTex[1], outsideTex[0], t[0]);
 
     return 2; // Return two newly formed triangles which form a quad
   }

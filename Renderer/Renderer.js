@@ -55,7 +55,7 @@ Renderer.projectTriangle = projectTriangle;
 
 Renderer.rasterTriangle = rasterTriangle;
 
-const LightDir = new Vector3(1, 0, 0).normalize();
+const LightDir = new Vector3(0, 0, -1).normalize();
 Renderer.prototype.loadMesh = function (mesh) {
   mesh.triangles.forEach((tri) => {
     tri.calcNormal();
