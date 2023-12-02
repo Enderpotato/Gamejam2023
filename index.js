@@ -8,10 +8,10 @@ import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
+import preloadAssets from "./preload.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
-let keyPressed = {};
 let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
@@ -65,8 +65,8 @@ function draw() {
 
   renderer.render(scene);
   renderer.clear();
-  map_.draw_map();
-  map_.draw_obj(camera);
+  // map_.draw_map();
+  // map_.draw_obj(camera);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);
@@ -74,6 +74,14 @@ function draw() {
   cameraControl(deltaTime);
 }
 
+function keyPressed() {
+  // l key
+  if (keyCode === 76) {
+    console.log(zBuffer);
+  }
+}
+
+window.preload = preloadAssets;
 window.setup = setup;
 window.draw = draw;
 window.keyPressed = keyPressed;

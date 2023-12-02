@@ -1,86 +1,84 @@
 import { zBuffer } from "../index.js";
+import { brickTexture } from "../preload.js";
 
 function swap(a, b) {
   return [b, a];
 }
 
 export function texturedTriangle(tri) {
-  /* 
-      y1 == tri.vertices[0].y
-      y2 == tri.vertices[1].y
-      y3 == tri.vertices[2].y
-      x1 == tri.vertices[0].x
-      x2 == tri.vertices[1].x
-      x3 == tri.vertices[2].x
-      ... same for u, v, z
-    */
+  const scaleX = width / 2;
+  const scaleY = height / 2;
+  let y1 = Math.round(tri.vertices[0].y * scaleY);
+  let y2 = Math.round(tri.vertices[1].y * scaleY);
+  let y3 = Math.round(tri.vertices[2].y * scaleY);
+  let x1 = Math.round(tri.vertices[0].x * scaleX);
+  let x2 = Math.round(tri.vertices[1].x * scaleX);
+  let x3 = Math.round(tri.vertices[2].x * scaleX);
+
+  let u1 = tri.texture[0].u;
+  let u2 = tri.texture[1].u;
+  let u3 = tri.texture[2].u;
+  let v1 = tri.texture[0].v;
+  let v2 = tri.texture[1].v;
+  let v3 = tri.texture[2].v;
+  let w1 = tri.vertices[0].w;
+  let w2 = tri.vertices[1].w;
+  let w3 = tri.vertices[2].w;
 
   // y2 < y1
-  if (tri.vertices[1].y < tri.vertices[0].y) {
+  if (y2 < y1) {
     // swap y1 and y2
-    [tri.vertices[0].y, tri.vertices[1].y] = swap(
-      tri.vertices[0].y,
-      tri.vertices[1].y
-    );
+    [y1, y2] = swap(y1, y2);
     // swap x1 and x2
-    [tri.vertices[0].x, tri.vertices[1].x] = swap(
-      tri.vertices[0].x,
-      tri.vertices[1].x
-    );
+    [x1, x2] = swap(x1, x2);
 
     // swap texture coordinates
-    [tri.texture[0], tri.texture[1]] = swap(tri.texture[0], tri.texture[1]);
+    [u1, u2] = swap(u1, u2);
+    [v1, v2] = swap(v1, v2);
+    [w1, w2] = swap(w1, w2);
   }
 
   // y3 < y1
-  if (tri.vertices[2].y < tri.vertices[0].y) {
+  if (y3 < y1) {
     // swap y1 and y3
-    [tri.vertices[0].y, tri.vertices[2].y] = swap(
-      tri.vertices[0].y,
-      tri.vertices[2].y
-    );
+    [y1, y3] = swap(y1, y3);
     // swap x1 and x3
-    [tri.vertices[0].x, tri.vertices[2].x] = swap(
-      tri.vertices[0].x,
-      tri.vertices[2].x
-    );
+    [x1, x3] = swap(x1, x3);
 
     // swap texture coordinates
-    [tri.texture[0], tri.texture[2]] = swap(tri.texture[0], tri.texture[2]);
+    [u1, u3] = swap(u1, u3);
+    [v1, v3] = swap(v1, v3);
+    [w1, w3] = swap(w1, w3);
   }
 
   // y3 < y2
-  if (tri.vertices[2].y < tri.vertices[1].y) {
+  if (y3 < y2) {
     // swap y2 and y3
-    [tri.vertices[1].y, tri.vertices[2].y] = swap(
-      tri.vertices[1].y,
-      tri.vertices[2].y
-    );
+    [y2, y3] = swap(y2, y3);
     // swap x2 and x3
-    [tri.vertices[1].x, tri.vertices[2].x] = swap(
-      tri.vertices[1].x,
-      tri.vertices[2].x
-    );
+    [x2, x3] = swap(x2, x3);
 
     // swap texture coordinates
-    [tri.texture[1], tri.texture[2]] = swap(tri.texture[1], tri.texture[2]);
+    [u2, u3] = swap(u2, u3);
+    [v2, v3] = swap(v2, v3);
+    [w2, w3] = swap(w2, w3);
   }
 
   // copied from some thing cuz idk how to do textures
   // github repo: https://github.com/OneLoneCoder/Javidx9/tree/master/ConsoleGameEngine/BiggerProjects/Engine3D
   // f**king hell dumb ass shit
 
-  let dy1 = tri.vertices[1].y - tri.vertices[0].y; // y2 - y1
-  let dx1 = tri.vertices[1].x - tri.vertices[0].x; // x2 - x1
-  let dv1 = tri.texture[1].v - tri.texture[0].v; // v2 - v1
-  let du1 = tri.texture[1].u - tri.texture[0].u; // u2 - u1
-  let dw1 = tri.texture[1].w - tri.texture[0].w; // w2 - w1
+  let dy1 = y2 - y1; // y2 - y1
+  let dx1 = x2 - x1; // x2 - x1
+  let dv1 = v2 - v1; // v2 - v1
+  let du1 = u2 - u1; // u2 - u1
+  let dw1 = w2 - w1; // w2 - w1
 
-  let dy2 = tri.vertices[2].y - tri.vertices[0].y; // y3 - y1
-  let dx2 = tri.vertices[2].x - tri.vertices[0].x; // x3 - x1
-  let dv2 = tri.texture[2].v - tri.texture[0].v; // v3 - v1
-  let du2 = tri.texture[2].u - tri.texture[0].u; // u3 - u1
-  let dw2 = tri.texture[2].w - tri.texture[0].w; // w3 - w1
+  let dy2 = y3 - y1; // y3 - y1
+  let dx2 = x3 - x1; // x3 - x1
+  let dv2 = v3 - v1; // v3 - v1
+  let du2 = u3 - u1; // u3 - u1
+  let dw2 = w3 - w1; // w3 - w1
 
   let tex_u, tex_v, tex_w;
 
@@ -108,6 +106,7 @@ export function texturedTriangle(tri) {
   if (dy2) dv2_step = dv2 / Math.abs(dy2);
   if (dy2) dw2_step = du2 / Math.abs(dy2);
 
+  //   return;
   // OHHH MYY
   if (dy1) {
     for (let i = y1; i <= y2; i++) {
@@ -140,17 +139,18 @@ export function texturedTriangle(tri) {
         tex_u = (1 - t) * tex_su + t * tex_eu;
         tex_v = (1 - t) * tex_sv + t * tex_ev;
         tex_w = (1 - t) * tex_sw + t * tex_ew;
-
-        if (tex_w > zbuffer[i * width + j]) {
-          zbuffer[i * width + j] = tex_w;
-          let color = texture.sample(tex_u / tex_w, tex_v / tex_w);
-          set(j, i, color);
+        if (tex_w > zBuffer[i * width + j]) {
+          zBuffer[i * width + j] = tex_w;
+          let color = brickTexture.getPixel(tex_u / tex_w, tex_v / tex_w);
+          //   fill(color);
+          //   rect(j, i, 1, 1);
         }
 
         t += tstep;
       }
     }
   }
+  //   return;
 
   // thanks copilot for generating instead of me translating everything from C++ to p5js
   // lmao copilot just tried to generate 'i love you' to itself but no nononononono
@@ -204,20 +204,15 @@ export function texturedTriangle(tri) {
         tex_v = (1 - t) * tex_sv + t * tex_ev;
         tex_w = (1 - t) * tex_sw + t * tex_ew;
 
-        if (tex_w > zbuffer[i * width + j]) {
-          zbuffer[i * width + j] = tex_w;
-          let color = texture.sample(tex_u / tex_w, tex_v / tex_w);
-          set(j, i, color);
+        if (tex_w > zBuffer[i * width + j]) {
+          zBuffer[i * width + j] = tex_w;
+          let color = brickTexture.getPixel(tex_u / tex_w, tex_v / tex_w);
+          //   fill(color);
+          //   rect(j, i, 1, 1);
         }
 
         t += tstep;
       }
     }
   }
-}
-
-function sampleFromTexture(texture, u, v) {
-  let x = Math.floor(u * texture.width);
-  let y = Math.floor(v * texture.height);
-  return texture.get(x, y);
 }
