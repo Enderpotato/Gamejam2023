@@ -9,6 +9,7 @@ import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets from "./preload.js";
+import { Shader } from "./preload.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -47,31 +48,30 @@ function setup() {
   canvas = createCanvas(WIDTH, HEIGHT, WEBGL);
   canvas.parent("canvas");
 
-  frame = createGraphics(WIDTH, HEIGHT);
-  gl = canvas.GL;
-  console.log(gl);
+  shader(Shader);
 }
 
 function draw() {
   FPSElement.innerHTML = Math.round(frameRate());
 
-  background(0);
-  // clear zBuffer
-  zBuffer.fill(0);
+  clear();
+  // background(0);
+  // // clear zBuffer
+  // zBuffer.fill(0);
 
-  camera.update(deltaTime);
-  let targetDir = Vector3.add(camera.position, camera.lookDir);
-  camera.calcCameraMatrix(camera.position, targetDir, upDir);
+  // camera.update(deltaTime);
+  // let targetDir = Vector3.add(camera.position, camera.lookDir);
+  // camera.calcCameraMatrix(camera.position, targetDir, upDir);
 
-  renderer.render(scene);
-  renderer.clear();
-  // map_.draw_map();
-  // map_.draw_obj(camera);
+  // renderer.render(scene);
+  // renderer.clear();
+  // // map_.draw_map();
+  // // map_.draw_obj(camera);
 
-  if (keyIsDown(32)) {
-    scene.update(deltaTime);
-  }
-  cameraControl(deltaTime);
+  // if (keyIsDown(32)) {
+  //   scene.update(deltaTime);
+  // }
+  // cameraControl(deltaTime);
 }
 
 function keyPressed() {
