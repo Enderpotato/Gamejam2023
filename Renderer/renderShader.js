@@ -26,7 +26,6 @@ export default function renderWithShader(scene, renderer) {
 }
 
 function returnValidTriangles(mesh) {
-  //   return mesh.triangles;
   // backface culling
   let validTriangles = [];
   mesh.triangles.forEach((tri) => {
@@ -42,9 +41,14 @@ function returnValidTriangles(mesh) {
 }
 
 function shaderRenderTriangle(tri, dexter) {
+  tri.calcNormal();
+  let norm = tri.normal;
   vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
+  normal(norm.x, norm.y, norm.z);
   vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
+  normal(norm.x, norm.y, norm.z);
   vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
+  normal(norm.x, norm.y, norm.z);
 }
 
 export function renderShaderCube(width) {
