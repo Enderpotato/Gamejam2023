@@ -17,7 +17,6 @@ export default function renderWithShader(scene, renderer) {
     }
   });
 
-  //   console.log(trianglesToRender.length);
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
     shaderRenderTriangle(tri, sandTexture);
@@ -41,13 +40,34 @@ function returnValidTriangles(mesh) {
 }
 
 function shaderRenderTriangle(tri, dexter) {
+  bestShader.setUniform("uMatcapTexture", dexter);
   tri.calcNormal();
   let norm = tri.normal;
-  vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
+  textureMode(NORMAL);
+  texture(dexter);
+  vertex(
+    tri.vertices[0].x,
+    tri.vertices[0].y,
+    tri.vertices[0].z,
+    tri.texture[0].u,
+    tri.texture[0].v
+  );
   normal(norm.x, norm.y, norm.z);
-  vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
+  vertex(
+    tri.vertices[1].x,
+    tri.vertices[1].y,
+    tri.vertices[1].z,
+    tri.texture[1].u,
+    tri.texture[1].v
+  );
   normal(norm.x, norm.y, norm.z);
-  vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
+  vertex(
+    tri.vertices[2].x,
+    tri.vertices[2].y,
+    tri.vertices[2].z,
+    tri.texture[2].u,
+    tri.texture[2].v
+  );
   normal(norm.x, norm.y, norm.z);
 }
 
