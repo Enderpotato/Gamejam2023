@@ -22,7 +22,11 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/axis.obj", { flipY: -1 });
+customMesh.createFromObj("./assets/testObjs/axis.obj", {
+  flipX: -1,
+  flipY: 1,
+  flipZ: 1,
+});
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 // const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
 const scene = new Scene([customMesh]);
@@ -34,6 +38,9 @@ let cam;
 
 const WIDTH = 450;
 const HEIGHT = 450;
+// Create a depth buffer
+export const depthBuffer = new Array(WIDTH * HEIGHT).fill(Infinity);
+
 const MAP_WIDTH = 400;
 const upDir = new Vector3(0, 1, 0);
 
