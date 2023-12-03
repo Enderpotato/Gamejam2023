@@ -1,7 +1,11 @@
-# ifndef GL_ES
 precision mediump float;
-# endif
+
+varying vec2 vTexCoord;
+
+uniform sampler2D uMatcapTexture;
 
 void main() {
-    gl_FragColor = vec4(1.0);
+    vec4 matcapColor = texture2D(uMatcapTexture, vTexCoord);
+
+    gl_FragColor = matcapColor;
 }

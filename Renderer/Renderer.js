@@ -10,6 +10,7 @@ import { camera } from "../index.js";
 import Triangle from "../shapes/Triangle.js";
 import { Matrix_MultiplyVector } from "../helperFuncs/testfuncs.js";
 import Vector3 from "../structs/Vector3.js";
+import renderWithShader from "./renderShader.js";
 
 export default class Renderer {
   constructor() {
@@ -17,7 +18,11 @@ export default class Renderer {
     this.trianglesToRaster = [];
   }
 
-  render(scene) {
+  render(scene, shader = false) {
+    if (shader) {
+      this.renderWithShader(scene, this);
+      return;
+    }
     scene.objects.forEach((object) => {
       if (object instanceof Cube) Renderer.renderCube(object);
       if (object instanceof Mesh || object instanceof MeshCube)
@@ -54,6 +59,8 @@ Renderer.renderCube = RenderCube;
 Renderer.projectTriangle = projectTriangle;
 
 Renderer.rasterTriangle = rasterTriangle;
+
+Renderer.renderWithShader = renderWithShader;
 
 const LightDir = new Vector3(0, 0, -1).normalize();
 Renderer.prototype.loadMesh = function (mesh) {
