@@ -7,22 +7,19 @@ const RotElement = document.getElementById("camera-rot");
 const LookElement = document.getElementById("camera-look");
 
 export default class Camera {
-  constructor(position, lookDir) {
-    this.position = position; // vector3
-    this.lookDir = lookDir; // vector3
+  constructor(cam) {
+    this.cam = cam; // p5.Camera object
+    this.position = new Vector3(cam.eyeX, cam.eyeY, cam.eyeZ);
 
-    this.vel = new Vector3(0, 0, 0);
-
-    this.matCamera;
-    this.matView;
+    this.lookDir = new Vector3(0, 0, 1);
 
     this.yawAngle = 0; // Y axis
     this.pitchAngle = 0; // X axis
   }
 
   update(dt) {
-    if (this.pitchAngle > TAU) this.pitchAngle -= TAU;
-    if (this.pitchAngle < -TAU) this.pitchAngle += TAU;
+    if (this.pitchAngle > HALF_PI) this.pitchAngle = HALF_PI;
+    if (this.pitchAngle < -HALF_PI) this.pitchAngle = -HALF_PI;
 
     if (this.yawAngle > TAU) this.yawAngle -= TAU;
     if (this.yawAngle < -TAU) this.yawAngle += TAU;
@@ -32,8 +29,10 @@ export default class Camera {
       PI,
       "XYZ"
     );
+    this.cam.setPosition(this.position.x, this.position.y, this.position.z);
     this.lookDir = new Vector3(0, 0, 1).quaternionRotate(rotQuat).normalize();
-    this.position = this.position.add(this.vel.elementMult(dt));
+    let target = Vector3.add(this.position, this.lookDir);
+    this.cam.lookAt(target.x, target.y, target.z);
   }
 }
 
@@ -45,34 +44,29 @@ Camera.prototype.calcCameraMatrix = function (pos, target, up) {
 export function cameraControl(deltaTime) {
   // reset input velocity
   camera.inputVel = new Vector3(0, 0, 0);
-  const speed = 0.02 * deltaTime;
+  const speed = 0.04 * deltaTime;
   let forwardW = camera.lookDir.clone().elementMult(speed);
+  let rightW = Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
+    .normalize()
+    .elementMult(speed);
   // w and s key
   if (keyIsDown(87)) {
-    camera.position = camera.position.add(forwardW);
+    camera.position.add_(forwardW);
   } else if (keyIsDown(83)) {
-    camera.position = camera.position.add(forwardW.elementMult(-1));
+    camera.position.add_(forwardW.neg());
   }
   // a and d key
   if (keyIsDown(65)) {
-    camera.position = camera.position.add(
-      Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
-        .normalize()
-        .elementMult(-speed)
-    );
+    camera.position.add_(rightW.neg());
   } else if (keyIsDown(68)) {
-    camera.position = camera.position.add(
-      Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
-        .normalize()
-        .elementMult(speed)
-    );
+    camera.position.add_(rightW);
   }
 
   // q and e key
   if (keyIsDown(81)) {
-    camera.position = camera.position.add(new Vector3(0, speed, 0));
+    camera.position.add_(new Vector3(0, -speed, 0));
   } else if (keyIsDown(69)) {
-    camera.position = camera.position.add(new Vector3(0, -speed, 0));
+    camera.position.add_(new Vector3(0, speed, 0));
   }
 
   const rotationSpeed = 0.002 * deltaTime;
@@ -86,9 +80,9 @@ export function cameraControl(deltaTime) {
 
   // up and down arrow key for rotation
   if (keyIsDown(UP_ARROW)) {
-    camera.pitchAngle += rotationSpeed;
-  } else if (keyIsDown(DOWN_ARROW)) {
     camera.pitchAngle += -rotationSpeed;
+  } else if (keyIsDown(DOWN_ARROW)) {
+    camera.pitchAngle += rotationSpeed;
   }
 
   // console.log(camera.inputVel);

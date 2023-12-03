@@ -70,6 +70,19 @@ Vector3.prototype.add = function (b) {
   return new Vector3(this.x + b.x, this.y + b.y, this.z + b.z);
 };
 
+Vector3.prototype.add_ = function (b) {
+  if (typeof b === "number") {
+    this.x += b;
+    this.y += b;
+    this.z += b;
+    return;
+  }
+
+  this.x += b.x;
+  this.y += b.y;
+  this.z += b.z;
+};
+
 Vector3.prototype.subtract = function (b) {
   if (typeof b === "number")
     return new Vector3(this.x - b, this.y - b, this.z - b);
@@ -115,6 +128,10 @@ Vector3.prototype.normalize = function () {
   let mag = this.mag();
   if (mag === 0) return new Vector3(0, 0, 0);
   return new Vector3(this.x / mag, this.y / mag, this.z / mag);
+};
+
+Vector3.prototype.neg = function () {
+  return new Vector3(-this.x, -this.y, -this.z);
 };
 
 Vector3.prototype.toArray = function () {

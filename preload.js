@@ -1,6 +1,8 @@
 import Texture from "./texture/Texture.js";
 
+export let bestShader;
 export const brickTexture = new Texture();
+export let sandTexture;
 
 function loadSuccessCallback(img, textureObj) {
   textureObj.image = img;
@@ -18,4 +20,8 @@ export default function preloadAssets() {
     (img) => loadSuccessCallback(img, brickTexture),
     (err) => loadErrorCallback(err)
   );
+
+  sandTexture = loadImage("/assets/textures/sand.png");
+
+  bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 }

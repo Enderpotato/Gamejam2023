@@ -6,6 +6,15 @@ import Triangle from "../shapes/Triangle.js";
 let perspMatrix;
 let perspMatrixTensor;
 
+export function flattenArray(arr) {
+  let arrT = transpose2dArray(arr);
+  return arrT.reduce((acc, val) => acc.concat(val), []);
+}
+
+function transpose2dArray(arr) {
+  return arr[0].map((_, colIndex) => arr.map((row) => row[colIndex]));
+}
+
 export function createPerspectiveMatrix() {
   perspMatrix = [
     [AspectRatio * invFov, 0, 0, 0],
@@ -13,7 +22,7 @@ export function createPerspectiveMatrix() {
     [0, 0, ZFAR / (ZFAR - ZNEAR), -1],
     [0, 0, (-ZFAR * ZNEAR) / (ZFAR - ZNEAR), 0],
   ];
-  perspMatrixTensor = tf.tensor2d(perspMatrix);
+  return perspMatrix;
   // console.log(pers);pMatrix
 }
 

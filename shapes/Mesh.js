@@ -19,7 +19,10 @@ export default class Mesh {
   }
 }
 
-Mesh.prototype.createFromObj = function (filename, config = { flipY: 1 }) {
+Mesh.prototype.createFromObj = function (
+  filename,
+  config = { flipX: 1, flipY: 1, flipZ: 1 }
+) {
   // fetch file
   fetch(filename)
     .then((response) => response.text())
@@ -32,9 +35,9 @@ Mesh.prototype.createFromObj = function (filename, config = { flipY: 1 }) {
         if (tokens[0] === "v") {
           vertices.push(
             new Vector3(
-              parseFloat(tokens[1]),
+              parseFloat(tokens[1]) * config.flipX,
               parseFloat(tokens[2]) * config.flipY,
-              parseFloat(tokens[3])
+              parseFloat(tokens[3]) * config.flipZ
             )
           );
         } else if (tokens[0] === "f") {
