@@ -4,7 +4,8 @@ import Cube from "../shapes/TestShapes/Cube.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import { camera } from "../index.js";
-import { brickTexture } from "../preload.js";
+import { bestShader } from "../preload.js";
+import { brickTexture, sandTexture } from "../preload.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];
@@ -18,7 +19,7 @@ export default function renderWithShader(scene, renderer) {
 
   //   console.log(trianglesToRender.length);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, brickTexture);
+    shaderRenderTriangle(tri, sandTexture);
   });
 }
 
@@ -41,29 +42,13 @@ function returnValidTriangles(mesh) {
 function shaderRenderTriangle(tri, dexter) {
   //   stroke(0);
   //   strokeWeight(1);
+  bestShader.setUniform("uMatcapTexture", dexter);
+  textureMode(IMAGE);
   texture(dexter);
   beginShape(TRIANGLES);
-  vertex(
-    tri.vertices[0].x,
-    tri.vertices[0].y,
-    tri.vertices[0].z,
-    tri.texture[0].u,
-    tri.texture[1].v
-  );
-  vertex(
-    tri.vertices[1].x,
-    tri.vertices[1].y,
-    tri.vertices[1].z,
-    tri.texture[1].u,
-    tri.texture[1].v
-  );
-  vertex(
-    tri.vertices[2].x,
-    tri.vertices[2].y,
-    tri.vertices[2].z,
-    tri.texture[2].u,
-    tri.texture[2].v
-  );
+  vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
+  vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
+  vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
   endShape(CLOSE);
 }
 
