@@ -22,9 +22,9 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/axis.obj", {
+customMesh.createFromObj("./assets/testObjs/mountains.obj", {
   flipX: -1,
-  flipY: 1,
+  flipY: -1,
   flipZ: 1,
 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);

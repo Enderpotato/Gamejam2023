@@ -18,9 +18,11 @@ export default function renderWithShader(scene, renderer) {
   });
 
   //   console.log(trianglesToRender.length);
+  beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
     shaderRenderTriangle(tri, sandTexture);
   });
+  endShape(CLOSE);
 }
 
 function returnValidTriangles(mesh) {
@@ -40,16 +42,9 @@ function returnValidTriangles(mesh) {
 }
 
 function shaderRenderTriangle(tri, dexter) {
-  //   stroke(0);
-  //   strokeWeight(1);
-  bestShader.setUniform("uMatcapTexture", dexter);
-  textureMode(IMAGE);
-  texture(dexter);
-  beginShape(TRIANGLES);
   vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
   vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
   vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
-  endShape(CLOSE);
 }
 
 export function renderShaderCube(width) {
