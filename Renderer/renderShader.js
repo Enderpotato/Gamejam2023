@@ -1,27 +1,52 @@
-import { Matrix_MultiplyVector } from "../helperFuncs/testfuncs.js";
+import Vector3 from "../structs/Vector3.js";
+import Triangle from "../shapes/Triangle.js";
+import Cube from "../shapes/TestShapes/Cube.js";
+import Mesh from "../shapes/Mesh.js";
+import MeshCube from "../shapes/TestShapes/MeshCube.js";
+import { camera } from "../index.js";
 
 export default function renderWithShader(scene, renderer) {
+  let trianglesToRender = [];
   scene.objects.forEach((object) => {
     if (object instanceof Cube) console.log("cube");
-    if (object instanceof Mesh || object instanceof MeshCube)
-      shaderRenderMesh(object);
+    if (object instanceof Mesh || object instanceof MeshCube) {
+      let validTriangles = returnValidTriangles(object);
+      trianglesToRender = trianglesToRender.concat(validTriangles);
+    }
+  });
+
+  console.log(trianglesToRender.length);
+  trianglesToRender.forEach((tri) => {
+    shaderRenderTriangle(tri);
   });
 }
 
-function shaderRenderMesh(mesh) {
+function returnValidTriangles(mesh) {
+  //   return mesh.triangles;
+  //normal culling
+  let validTriangles = [];
   mesh.triangles.forEach((tri) => {
-    triangle(
-      tri.vertices[0].x,
-      tri.vertices[0].y,
-      tri.vertices[1].x,
-      tri.vertices[1].y,
-      tri.vertices[2].x,
-      tri.vertices[2].y
-    );
+    tri.calcNormal();
+    let normal = tri.normal;
+    let cameraToTriangle = tri.vertices[0].clone().subtract(camera.position);
+    let dot = normal.dot(cameraToTriangle);
+    if (dot < 0) {
+      validTriangles.push(tri);
+    }
   });
+  return validTriangles;
 }
 
-export function renderShaderCube(width, viewMatrix) {
+function shaderRenderTriangle(tri) {
+  stroke(0);
+  beginShape();
+  vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
+  vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
+  vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
+  endShape(CLOSE);
+}
+
+export function renderShaderCube(width) {
   let halfWidth = width * 0.5;
   let vertices = [
     new Vector3(-halfWidth, -halfWidth, halfWidth),
@@ -34,12 +59,34 @@ export function renderShaderCube(width, viewMatrix) {
     new Vector3(-halfWidth, halfWidth, -halfWidth),
   ];
 
-  let transformedVertices = [];
-  vertices.forEach((vert) => {
-    transformedVertices.push(Matrix_MultiplyVector(viewMatrix, vert));
-  });
+  let triangles = [
+    //front
+    new Triangle([vertices[0], vertices[1], vertices[2]]),
+    new Triangle([vertices[0], vertices[2], vertices[3]]),
+    //right
+    new Triangle([vertices[1], vertices[5], vertices[6]]),
+    new Triangle([vertices[1], vertices[6], vertices[2]]),
+    //back
+    new Triangle([vertices[7], vertices[6], vertices[5]]),
+    new Triangle([vertices[7], vertices[5], vertices[4]]),
+    //left
+    new Triangle([vertices[4], vertices[0], vertices[3]]),
+    new Triangle([vertices[4], vertices[3], vertices[7]]),
+    //top
+    new Triangle([vertices[3], vertices[2], vertices[6]]),
+    new Triangle([vertices[3], vertices[6], vertices[7]]),
+    //bottom
+    new Triangle([vertices[4], vertices[5], vertices[1]]),
+    new Triangle([vertices[4], vertices[1], vertices[0]]),
+  ];
+  //   console.log(triangles);
 
-  beginShape();
-  vertex(...transformedVertices[0].toArray());
-  endShape();
+  stroke(0);
+  triangles.forEach((tri) => {
+    beginShape();
+    vertex(tri.vertices[0].x, tri.vertices[0].y, tri.vertices[0].z);
+    vertex(tri.vertices[1].x, tri.vertices[1].y, tri.vertices[1].z);
+    vertex(tri.vertices[2].x, tri.vertices[2].y, tri.vertices[2].z);
+    endShape(CLOSE);
+  });
 }

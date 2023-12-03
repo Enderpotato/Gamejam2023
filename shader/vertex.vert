@@ -13,10 +13,6 @@ void main() {
     vec4 position = vec4(aPosition, 1.0);
 
     gl_Position = uProjectionMatrix * uModelViewMatrix * position;
-    // gl_Position = uProjectionMatrix * uCameraViewMatrix * position;
-
-    // gl_Position = uProjectionMatrix * position;
-    // gl_Position = position;
 
     vTexCoord = aTexCoord;
 }

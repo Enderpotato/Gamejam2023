@@ -60,7 +60,7 @@ Renderer.projectTriangle = projectTriangle;
 
 Renderer.rasterTriangle = rasterTriangle;
 
-Renderer.renderWithShader = renderWithShader;
+Renderer.prototype.renderWithShader = renderWithShader;
 
 const LightDir = new Vector3(0, 0, -1).normalize();
 Renderer.prototype.loadMesh = function (mesh) {
