@@ -22,11 +22,12 @@ function renderMesh(mesh) {
   let validTriangles = returnValidTriangles(mesh);
   trianglesToRender = trianglesToRender.concat(validTriangles);
 
-  // if (mesh.texture) texture(mesh.texture);
-  // else texture(Textures.diamond);
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, mesh.texture ? mesh.texture : Textures.diamond);
+    shaderRenderTriangle(
+      tri,
+      mesh.textureImg ? mesh.textureImg : Textures.diamond
+    );
   });
   endShape(CLOSE);
 }
@@ -43,6 +44,7 @@ function returnValidTriangles(mesh) {
       validTriangles.push(tri);
     }
   });
+  // console.log(validTriangles.length);
   return validTriangles;
 }
 
