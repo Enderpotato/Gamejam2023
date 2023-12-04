@@ -28,8 +28,8 @@ customMesh.createFromObj("./assets/testObjs/mountains.obj", {
   flipZ: 1,
 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
-// const scene = new Scene([customMesh]);
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
+const scene = new Scene([customMesh]);
 const renderer = new Renderer();
 export let camera;
 
