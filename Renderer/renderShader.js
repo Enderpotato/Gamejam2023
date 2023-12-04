@@ -5,7 +5,7 @@ import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import { camera } from "../index.js";
 import { bestShader } from "../preload.js";
-import { brickTexture, sandTexture } from "../preload.js";
+import { Textures } from "../preload.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];
@@ -19,7 +19,7 @@ export default function renderWithShader(scene, renderer) {
 
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, sandTexture);
+    shaderRenderTriangle(tri, Textures["diamond"]);
   });
   endShape(CLOSE);
 }
@@ -45,6 +45,7 @@ function shaderRenderTriangle(tri, dexter) {
   let norm = tri.normal;
   textureMode(NORMAL);
   texture(dexter);
+  normal(norm.x, norm.y, norm.z);
   vertex(
     tri.vertices[0].x,
     tri.vertices[0].y,
@@ -68,7 +69,6 @@ function shaderRenderTriangle(tri, dexter) {
     tri.texture[2].u,
     tri.texture[2].v
   );
-  normal(norm.x, norm.y, norm.z);
 }
 
 export function renderShaderCube(width) {
