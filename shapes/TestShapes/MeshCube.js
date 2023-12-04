@@ -147,10 +147,17 @@ export default class MeshCube {
   }
 
   update(dt) {
+    let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
+    // i, o, p key for axis rotation
+    const speed = 0.002 * dt;
+    if (keyIsDown(73)) rotate_x = speed;
+    if (keyIsDown(79)) rotate_y = speed;
+    if (keyIsDown(80)) rotate_z = speed;
+
     this.triangles.forEach((triangle) => {
       ShapeMorph.rotateTriangle(
         triangle,
-        Quaternion.fromEulerLogical(-0.01, 0.01, 0.01, "XYZ"),
+        Quaternion.fromEulerLogical(rotate_x, rotate_y, rotate_z, "XYZ"),
         this.position
       );
     });

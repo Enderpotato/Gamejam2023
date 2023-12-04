@@ -22,7 +22,7 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/mountains.obj", {
+customMesh.createFromObj("./assets/testObjs/Videoship.obj", {
   flipX: -1,
   flipY: -1,
   flipZ: 1,
@@ -72,8 +72,9 @@ function draw() {
 
   background(0);
   clear();
-
   shader(bestShader);
+
+  scene.update(deltaTime);
   cameraControl(deltaTime);
   camera.update(deltaTime);
 
@@ -85,10 +86,6 @@ function draw() {
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uCameraPosition", camera.position.toArray());
-
-  if (keyIsDown(32)) {
-    scene.update(deltaTime);
-  }
 }
 
 function keyPressed() {
