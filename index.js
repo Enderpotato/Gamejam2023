@@ -12,7 +12,7 @@ import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets from "./preload.js";
-import { bestShader, brickTexture } from "./preload.js";
+import { bestShader } from "./preload.js";
 import { renderShaderCube } from "./Renderer/renderShader.js";
 
 const FPSElement = document.getElementById("fps-debug");
@@ -22,13 +22,13 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/mountains.obj", {
+customMesh.createFromObj("./assets/testObjs/Videoship.obj", {
   flipX: -1,
   flipY: -1,
   flipZ: 1,
 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
+const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
 // const scene = new Scene([customMesh]);
 const renderer = new Renderer();
 export let camera;
@@ -72,12 +72,12 @@ function draw() {
 
   background(0);
   clear();
-
   shader(bestShader);
+
+  scene.update(deltaTime);
   cameraControl(deltaTime);
   camera.update(deltaTime);
 
-  // renderShaderCube(10);
   renderer.render(scene, true);
   renderer.clear();
   noStroke();
@@ -85,19 +85,7 @@ function draw() {
   // box(100);
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
-  bestShader.setUniform("uMatcapTexture", brickTexture.image);
   bestShader.setUniform("uCameraPosition", camera.position.toArray());
-
-  // // clear zBuffer
-  // zBuffer.fill(0);
-
-  // renderer.render(scene);
-  // // map_.draw_map();
-  // // map_.draw_obj(camera);
-
-  if (keyIsDown(32)) {
-    scene.update(deltaTime);
-  }
 }
 
 function keyPressed() {
