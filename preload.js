@@ -1,18 +1,20 @@
-import Texture from "./texture/Texture.js";
+import TextureBuffer from "./Texture.js";
 
+export const Textures = new TextureBuffer();
 export let bestShader;
-export let brickTexture = new Texture();
-export let sandTexture;
-export let whiteTexture;
 
 function loadErrorCallback(err) {
   console.log("error loading image");
 }
 
 export default function preloadAssets() {
-  brickTexture = loadImage("/assets/textures/bricks.png");
-  sandTexture = loadImage("/assets/textures/sand.png");
-  whiteTexture = loadImage("/assets/textures/white.png");
+  Textures.addTexture(loadImage("/assets/textures/bricks.png"), "bricks");
+  Textures.addTexture(loadImage("/assets/textures/sand.png"), "sand");
+  Textures.addTexture(loadImage("assets/textures/white.png"), "white");
+  Textures.addTexture(
+    loadImage("assets/textures/diamond_block.png"),
+    "diamond"
+  );
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 }

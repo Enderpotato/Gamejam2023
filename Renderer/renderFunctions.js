@@ -7,7 +7,6 @@ import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
 import { triangleClipAgainstPlane } from "../helperFuncs/clipping.js";
 import Triangle from "../shapes/Triangle.js";
-import { texturedTriangle } from "./texture.js";
 
 export function RenderCube(cube) {
   let transformedVertices = [];

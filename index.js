@@ -12,7 +12,7 @@ import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets from "./preload.js";
-import { bestShader, brickTexture } from "./preload.js";
+import { bestShader } from "./preload.js";
 import { renderShaderCube } from "./Renderer/renderShader.js";
 
 const FPSElement = document.getElementById("fps-debug");
