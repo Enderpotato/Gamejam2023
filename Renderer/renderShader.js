@@ -45,6 +45,7 @@ function shaderRenderTriangle(tri, dexter) {
   let norm = tri.normal;
   textureMode(NORMAL);
   texture(dexter);
+  normal(norm.x, norm.y, norm.z);
   vertex(
     tri.vertices[0].x,
     tri.vertices[0].y,
@@ -68,7 +69,6 @@ function shaderRenderTriangle(tri, dexter) {
     tri.texture[2].u,
     tri.texture[2].v
   );
-  normal(norm.x, norm.y, norm.z);
 }
 
 export function renderShaderCube(width) {
