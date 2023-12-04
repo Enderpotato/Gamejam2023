@@ -4,7 +4,8 @@ import Cube from "../shapes/TestShapes/Cube.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import { camera } from "../index.js";
-import { brickTexture } from "../preload.js";
+import { bestShader } from "../preload.js";
+import { brickTexture, sandTexture } from "../preload.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];
@@ -16,14 +17,14 @@ export default function renderWithShader(scene, renderer) {
     }
   });
 
-  //   console.log(trianglesToRender.length);
+  beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, brickTexture);
+    shaderRenderTriangle(tri, sandTexture);
   });
+  endShape(CLOSE);
 }
 
 function returnValidTriangles(mesh) {
-  //   return mesh.triangles;
   // backface culling
   let validTriangles = [];
   mesh.triangles.forEach((tri) => {
@@ -39,17 +40,19 @@ function returnValidTriangles(mesh) {
 }
 
 function shaderRenderTriangle(tri, dexter) {
-  //   stroke(0);
-  //   strokeWeight(1);
+  bestShader.setUniform("uMatcapTexture", dexter);
+  tri.calcNormal();
+  let norm = tri.normal;
+  textureMode(NORMAL);
   texture(dexter);
-  beginShape(TRIANGLES);
   vertex(
     tri.vertices[0].x,
     tri.vertices[0].y,
     tri.vertices[0].z,
     tri.texture[0].u,
-    tri.texture[1].v
+    tri.texture[0].v
   );
+  normal(norm.x, norm.y, norm.z);
   vertex(
     tri.vertices[1].x,
     tri.vertices[1].y,
@@ -57,6 +60,7 @@ function shaderRenderTriangle(tri, dexter) {
     tri.texture[1].u,
     tri.texture[1].v
   );
+  normal(norm.x, norm.y, norm.z);
   vertex(
     tri.vertices[2].x,
     tri.vertices[2].y,
@@ -64,7 +68,7 @@ function shaderRenderTriangle(tri, dexter) {
     tri.texture[2].u,
     tri.texture[2].v
   );
-  endShape(CLOSE);
+  normal(norm.x, norm.y, norm.z);
 }
 
 export function renderShaderCube(width) {

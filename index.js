@@ -22,28 +22,27 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/VideoShip.obj", {
+customMesh.createFromObj("./assets/testObjs/mountains.obj", {
   flipX: -1,
-  flipY: 1,
+  flipY: -1,
   flipZ: 1,
 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-// const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
-const scene = new Scene([customMesh]);
+const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
+// const scene = new Scene([customMesh]);
 const renderer = new Renderer();
-const FOV = 60 * (Math.PI / 180);
 export let camera;
 
 let cam;
 
-const WIDTH = 450;
+const WIDTH = 600;
 const HEIGHT = 450;
 // Create a depth buffer
 export const depthBuffer = new Array(WIDTH * HEIGHT).fill(Infinity);
 
 const MAP_WIDTH = 400;
-const upDir = new Vector3(0, 1, 0);
 
+const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 1;
 export const ZFAR = 1000;
@@ -52,12 +51,8 @@ var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
 export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
 
-// const perspectiveMat = createPerspectiveMatrix();
-// console.log(flattenArray(perspectiveMat));
-
 let canvas;
 export let frame;
-let gl;
 
 function setup() {
   canvas = createCanvas(WIDTH, HEIGHT, WEBGL);
@@ -68,7 +63,6 @@ function setup() {
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
   camera = new Camera(cam);
-  console.log(cam);
 
   noStroke();
 }
@@ -85,24 +79,25 @@ function draw() {
 
   // renderShaderCube(10);
   renderer.render(scene, true);
+  renderer.clear();
   noStroke();
 
   // box(100);
   bestShader.setUniform("millis", millis());
-  // bestShader.setUniform("uCameraViewMatrix", flattenArray(camera.matView));
+  bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uMatcapTexture", brickTexture.image);
+  bestShader.setUniform("uCameraPosition", camera.position.toArray());
 
   // // clear zBuffer
   // zBuffer.fill(0);
 
   // renderer.render(scene);
-  // renderer.clear();
   // // map_.draw_map();
   // // map_.draw_obj(camera);
 
-  // if (keyIsDown(32)) {
-  //   scene.update(deltaTime);
-  // }
+  if (keyIsDown(32)) {
+    scene.update(deltaTime);
+  }
 }
 
 function keyPressed() {
@@ -112,7 +107,7 @@ function keyPressed() {
   }
 }
 
-window.draw = draw;
-window.setup = setup;
 window.preload = preloadAssets;
+window.setup = setup;
+window.draw = draw;
 window.keyPressed = keyPressed;
