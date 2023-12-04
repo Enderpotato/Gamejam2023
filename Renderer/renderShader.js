@@ -12,14 +12,21 @@ export default function renderWithShader(scene, renderer) {
   scene.objects.forEach((object) => {
     if (object instanceof Cube) console.log("cube");
     if (object instanceof Mesh || object instanceof MeshCube) {
-      let validTriangles = returnValidTriangles(object);
-      trianglesToRender = trianglesToRender.concat(validTriangles);
+      renderMesh(object);
     }
   });
+}
 
+function renderMesh(mesh) {
+  let trianglesToRender = [];
+  let validTriangles = returnValidTriangles(mesh);
+  trianglesToRender = trianglesToRender.concat(validTriangles);
+
+  // if (mesh.texture) texture(mesh.texture);
+  // else texture(Textures.diamond);
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, Textures["diamond"]);
+    shaderRenderTriangle(tri, mesh.texture ? mesh.texture : Textures.diamond);
   });
   endShape(CLOSE);
 }

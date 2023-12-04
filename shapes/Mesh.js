@@ -3,9 +3,13 @@ import Vector3 from "../structs/Vector3.js";
 import ShapeMorph from "./ShapeMorph.js";
 
 export default class Mesh {
-  constructor(position) {
+  constructor(position, textureImg) {
     this.triangles = [];
+    this.meshTriangles = [];
+
     this.position = position;
+    this.rotation = new Vector3(0, 0, 0);
+    this.textureImg = textureImg || null;
   }
 
   update(dt) {
@@ -15,12 +19,17 @@ export default class Mesh {
     if (keyIsDown(73)) rotate_x = speed;
     if (keyIsDown(79)) rotate_y = speed;
     if (keyIsDown(80)) rotate_z = speed;
-    this.triangles.forEach((triangle) => {
-      ShapeMorph.rotateTriangle(
-        triangle,
-        Quaternion.fromEulerLogical(rotate_x, rotate_y, rotate_z, "XYZ"),
-        this.position
-      );
+
+    this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
+
+    const quat = Quaternion.fromEulerLogical(
+      this.rotation.x,
+      this.rotation.y,
+      this.rotation.z,
+      "XYZ"
+    );
+    this.triangles = this.meshTriangles.map((triangle) => {
+      return ShapeMorph.transformToWorld(triangle, quat, this.position);
     });
   }
 }
@@ -60,12 +69,7 @@ Mesh.prototype.createFromObj = function (
           vertices[face[1] - 1],
           vertices[face[2] - 1],
         ]);
-
-        // add position to triangle
-        triangle.vertices = triangle.vertices.map((vertex) => {
-          return vertex.add(this.position);
-        });
-        this.triangles.push(triangle);
+        this.meshTriangles.push(triangle);
       });
     });
 };
