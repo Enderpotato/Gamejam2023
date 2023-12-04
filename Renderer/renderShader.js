@@ -5,7 +5,7 @@ import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import { camera } from "../index.js";
 import { bestShader } from "../preload.js";
-import { brickTexture, sandTexture } from "../preload.js";
+import { brickTexture, sandTexture, whiteTexture } from "../preload.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];

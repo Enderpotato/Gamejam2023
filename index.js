@@ -28,8 +28,8 @@ customMesh.createFromObj("./assets/testObjs/mountains.obj", {
   flipZ: 1,
 });
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-// const scene = new Scene([new MeshCube(new Vector3(0, 0, 20), 10)]);
-const scene = new Scene([customMesh]);
+const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
+// const scene = new Scene([customMesh]);
 const renderer = new Renderer();
 export let camera;
 
@@ -77,7 +77,6 @@ function draw() {
   cameraControl(deltaTime);
   camera.update(deltaTime);
 
-  // renderShaderCube(10);
   renderer.render(scene, true);
   renderer.clear();
   noStroke();
@@ -85,15 +84,7 @@ function draw() {
   // box(100);
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
-  bestShader.setUniform("uMatcapTexture", brickTexture.image);
   bestShader.setUniform("uCameraPosition", camera.position.toArray());
-
-  // // clear zBuffer
-  // zBuffer.fill(0);
-
-  // renderer.render(scene);
-  // // map_.draw_map();
-  // // map_.draw_obj(camera);
 
   if (keyIsDown(32)) {
     scene.update(deltaTime);

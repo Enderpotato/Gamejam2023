@@ -87,7 +87,7 @@ export default class MeshCube {
           new Vector3(halfWidth, halfWidth, -halfWidth).add(this.position),
           new Vector3(halfWidth, halfWidth, halfWidth).add(this.position),
         ],
-        [new Vector2T(0, 0), new Vector2T(1, 1), new Vector2T(1, 0)]
+        [new Vector2T(0, 0), new Vector2T(1, 0), new Vector2T(1, 1)]
       )
     );
     this.triangles.push(
@@ -131,7 +131,7 @@ export default class MeshCube {
           new Vector3(halfWidth, -halfWidth, -halfWidth).add(this.position),
           new Vector3(halfWidth, -halfWidth, halfWidth).add(this.position),
         ],
-        [new Vector2T(0, 0), new Vector2T(1, 1), new Vector2T(1, 0)]
+        [new Vector2T(0, 0), new Vector2T(1, 0), new Vector2T(1, 1)]
       )
     );
     this.triangles.push(
