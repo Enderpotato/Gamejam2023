@@ -22,7 +22,7 @@ let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/axis.obj", {
+customMesh.createFromObj("./assets/testObjs/VideoShip.obj", {
   flipX: -1,
   flipY: 1,
   flipZ: 1,
@@ -112,7 +112,7 @@ function keyPressed() {
   }
 }
 
-window.preload = preloadAssets;
-window.setup = setup;
 window.draw = draw;
+window.setup = setup;
+window.preload = preloadAssets;
 window.keyPressed = keyPressed;
