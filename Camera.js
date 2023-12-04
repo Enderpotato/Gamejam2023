@@ -29,6 +29,7 @@ export default class Camera {
       PI,
       "XYZ"
     );
+    console.log(rotQuat)
     this.cam.setPosition(this.position.x, this.position.y, this.position.z);
     this.lookDir = new Vector3(0, 0, 1).quaternionRotate(rotQuat).normalize();
     let target = Vector3.add(this.position, this.lookDir);
