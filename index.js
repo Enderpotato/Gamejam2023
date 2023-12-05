@@ -34,7 +34,8 @@ const gObject4 = new GameObject(new Vector3(0, 0, 10), customMesh4);
 const cube1 = new MeshCube(10);
 const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
 
-const scene = new Scene([gObject4]);
+// const scene = new Scene([gObject4]);
+const scene = new Scene([gObject5]);
 const renderer = new Renderer();
 export let camera;
 
@@ -84,7 +85,6 @@ function draw() {
   cameraControl(deltaTime);
   camera.update(deltaTime);
   scene.update(deltaTime);
-
 
   renderer.render(scene, true);
   renderer.clear();
