@@ -15,7 +15,7 @@ Mesh.prototype.update = function (position, quat) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position);
   });
-}
+};
 
 Mesh.prototype.setTexture = function (textureImg) {
   this.textureImg = textureImg; // p5.Image
@@ -58,6 +58,7 @@ Mesh.prototype.createFromObj = function (filename) {
         this.meshTriangles.push(triangle);
       });
     });
+  return this;
 };
 
 function parseLine(line, vertices, faces, textures) {

@@ -16,6 +16,7 @@ export default function preloadAssets() {
     "diamond"
   );
   Textures.addTexture(loadImage("assets/textures/Map.png"), "map");
+  Textures.addTexture(loadImage("assets/textures/Steve.png"), "steve");
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 }

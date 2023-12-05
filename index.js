@@ -13,9 +13,7 @@ import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
-import { renderShaderCube } from "./Renderer/renderShader.js";
 import GameObject from "./GameObject.js";
-
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -23,21 +21,20 @@ let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
-let customMesh1 = new Mesh(new Vector3(0, 0, 30));
-customMesh1.createFromObj("./assets/testObjs/teapot.obj");
-let customMesh2 = new Mesh();
-customMesh2.createFromObj("./assets/testObjs/bedroom.obj");
-// const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
+let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
+let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
+let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
+let customMesh4 = new Mesh().createFromObj("./assets/testObjs/steve.obj");
 
-const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1)
-const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh1)
+const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1);
+const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh2);
+const gObject3 = new GameObject(new Vector3(0, 0, 10), customMesh3);
+const gObject4 = new GameObject(new Vector3(0, 0, 10), customMesh4);
 
 const cube1 = new MeshCube(10);
-const gObject3 = new GameObject(new Vector3(0, 0, 30), cube1)
+const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
 
-const scene = new Scene([gObject3]);
-// const scene = new Scene([gObject1]);
-// const scene = new Scene([customMesh1])
+const scene = new Scene([gObject4]);
 const renderer = new Renderer();
 export let camera;
 
@@ -72,6 +69,7 @@ function setup() {
   cam.lookAt(0, 0, 1);
   camera = new Camera(cam);
   customMesh1.setTexture(Textures["white"]);
+  customMesh4.setTexture(Textures["steve"]);
 
   noStroke();
 }
