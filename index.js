@@ -2,11 +2,6 @@ import Renderer from "./Renderer/Renderer.js";
 import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
-import Cube from "./shapes/TestShapes/Cube.js";
-import {
-  createPerspectiveMatrix,
-  flattenArray,
-} from "./helperFuncs/testfuncs.js";
 import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
@@ -14,6 +9,7 @@ import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
 import GameObject from "./GameObject.js";
+import Player from "./Player.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -27,21 +23,24 @@ let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
 let customMesh4 = new Mesh().createFromObj("./assets/testObjs/steve.obj");
 let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 
-const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1);
-const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh2);
-const gObject3 = new GameObject(new Vector3(0, 0, 10), customMesh3);
+const gObject1 = new GameObject(new Vector3(-30, 0, 30), customMesh1);
+const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
+const gObject3 = new GameObject(new Vector3(0, 10, 10), customMesh3);
+gObject3.mass = Number.MAX_SAFE_INTEGER;
+
 const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
 
 const cube1 = new MeshCube(10);
-const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
+const gObject5 = new GameObject(new Vector3(0, -200, 30), cube1);
 const cube2 = new MeshCube(10);
 const gObject6 = new GameObject(new Vector3(-30, 0, 30), cube2);
 
-const scene = new Scene([gObject5, gObject4]);
+const scene = new Scene([gObject5, gObject3]);
 // const scene = new Scene([gObject4]);
 // const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
 export let camera;
+let player;
 
 let cam;
 
@@ -74,6 +73,8 @@ function setup() {
   customMesh2.setTexture(Textures["map"]);
   customMesh4.setTexture(Textures["steve"]);
 
+  player = new Player(camera);
+  // scene.addObject(player);
   noStroke();
 }
 
@@ -83,6 +84,7 @@ function draw() {
   background(0);
   clear();
   shader(bestShader);
+  deltaTime /= 1000;
 
   cameraControl(deltaTime);
   camera.update(deltaTime);
@@ -99,8 +101,7 @@ function draw() {
 
 function keyPressed() {
   if (keyCode === 32) {
-    scene.objects[0].velocity.x = -0.01;
-    scene.objects[1].velocity.x = 0.01;
+    gObject5.velocity = new Vector3(0, 100, 0);
   }
 }
 

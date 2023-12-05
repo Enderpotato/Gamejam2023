@@ -16,10 +16,13 @@ export default class Camera {
 
     this.yawAngle = 0; // Y axis
     this.pitchAngle = 0; // X axis
-    this.boundingBoxWidth = 2
-    this.boundingBox = new BoundingBox(this.position, this.boundingBoxWidth,
+    this.boundingBoxWidth = 2;
+    this.boundingBox = new BoundingBox(
+      this.position,
       this.boundingBoxWidth,
-      this.boundingBoxWidth);
+      this.boundingBoxWidth,
+      this.boundingBoxWidth
+    );
   }
 
   update(dt) {
@@ -39,9 +42,12 @@ export default class Camera {
     let target = Vector3.add(this.position, this.lookDir);
     this.cam.lookAt(target.x, target.y, target.z);
 
-    this.boundingBox = new BoundingBox(this.position, this.boundingBoxWidth,
+    this.boundingBox = new BoundingBox(
+      this.position,
       this.boundingBoxWidth,
-      this.boundingBoxWidth);
+      this.boundingBoxWidth,
+      this.boundingBoxWidth
+    );
   }
 }
 
@@ -50,12 +56,11 @@ Camera.prototype.calcCameraMatrix = function (pos, target, up) {
   this.matView = matrixQuickInverse(this.matCamera);
 };
 
-
 export function cameraControl(deltaTime) {
   // reset input velocity
   camera.inputVelZ = new Vector3(0, 0, 0);
-  camera.inputVelX = new Vector3(0, 0, 0)
-  const speed = 0.04 * deltaTime;
+  camera.inputVelX = new Vector3(0, 0, 0);
+  const speed = 40 * deltaTime; // 40 units per second
   let forwardW = camera.lookDir.clone().elementMult(speed);
   let rightW = Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
     .normalize()
@@ -84,8 +89,7 @@ export function cameraControl(deltaTime) {
     camera.position.add_(new Vector3(0, speed, 0));
   }
 
-
-  const rotationSpeed = 0.002 * deltaTime;
+  const rotationSpeed = 2 * deltaTime; // 2 radians per second
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {

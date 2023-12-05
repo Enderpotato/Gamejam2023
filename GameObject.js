@@ -8,7 +8,7 @@ export default class GameObject {
     this.position = position;
     this.rotation = Vector3.zeros();
     this.mesh = mesh;
-    mesh.position = position;
+    if (mesh != null) mesh.position = position;
 
     this.mass = 1;
     this.inverseMass = 1 / this.mass;
@@ -19,27 +19,28 @@ export default class GameObject {
     this.force = Vector3.zeros();
     this.angularVelocity = Vector3.zeros();
 
-    this.boundingBox = BoundingBox.createFromCube(this);
-    this.inertia = new Vector3(
-      this.boundingBox.w * this.boundingBox.w +
-        this.boundingBox.l * this.boundingBox.l,
-      this.boundingBox.w * this.boundingBox.w +
-        this.boundingBox.h * this.boundingBox.h,
-      this.boundingBox.l * this.boundingBox.l +
-        this.boundingBox.h * this.boundingBox.h
-    ).elementMult(this.mass / 12);
+    // this.inertia = new Vector3(
+    //   this.boundingBox.w * this.boundingBox.w +
+    //     this.boundingBox.l * this.boundingBox.l,
+    //   this.boundingBox.w * this.boundingBox.w +
+    //     this.boundingBox.h * this.boundingBox.h,
+    //   this.boundingBox.l * this.boundingBox.l +
+    //     this.boundingBox.h * this.boundingBox.h
+    // ).elementMult(this.mass / 12);
   }
 }
 
 GameObject.prototype.update = function (dt) {
-  this.velocity.add_(this.acc.elementMult(1 / 9));
+  // semi-implicit euler integration
+  this.acc = Vector3.elementMult(this.force, this.inverseMass);
+  this.velocity.add_(this.acc.elementMult(dt));
   this.position.add_(this.velocity.elementMult(dt));
-  //   this.acc = this.velocity.elementMult(-0.9);
   this.acc = Vector3.zeros();
+  this.force = Vector3.zeros();
 
   let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
   // i, o, p key for axis rotation (DEBUG)
-  const speed = 0.002 * dt;
+  const speed = 2 * dt;
   if (keyIsDown(73)) rotate_x = speed;
   if (keyIsDown(79)) rotate_y = speed;
   if (keyIsDown(80)) rotate_z = speed;
