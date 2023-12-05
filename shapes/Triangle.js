@@ -29,7 +29,7 @@ Triangle.prototype.calcNormal = function () {
   // vertices are in clockwise order
   let v1 = this.vertices[1].subtract(this.vertices[0]);
   let v2 = this.vertices[2].subtract(this.vertices[0]);
-  this.normal = v1.cross(v2).normalize();
+  this.normal = Vector3.cross(v1, v2).normalize();
 };
 
 Triangle.prototype.textureClone = function () {

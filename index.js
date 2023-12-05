@@ -11,7 +11,7 @@ import Camera from "./Camera.js";
 import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
-import preloadAssets from "./preload.js";
+import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
 import { renderShaderCube } from "./Renderer/renderShader.js";
 
@@ -21,15 +21,13 @@ let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
-let customMesh = new Mesh(new Vector3(0, 0, 30));
-customMesh.createFromObj("./assets/testObjs/Videoship.obj", {
-  flipX: -1,
-  flipY: -1,
-  flipZ: 1,
-});
+let customMesh1 = new Mesh(new Vector3(0, 0, 30));
+customMesh1.createFromObj("./assets/testObjs/teapot.obj");
+let customMesh2 = new Mesh(new Vector3(0, -10, 30));
+customMesh2.createFromObj("./assets/testObjs/bedroom.obj");
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
-// const scene = new Scene([customMesh]);
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
+const scene = new Scene([customMesh2]);
 const renderer = new Renderer();
 export let camera;
 
@@ -63,6 +61,7 @@ function setup() {
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
   camera = new Camera(cam);
+  customMesh2.setTexture(Textures["map"]);
 
   noStroke();
 }
@@ -75,6 +74,7 @@ function draw() {
   shader(bestShader);
 
   scene.update(deltaTime);
+
   cameraControl(deltaTime);
   camera.update(deltaTime);
 
@@ -82,7 +82,6 @@ function draw() {
   renderer.clear();
   noStroke();
 
-  // box(100);
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uCameraPosition", camera.position.toArray());

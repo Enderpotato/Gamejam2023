@@ -52,7 +52,6 @@ export function projectTriangle(tri, Renderer) {
     triProjected.vertices[1] = perspectiveProject(clipped[n].vertices[1]);
     triProjected.vertices[2] = perspectiveProject(clipped[n].vertices[2]);
     triProjected.normal = tri.normal;
-    // console.log(triProjected.texture);
     Renderer.trianglesToRaster.push(triProjected);
   }
 }

@@ -12,14 +12,22 @@ export default function renderWithShader(scene, renderer) {
   scene.objects.forEach((object) => {
     if (object instanceof Cube) console.log("cube");
     if (object instanceof Mesh || object instanceof MeshCube) {
-      let validTriangles = returnValidTriangles(object);
-      trianglesToRender = trianglesToRender.concat(validTriangles);
+      renderMesh(object);
     }
   });
+}
+
+function renderMesh(mesh) {
+  let trianglesToRender = [];
+  let validTriangles = returnValidTriangles(mesh);
+  trianglesToRender = trianglesToRender.concat(validTriangles);
 
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
-    shaderRenderTriangle(tri, Textures["diamond"]);
+    shaderRenderTriangle(
+      tri,
+      mesh.textureImg ? mesh.textureImg : Textures.diamond
+    );
   });
   endShape(CLOSE);
 }
@@ -36,6 +44,7 @@ function returnValidTriangles(mesh) {
       validTriangles.push(tri);
     }
   });
+  // console.log(validTriangles.length);
   return validTriangles;
 }
 
