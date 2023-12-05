@@ -34,6 +34,7 @@ void main() {
     vec3 lighting = vec3(0, 0, 0);
     // lighting = ambient * 0.2 + diffuse * 0.7 + specular; // very metallic
     lighting = ambient * 0.2 + diffuse + specular * 0.4; // less metallic
+    // lighting = vec3(1.0, 1.0, 1.0);
 
     vec4 matcapColor = texture2D(uMatcapTexture, vTexCoord);
 
