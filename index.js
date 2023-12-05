@@ -25,18 +25,19 @@ let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
 let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
 let customMesh4 = new Mesh().createFromObj("./assets/testObjs/steve.obj");
+let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 
 const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh2);
 const gObject3 = new GameObject(new Vector3(0, 0, 10), customMesh3);
-const gObject4 = new GameObject(new Vector3(0, 0, 10), customMesh4);
+const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
 
 const cube1 = new MeshCube(10);
 const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
 const cube2 = new MeshCube(10);
-const gObject6 = new GameObject(new Vector3(-50, 40, 80), cube2);
+const gObject6 = new GameObject(new Vector3(-30, 0, 30), cube2);
 
-const scene = new Scene([gObject5, gObject6]);
+const scene = new Scene([gObject5, gObject4]);
 // const scene = new Scene([gObject4]);
 // const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
@@ -100,10 +101,6 @@ function keyPressed() {
   if (keyCode === 32) {
     scene.objects[0].velocity.x = -0.01;
     scene.objects[1].velocity.x = 0.01;
-    scene.objects[0].velocity.y = 0.01;
-    scene.objects[1].velocity.y = -0.01;
-    scene.objects[0].velocity.z = 0.01;
-    scene.objects[1].velocity.z = -0.01;
   }
 }
 

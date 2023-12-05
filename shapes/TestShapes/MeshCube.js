@@ -152,4 +152,4 @@ MeshCube.prototype.update = function (position, quat) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position);
   });
-}
+};

@@ -55,6 +55,14 @@ Vector3.magSq = function (a) {
   return a.x * a.x + a.y * a.y + a.z * a.z;
 };
 
+Vector3.distance = function (a, b) {
+  return Math.sqrt(
+    (a.x - b.x) * (a.x - b.x) +
+      (a.y - b.y) * (a.y - b.y) +
+      (a.z - b.z) * (a.z - b.z)
+  );
+};
+
 Vector3.normalize = function (a) {
   let mag = Vector3.mag(a);
   if (mag === 0) return new Vector3(0, 0, 0);
@@ -112,6 +120,25 @@ Vector3.prototype.elementDiv = function (b) {
   return new Vector3(this.x / b.x, this.y / b.y, this.z / b.z);
 };
 
+Vector3.prototype.max = function (b) {
+  if (typeof b === "number")
+    return new Vector3(
+      Math.max(this.x, b),
+      Math.max(this.y, b),
+      Math.max(this.z, b)
+    );
+
+  return new Vector3(
+    Math.max(this.x, b.x),
+    Math.max(this.y, b.y),
+    Math.max(this.z, b.z)
+  );
+};
+
+Vector3.prototype.abs = function () {
+  return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
+};
+
 Vector3.prototype.dot = function (b) {
   return this.x * b.x + this.y * b.y + this.z * b.z;
 };
@@ -148,6 +175,10 @@ Vector3.prototype.toArray = function () {
 
 Vector3.prototype.clone = function () {
   return new Vector3(this.x, this.y, this.z);
+};
+
+Vector3.prototype.map = function (f) {
+  return new Vector3(f(this.x), f(this.y), f(this.z));
 };
 
 Vector3.prototype.quaternionRotate = function (q) {
