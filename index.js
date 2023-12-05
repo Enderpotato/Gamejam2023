@@ -23,17 +23,21 @@ let angle;
 let player_pos;
 let x_angle = 0; //the player can only angle the camera in the x direction
 
-let customMesh1 = new Mesh(new Vector3(0, 0, 30));
+let customMesh1 = new Mesh();
 customMesh1.createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh();
 customMesh2.createFromObj("./assets/testObjs/bedroom.obj");
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
+let RCharacter = new Mesh(); //florr
+// customMesh3.createFromObj()
 
 const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1)
 const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh1)
+// const gayObject = new GameObject(new Vector3)
 
 const cube1 = new MeshCube(10);
-const gObject3 = new GameObject(new Vector3(0, 0, 30), cube1)
+const gObject3 = new GameObject(new Vector3(0, 0, 30), cube1);
+// const floor = new GameObject(new Vector3(0, 0, 0),)
 
 const scene = new Scene([gObject3]);
 // const scene = new Scene([gObject1]);
@@ -83,10 +87,10 @@ function draw() {
   clear();
   shader(bestShader);
 
-  scene.update(deltaTime);
-
   cameraControl(deltaTime);
   camera.update(deltaTime);
+  scene.update(deltaTime);
+
 
   renderer.render(scene, true);
   renderer.clear();
