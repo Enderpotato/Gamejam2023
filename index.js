@@ -33,9 +33,12 @@ const gObject4 = new GameObject(new Vector3(0, 0, 10), customMesh4);
 
 const cube1 = new MeshCube(10);
 const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
+const cube2 = new MeshCube(10);
+const gObject6 = new GameObject(new Vector3(-50, 40, 80), cube2);
 
+const scene = new Scene([gObject5, gObject6]);
 // const scene = new Scene([gObject4]);
-const scene = new Scene([gObject5, gObject2]);
+// const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
 export let camera;
 
@@ -43,9 +46,6 @@ let cam;
 
 const WIDTH = 600;
 const HEIGHT = 450;
-// Create a depth buffer
-export const depthBuffer = new Array(WIDTH * HEIGHT).fill(Infinity);
-
 const MAP_WIDTH = 400;
 
 const FOV = 60 * (Math.PI / 180);
@@ -70,6 +70,7 @@ function setup() {
   cam.lookAt(0, 0, 1);
   camera = new Camera(cam);
   customMesh1.setTexture(Textures["white"]);
+  customMesh2.setTexture(Textures["map"]);
   customMesh4.setTexture(Textures["steve"]);
 
   noStroke();
@@ -96,9 +97,13 @@ function draw() {
 }
 
 function keyPressed() {
-  // l key
-  if (keyCode === 76) {
-    console.log(zBuffer);
+  if (keyCode === 32) {
+    scene.objects[0].velocity.x = -0.01;
+    scene.objects[1].velocity.x = 0.01;
+    scene.objects[0].velocity.y = 0.01;
+    scene.objects[1].velocity.y = -0.01;
+    scene.objects[0].velocity.z = 0.01;
+    scene.objects[1].velocity.z = -0.01;
   }
 }
 

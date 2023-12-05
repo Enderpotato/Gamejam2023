@@ -7,6 +7,14 @@ export default class Vector3 {
   }
 }
 
+Vector3.zeros = function () {
+  return new Vector3(0, 0, 0);
+};
+
+Vector3.ones = function () {
+  return new Vector3(1, 1, 1);
+};
+
 Vector3.add = function (a, b) {
   if (typeof b === "number") return new Vector3(a.x + b, a.y + b, a.z + b);
   return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);

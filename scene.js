@@ -5,20 +5,26 @@ import Vector3 from "./structs/Vector3.js";
 export default class Scene {
   constructor(objects) {
     this.objects = [...objects];
-
   }
 
   update(dt) {
     this.objects.forEach((object) => {
       object.update(dt);
     });
-    // console.log(camera.inputVelX.add(camera.inputVelZ))
-    for (let object of this.objects) {
-      if (BoundingBox.intersect(camera.boundingBox, object.boundingBox)) {
-        object.acc = camera.inputVelX.add(camera.inputVelZ);
-      } else {
-        // object.velocity = new Vector3(0, 0, 0);
+    this.objects.forEach((object, index) => {
+      for (
+        let otherIndex = index + 1;
+        otherIndex < this.objects.length;
+        otherIndex++
+      ) {
+        let otherObject = this.objects[otherIndex];
+        if (
+          BoundingBox.intersect(object.boundingBox, otherObject.boundingBox)
+        ) {
+          console.log("collision");
+          object.onCollision(otherObject);
+        }
       }
-    }
+    });
   }
 }
