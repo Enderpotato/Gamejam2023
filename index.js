@@ -14,7 +14,7 @@ import Map from "./map.js";
 import preloadAssets from "./preload.js";
 import { bestShader } from "./preload.js";
 import { renderShaderCube } from "./Renderer/renderShader.js";
-
+  
 const FPSElement = document.getElementById("fps-debug");
 
 let angle;
@@ -27,6 +27,7 @@ customMesh.createFromObj("./assets/testObjs/Videoship.obj", {
   flipY: -1,
   flipZ: 1,
 });
+
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
 const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
 // const scene = new Scene([customMesh]);
