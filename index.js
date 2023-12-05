@@ -35,7 +35,7 @@ const cube1 = new MeshCube(10);
 const gObject5 = new GameObject(new Vector3(0, 0, 30), cube1);
 
 // const scene = new Scene([gObject4]);
-const scene = new Scene([gObject5]);
+const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
 export let camera;
 

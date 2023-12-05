@@ -15,9 +15,9 @@ export default class GameObject {
 }
 
 GameObject.prototype.update = function (dt) {
-    this.velocity.add_(this.acc);
+    this.velocity.add_(this.acc.elementMult(1 / 9));
     this.position.add_(this.velocity.elementMult(dt));
-    this.acc = this.velocity.elementMult(-0.1);
+    this.acc = this.velocity.elementMult(-0.9);
 
     let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
     // i, o, p key for axis rotation

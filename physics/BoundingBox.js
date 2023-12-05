@@ -32,5 +32,4 @@ BoundingBox.intersect = function (a, b) {
 BoundingBox.createFromCube = function (gameobj) {
     let width = gameobj.mesh.width;
     return new BoundingBox(gameobj.position, width, width, width);
-
 };
