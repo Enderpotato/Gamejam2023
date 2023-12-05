@@ -81,10 +81,10 @@ function draw() {
   clear();
   shader(bestShader);
 
-  scene.update(deltaTime);
-
   cameraControl(deltaTime);
   camera.update(deltaTime);
+  scene.update(deltaTime);
+
 
   renderer.render(scene, true);
   renderer.clear();
