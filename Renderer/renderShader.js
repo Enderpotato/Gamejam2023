@@ -6,6 +6,7 @@ import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import { camera } from "../index.js";
 import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
+import GameObject from "../GameObject.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];
@@ -14,6 +15,7 @@ export default function renderWithShader(scene, renderer) {
     if (object instanceof Mesh || object instanceof MeshCube) {
       renderMesh(object);
     }
+    if (object instanceof GameObject) renderMesh(object.mesh);
   });
 }
 

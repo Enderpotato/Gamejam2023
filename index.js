@@ -14,6 +14,8 @@ import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
 import { renderShaderCube } from "./Renderer/renderShader.js";
+import GameObject from "./GameObject.js";
+
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -23,11 +25,17 @@ let x_angle = 0; //the player can only angle the camera in the x direction
 
 let customMesh1 = new Mesh(new Vector3(0, 0, 30));
 customMesh1.createFromObj("./assets/testObjs/teapot.obj");
-let customMesh2 = new Mesh(new Vector3(0, -10, 30));
+let customMesh2 = new Mesh();
 customMesh2.createFromObj("./assets/testObjs/bedroom.obj");
 // const scene = new Scene([new Cube(new Vector3(0, 0, 5), 1.5)]);
-// const scene = new Scene([new MeshCube(new Vector3(0, 0, 50), 10)]);
-const scene = new Scene([customMesh2]);
+
+const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1)
+const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh1)
+
+
+// const scene = new Scene([new MeshCube(new Vector3(0, 0, 40), 10), new MeshCube(new Vector3(0, 10, 40), 10)]);
+const scene = new Scene([gObject1]);
+// const scene = new Scene([customMesh1])
 const renderer = new Renderer();
 export let camera;
 
@@ -61,7 +69,7 @@ function setup() {
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
   camera = new Camera(cam);
-  customMesh2.setTexture(Textures["map"]);
+  customMesh1.setTexture(Textures["white"]);
 
   noStroke();
 }
