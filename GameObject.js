@@ -1,5 +1,5 @@
 import Vector3 from "./structs/Vector3.js";
-import BoundingBox from "./physics.js";
+import BoundingBox from "./physics/BoundingBox.js";
 
 export default class GameObject {
     constructor(position, mesh) {
@@ -7,6 +7,7 @@ export default class GameObject {
         this.rotation = new Vector3(0, 0, 0)
         this.mesh = mesh;
         mesh.position = position;
+        this.boundingBox = BoundingBox.createFromCube(this);
     }
 }
 
@@ -18,6 +19,8 @@ GameObject.prototype.update = function (dt) {
     if (keyIsDown(79)) rotate_y = speed;
     if (keyIsDown(80)) rotate_z = speed;
 
+    this.boundingBox = BoundingBox.createFromCube(this);
+
     this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
 
     const quat = Quaternion.fromEulerLogical(
@@ -27,5 +30,5 @@ GameObject.prototype.update = function (dt) {
         "XYZ"
     );
 
-    this.mesh.updateA(this.position, quat)
+    this.mesh.update(this.position, quat)
 }

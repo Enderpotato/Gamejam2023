@@ -32,9 +32,11 @@ customMesh2.createFromObj("./assets/testObjs/bedroom.obj");
 const gObject1 = new GameObject(new Vector3(0, 0, 30), customMesh1)
 const gObject2 = new GameObject(new Vector3(0, -10, 30), customMesh1)
 
+const cube1 = new MeshCube(10);
+const gObject3 = new GameObject(new Vector3(0, 0, 30), cube1)
 
-// const scene = new Scene([new MeshCube(new Vector3(0, 0, 40), 10), new MeshCube(new Vector3(0, 10, 40), 10)]);
-const scene = new Scene([gObject1]);
+const scene = new Scene([gObject3]);
+// const scene = new Scene([gObject1]);
 // const scene = new Scene([customMesh1])
 const renderer = new Renderer();
 export let camera;

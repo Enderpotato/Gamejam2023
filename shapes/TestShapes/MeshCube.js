@@ -4,12 +4,11 @@ import ShapeMorph from "../ShapeMorph.js";
 import { Vector2T } from "../../structs/Vector2.js";
 
 export default class MeshCube {
-  constructor(position, width) {
+  constructor(width) {
     // initialize triangles using position and width
     this.meshTriangles = [];
     this.triangles = [];
-    this.position = position;
-    this.rotation = new Vector3(0, 0, 0);
+    this.width = width;
 
     // use 12 triangles to make a cube
     // triangle consists of 3 vertices in clockwise order
@@ -147,25 +146,10 @@ export default class MeshCube {
       )
     );
   }
+}
 
-  update(dt) {
-    let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
-    // i, o, p key for axis rotation
-    const speed = 0.002 * dt;
-    if (keyIsDown(73)) rotate_x = speed;
-    if (keyIsDown(79)) rotate_y = speed;
-    if (keyIsDown(80)) rotate_z = speed;
-
-    this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
-
-    const quat = Quaternion.fromEulerLogical(
-      this.rotation.x,
-      this.rotation.y,
-      this.rotation.z,
-      "XYZ"
-    );
-    this.triangles = this.meshTriangles.map((triangle) => {
-      return ShapeMorph.transformToWorld(triangle, quat, this.position);
-    });
-  }
+MeshCube.prototype.update = function (position, quat) {
+  this.triangles = this.meshTriangles.map((triangle) => {
+    return ShapeMorph.transformToWorld(triangle, quat, position);
+  });
 }

@@ -11,7 +11,7 @@ export default class Mesh {
   }
 }
 
-Mesh.prototype.updateA = function (position, quat) {
+Mesh.prototype.update = function (position, quat) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position);
   });
