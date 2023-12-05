@@ -16,7 +16,7 @@ export default class Camera {
 
     this.yawAngle = 0; // Y axis
     this.pitchAngle = 0; // X axis
-    this.boundingBoxWidth = 10
+    this.boundingBoxWidth = 2
     this.boundingBox = new BoundingBox(this.position, this.boundingBoxWidth,
       this.boundingBoxWidth,
       this.boundingBoxWidth);
