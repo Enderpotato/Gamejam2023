@@ -1,10 +1,11 @@
 import Vector3 from "./structs/Vector3.js";
-import { cameraC } from "./index.js";
 import BoundingBox from "./physics/BoundingBox.js";
 
 const PosElement = document.getElementById("camera-pos");
 const RotElement = document.getElementById("camera-rot");
 const LookElement = document.getElementById("camera-look");
+
+const pitchLimit = Math.PI / 2 - 0.01;
 
 export default class Camera {
   constructor(cam) {
@@ -25,15 +26,15 @@ export default class Camera {
   }
 
   update(dt) {
-    if (this.pitchAngle > HALF_PI) this.pitchAngle = HALF_PI;
-    if (this.pitchAngle < -HALF_PI) this.pitchAngle = -HALF_PI;
+    if (this.pitchAngle > pitchLimit) this.pitchAngle = pitchLimit;
+    if (this.pitchAngle < -pitchLimit) this.pitchAngle = -pitchLimit;
 
     if (this.yawAngle > TAU) this.yawAngle -= TAU;
     if (this.yawAngle < -TAU) this.yawAngle += TAU;
     let rotQuat = Quaternion.fromEulerLogical(
       this.pitchAngle,
       this.yawAngle,
-      PI,
+      0,
       "XYZ"
     );
     this.cam.setPosition(this.position.x, this.position.y, this.position.z);
@@ -98,9 +99,6 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
 };
 
 export function cameraControl(deltaTime, cameraC) {
-  // reset input velocity
-  cameraC.inputVelZ = new Vector3(0, 0, 0);
-  cameraC.inputVelX = new Vector3(0, 0, 0);
   const speed = 40 * deltaTime; // 40 units per second
   let forwardW = cameraC.lookDir.clone().elementMult(speed);
   let rightW = Vector3.cross(cameraC.lookDir, new Vector3(0, 1, 0))
@@ -109,18 +107,14 @@ export function cameraControl(deltaTime, cameraC) {
   // w and s key
   if (keyIsDown(87)) {
     cameraC.position.add_(forwardW);
-    cameraC.inputVelZ = forwardW;
   } else if (keyIsDown(83)) {
     cameraC.position.add_(forwardW.neg());
-    cameraC.inputVelZ = forwardW.neg();
   }
   // a and d key
   if (keyIsDown(65)) {
     cameraC.position.add_(rightW.neg());
-    cameraC.inputVelX = rightW.neg();
   } else if (keyIsDown(68)) {
     cameraC.position.add_(rightW);
-    cameraC.inputVelX = rightW;
   }
 
   // q and e key
@@ -134,16 +128,16 @@ export function cameraControl(deltaTime, cameraC) {
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
-    cameraC.yawAngle += -rotationSpeed;
-  } else if (keyIsDown(RIGHT_ARROW)) {
     cameraC.yawAngle += rotationSpeed;
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    cameraC.yawAngle += -rotationSpeed;
   }
 
   // up and down arrow key for rotation
   if (keyIsDown(UP_ARROW)) {
-    cameraC.pitchAngle += -rotationSpeed;
-  } else if (keyIsDown(DOWN_ARROW)) {
     cameraC.pitchAngle += rotationSpeed;
+  } else if (keyIsDown(DOWN_ARROW)) {
+    cameraC.pitchAngle += -rotationSpeed;
   }
 
   PosElement.innerHTML = `Camera Position: 
