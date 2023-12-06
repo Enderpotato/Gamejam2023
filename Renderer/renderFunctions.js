@@ -3,7 +3,6 @@ import {
   perspectiveProject,
 } from "../helperFuncs/testfuncs.js";
 import Renderer from "./Renderer.js";
-import { camera } from "../index.js";
 import Vector3 from "../structs/Vector3.js";
 import { triangleClipAgainstPlane } from "../helperFuncs/clipping.js";
 import Triangle from "../shapes/Triangle.js";

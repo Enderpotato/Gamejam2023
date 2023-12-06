@@ -81,10 +81,9 @@ BoundingBox.createFromMesh = function (gameobj) {
 
 BoundingBox.prototype.draw = function () {
   stroke(255, 0, 0);
-  strokeWeight(2);
   noFill();
   push();
-  translate(this.pos.x, this.minY, this.pos.z);
+  translate(this.pos.x, this.pos.y, this.pos.z);
   box(this.w, this.l, this.h);
   pop();
 };

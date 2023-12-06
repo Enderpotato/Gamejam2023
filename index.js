@@ -39,7 +39,7 @@ const scene = new Scene([gObject5, gObject3, gObject6]);
 // const scene = new Scene([gObject4]);
 // const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
-export let camera;
+export let cameraC;
 let player;
 
 let cam;
@@ -69,12 +69,12 @@ function setup() {
   cam.perspective(FOV, AspectRatio, ZNEAR, ZFAR);
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
-  camera = new Camera(cam);
+  cameraC = new Camera(cam);
   customMesh1.setTexture(Textures["white"]);
   customMesh2.setTexture(Textures["map"]);
   customMesh4.setTexture(Textures["steve"]);
 
-  player = new Player(camera);
+  player = new Player(cameraC);
   // scene.addObject(player);
   noStroke();
 }
@@ -89,14 +89,14 @@ function draw() {
   shader(bestShader);
   noStroke();
 
-  cameraControl(deltaTime);
-  camera.update(deltaTime);
+  cameraControl(deltaTime, cameraC);
+  cameraC.update(deltaTime);
   scene.update(deltaTime);
-  let frustum = camera.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
+  let frustum = cameraC.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
 
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
-  bestShader.setUniform("uCameraPosition", camera.position.toArray());
+  bestShader.setUniform("uCameraPosition", cameraC.position.toArray());
   bestShader.setUniform("uNumLights", Lights.length);
 
   let lightPositions = [];
@@ -116,7 +116,7 @@ function draw() {
   // draw shit with normal functions
   resetShader();
   scene.objects.forEach((gObj) => {
-    gObj.collider.drawBoundingBox();
+    // gObj.collider.drawBoundingBox(); // shit doesnt work oof
   });
 }
 

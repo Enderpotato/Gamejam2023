@@ -1,5 +1,5 @@
 import Vector3 from "./structs/Vector3.js";
-import { camera } from "./index.js";
+import { cameraC } from "./index.js";
 import BoundingBox from "./physics/BoundingBox.js";
 
 const PosElement = document.getElementById("camera-pos");
@@ -97,64 +97,64 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
   return { nearCorners, farCorners };
 };
 
-export function cameraControl(deltaTime) {
+export function cameraControl(deltaTime, cameraC) {
   // reset input velocity
-  camera.inputVelZ = new Vector3(0, 0, 0);
-  camera.inputVelX = new Vector3(0, 0, 0);
+  cameraC.inputVelZ = new Vector3(0, 0, 0);
+  cameraC.inputVelX = new Vector3(0, 0, 0);
   const speed = 40 * deltaTime; // 40 units per second
-  let forwardW = camera.lookDir.clone().elementMult(speed);
-  let rightW = Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
+  let forwardW = cameraC.lookDir.clone().elementMult(speed);
+  let rightW = Vector3.cross(cameraC.lookDir, new Vector3(0, 1, 0))
     .normalize()
     .elementMult(speed);
   // w and s key
   if (keyIsDown(87)) {
-    camera.position.add_(forwardW);
-    camera.inputVelZ = forwardW;
+    cameraC.position.add_(forwardW);
+    cameraC.inputVelZ = forwardW;
   } else if (keyIsDown(83)) {
-    camera.position.add_(forwardW.neg());
-    camera.inputVelZ = forwardW.neg();
+    cameraC.position.add_(forwardW.neg());
+    cameraC.inputVelZ = forwardW.neg();
   }
   // a and d key
   if (keyIsDown(65)) {
-    camera.position.add_(rightW.neg());
-    camera.inputVelX = rightW.neg();
+    cameraC.position.add_(rightW.neg());
+    cameraC.inputVelX = rightW.neg();
   } else if (keyIsDown(68)) {
-    camera.position.add_(rightW);
-    camera.inputVelX = rightW;
+    cameraC.position.add_(rightW);
+    cameraC.inputVelX = rightW;
   }
 
   // q and e key
   if (keyIsDown(81)) {
-    camera.position.add_(new Vector3(0, -speed, 0));
+    cameraC.position.add_(new Vector3(0, -speed, 0));
   } else if (keyIsDown(69)) {
-    camera.position.add_(new Vector3(0, speed, 0));
+    cameraC.position.add_(new Vector3(0, speed, 0));
   }
 
   const rotationSpeed = 2 * deltaTime; // 2 radians per second
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
-    camera.yawAngle += -rotationSpeed;
+    cameraC.yawAngle += -rotationSpeed;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    camera.yawAngle += rotationSpeed;
+    cameraC.yawAngle += rotationSpeed;
   }
 
   // up and down arrow key for rotation
   if (keyIsDown(UP_ARROW)) {
-    camera.pitchAngle += -rotationSpeed;
+    cameraC.pitchAngle += -rotationSpeed;
   } else if (keyIsDown(DOWN_ARROW)) {
-    camera.pitchAngle += rotationSpeed;
+    cameraC.pitchAngle += rotationSpeed;
   }
 
   PosElement.innerHTML = `Camera Position: 
-  ${camera.position.x.toFixed()},
-   ${camera.position.y.toFixed()},
-    ${camera.position.z.toFixed()}`;
+  ${cameraC.position.x.toFixed()},
+   ${cameraC.position.y.toFixed()},
+    ${cameraC.position.z.toFixed()}`;
   RotElement.innerHTML = `Camera Rotation:
-  ${camera.yawAngle.toFixed(3)},
-   ${camera.pitchAngle.toFixed(3)}`;
+  ${cameraC.yawAngle.toFixed(3)},
+   ${cameraC.pitchAngle.toFixed(3)}`;
   LookElement.innerHTML = `Camera Look Direction:
-  ${camera.lookDir.x.toFixed(3)},
-   ${camera.lookDir.y.toFixed(3)},
-    ${camera.lookDir.z.toFixed(3)}`;
+  ${cameraC.lookDir.x.toFixed(3)},
+   ${cameraC.lookDir.y.toFixed(3)},
+    ${cameraC.lookDir.z.toFixed(3)}`;
 }

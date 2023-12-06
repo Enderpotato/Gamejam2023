@@ -4,7 +4,7 @@ import Cube from "../shapes/TestShapes/Cube.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Player from "../Player.js";
-import { camera } from "../index.js";
+import { cameraC } from "../index.js";
 import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
 import GameObject from "../GameObject.js";
@@ -44,7 +44,7 @@ function returnValidTriangles(mesh) {
   mesh.triangles.forEach((tri) => {
     tri.calcNormal();
     let normal = tri.normal;
-    let cameraToTriangle = tri.vertices[0].clone().subtract(camera.position);
+    let cameraToTriangle = tri.vertices[0].clone().subtract(cameraC.position);
     let dot = normal.dot(cameraToTriangle);
     if (dot < 0) {
       validTriangles.push(tri);
