@@ -6,8 +6,6 @@ import {
 import Cube from "../shapes/TestShapes/Cube.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Mesh from "../shapes/Mesh.js";
-import { camera } from "../index.js";
-import Triangle from "../shapes/Triangle.js";
 import { Matrix_MultiplyVector } from "../helperFuncs/testfuncs.js";
 import Vector3 from "../structs/Vector3.js";
 import renderWithShader from "./renderShader.js";

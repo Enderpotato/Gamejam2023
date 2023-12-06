@@ -20,6 +20,10 @@ Vector3.add = function (a, b) {
   return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
 };
 
+Vector3.add3 = function (a, b, c) {
+  return new Vector3(a.x + b.x + c.x, a.y + b.y + c.y, a.z + b.z + c.z);
+};
+
 Vector3.subtract = function (a, b) {
   if (typeof b === "number") return new Vector3(a.x - b, a.y - b, a.z - b);
   return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
@@ -67,6 +71,10 @@ Vector3.normalize = function (a) {
   let mag = Vector3.mag(a);
   if (mag === 0) return new Vector3(0, 0, 0);
   return new Vector3(a.x / mag, a.y / mag, a.z / mag);
+};
+
+Vector3.neg = function (a) {
+  return new Vector3(-a.x, -a.y, -a.z);
 };
 
 Vector3.toArray = function (a) {

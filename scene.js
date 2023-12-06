@@ -1,4 +1,3 @@
-import { camera } from "./index.js";
 import BoundingBox from "./physics/BoundingBox.js";
 import Vector3 from "./structs/Vector3.js";
 
