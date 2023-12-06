@@ -1,4 +1,4 @@
-import TextureBuffer from "./Texture.js";
+import TextureBuffer from "./graphics/Texture.js";
 
 export const Textures = new TextureBuffer();
 export let bestShader;

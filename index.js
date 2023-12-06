@@ -7,7 +7,7 @@ import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
 import { scene, sceneSetTextures } from "./sceneSetup.js";
 import Player from "./Player.js";
-import Light from "./Light.js";
+import Light from "./graphics/Light.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
