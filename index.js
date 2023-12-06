@@ -26,7 +26,7 @@ let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 const gObject1 = new GameObject(new Vector3(-30, 0, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
 const gObject3 = new GameObject(new Vector3(0, 10, 10), customMesh3);
-gObject3.mass = Number.MAX_SAFE_INTEGER;
+gObject3.setMass(10000000);
 
 const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
 

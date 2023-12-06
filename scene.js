@@ -14,6 +14,8 @@ Scene.prototype.addObject = function (object) {
 
 Scene.prototype.update = function (dt) {
   this.objects.forEach((object) => {
+    // add gravity
+    object.force = object.force.add(new Vector3(0, 9.8, 0));
     object.update(dt);
   });
   this.objects.forEach((object, index) => {
@@ -23,9 +25,9 @@ Scene.prototype.update = function (dt) {
       otherIndex++
     ) {
       let otherObject = this.objects[otherIndex];
-      if (BoundingBox.intersect(object.boundingBox, otherObject.boundingBox)) {
+      if (object.collider.collide(otherObject.collider)) {
         console.log("collision");
-        object.onCollision(otherObject);
+        object.collider.onCollision(otherObject.collider);
       }
     }
   });
