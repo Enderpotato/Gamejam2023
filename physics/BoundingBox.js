@@ -69,49 +69,11 @@ BoundingBox.createFromMesh = function (gameobj) {
 };
 
 BoundingBox.prototype.draw = function () {
-  // Draw the bounding box
-  fill(255, 0, 0, 30);
-  beginShape(TRIANGLES);
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
+  stroke(255, 0, 0);
 
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-  endShape();
+  noFill();
+  push();
+  translate(this.pos.x, this.pos.y, this.pos.z);
+  box(this.w, this.l, this.h);
+  pop();
 };

@@ -18,6 +18,7 @@ export default class GameObject {
     this.acc = Vector3.zeros();
     this.force = Vector3.zeros();
     this.angularVelocity = Vector3.zeros();
+    this.rotation.z = Math.PI;
   }
 }
 

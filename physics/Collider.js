@@ -106,10 +106,20 @@ Collider.prototype.onCollision = function (otherCollider) {
 
   // Displace the objects out of the collision
   let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
-  if (!this.gameobj.immovable) {
+  if (this.gameobj.immovable) {
+    otherObject.position.subtract_(collisionNormal.elementMult(minOverlap * 2));
+  } else if (otherObject.immovable) {
+    this.gameobj.position.add_(collisionNormal.elementMult(minOverlap * 2));
+  } else {
     this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
-  }
-  if (!otherObject.immovable) {
     otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
   }
+
+  // if (!this.gameobj.immovable) {
+
+  //   this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
+  // }
+  // if (!otherObject.immovable) {
+  //   otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
+  // }
 };

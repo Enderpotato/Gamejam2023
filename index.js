@@ -58,8 +58,8 @@ function draw() {
   shader(bestShader);
   noStroke();
 
-  // cameraControlDebug(deltaTime, cameraC);
-  player.update(deltaTime);
+  cameraControlDebug(deltaTime, cameraC);
+  // player.update(deltaTime);
   cameraC.update(deltaTime);
   scene.update(deltaTime);
   let frustum = cameraC.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
@@ -85,8 +85,7 @@ function draw() {
   resetShader();
   // draw shit with normal functions
   scene.objects.forEach((gObj) => {
-    // Draw bounding box
-    // gObj.collider.boundingBox.draw();
+    gObj.collider.boundingBox.draw();
   });
 }
 
