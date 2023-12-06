@@ -1,43 +1,15 @@
 import Renderer from "./Renderer/Renderer.js";
-import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
-import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import Camera from "./Camera.js";
-import Mesh from "./shapes/Mesh.js";
 import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
-import GameObject from "./GameObject.js";
+import { scene, sceneSetTextures } from "./setScene.js";
 import Player from "./Player.js";
 import Light from "./Light.js";
 
 const FPSElement = document.getElementById("fps-debug");
-
-let angle;
-let player_pos;
-let x_angle = 0; //the player can only angle the camera in the x direction
-
-let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
-let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
-let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
-let customMesh4 = new Mesh().createFromObj("./assets/testObjs/steve.obj");
-let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
-
-const gObject1 = new GameObject(new Vector3(0, -200, 30), customMesh1);
-const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
-const gObject3 = new GameObject(new Vector3(0, 10, 20), customMesh3);
-gObject3.immovable = true;
-const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
-
-const cube1 = new MeshCube(10);
-const gObject5 = new GameObject(new Vector3(0, -200, 30), cube1);
-const cube2 = new MeshCube(10);
-const gObject6 = new GameObject(new Vector3(30, -200, 30), cube2);
-gObject6.velocity.x = -10;
-const scene = new Scene([gObject5, gObject3, gObject6]);
-// const scene = new Scene([gObject4]);
-// const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();
 export let cameraC;
 let player;
@@ -70,9 +42,7 @@ function setup() {
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
   cameraC = new Camera(cam);
-  customMesh1.setTexture(Textures["white"]);
-  customMesh2.setTexture(Textures["map"]);
-  customMesh4.setTexture(Textures["steve"]);
+  sceneSetTextures();
 
   player = new Player(cameraC);
   // scene.addObject(player);
@@ -83,7 +53,6 @@ function draw() {
   deltaTime /= 1000;
   deltaTime = Math.min(deltaTime, 1 / 30);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
-
   background(0);
   clear();
   shader(bestShader);
@@ -115,8 +84,9 @@ function draw() {
 
   // draw shit with normal functions
   resetShader();
+
   scene.objects.forEach((gObj) => {
-    // gObj.collider.drawBoundingBox(); // shit doesnt work oof
+    gObj.collider.drawBoundingBox(); // shit doesnt work oof
   });
 }
 
