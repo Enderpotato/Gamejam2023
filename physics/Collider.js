@@ -7,6 +7,8 @@ export default class Collider {
   constructor(gameobj) {
     this.gameobj = gameobj;
     this.boundingBox = null;
+
+    this.isCollidingBelow = false;
   }
 }
 
@@ -30,65 +32,84 @@ Collider.prototype.createBoundingBox = function () {
 
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
-  // Calculate the collision normal
-  let collisionNormal = Vector3.subtract(
-    this.gameobj.position,
-    otherObject.position
-  ).normalize();
-
   // Calculate the overlap between the objects
   let overlap = new Vector3(
-    this.boundingBox.w + otherCollider.boundingBox.w,
-    this.boundingBox.l + otherCollider.boundingBox.l,
-    this.boundingBox.h + otherCollider.boundingBox.h
-  )
-    .subtract(
-      Vector3.subtract(this.gameobj.position, otherObject.position).abs()
-    )
-    .max(Vector3.zeros())
-    .elementMult(0.5);
-
-  //   Move the objects apart
-  this.gameobj.position.add_(
-    overlap.elementMult(collisionNormal.elementMult(0.5))
-  );
-  otherObject.position.add_(
-    overlap.elementMult(collisionNormal.elementMult(-0.5))
+    this.boundingBox.w / 2 +
+      otherCollider.boundingBox.w / 2 -
+      Math.abs(this.gameobj.position.x - otherObject.position.x),
+    this.boundingBox.l / 2 +
+      otherCollider.boundingBox.l / 2 -
+      Math.abs(this.gameobj.position.y - otherObject.position.y),
+    this.boundingBox.h / 2 +
+      otherCollider.boundingBox.h / 2 -
+      Math.abs(this.gameobj.position.z - otherObject.position.z)
   );
 
-  // Calculate the collision tangent
-  let collisionTangent = new Vector3(
-    -collisionNormal.y,
-    collisionNormal.x,
-    collisionNormal.z
-  );
+  // Calculate the collision normal
+  let collisionNormal;
+  if (overlap.x < overlap.y && overlap.x < overlap.z) {
+    collisionNormal = new Vector3(
+      Math.sign(this.gameobj.position.x - otherObject.position.x),
+      0,
+      0
+    );
+  } else if (overlap.y < overlap.z) {
+    collisionNormal = new Vector3(
+      0,
+      Math.sign(this.gameobj.position.y - otherObject.position.y),
+      0
+    );
+  } else {
+    collisionNormal = new Vector3(
+      0,
+      0,
+      Math.sign(this.gameobj.position.z - otherObject.position.z)
+    );
+  }
 
-  // Project the velocities onto the collision normal and tangent
+  // Project the velocities onto the collision normal
   let v1n = this.gameobj.velocity.dot(collisionNormal);
-  let v1t = this.gameobj.velocity.dot(collisionTangent);
   let v2n = otherObject.velocity.dot(collisionNormal);
-  let v2t = otherObject.velocity.dot(collisionTangent);
 
   // Calculate the new velocities along the normal direction after the collision
-  let mdiff = this.gameobj.mass - otherObject.mass;
-  let invMassSum = 1 / (this.gameobj.mass + otherObject.mass);
   let restitution = this.gameobj.restitution * otherObject.restitution;
-  let newV1n =
-    restitution * (mdiff * v1n + 2 * otherObject.mass * v2n) * invMassSum;
-  let newV2n =
-    restitution * (mdiff * v2n + 2 * this.gameobj.mass * v1n) * invMassSum;
+  let newV1n, newV2n;
 
-  // The velocities along the tangent direction don't change
-  let newV1t = v1t;
-  let newV2t = v2t;
+  if (this.gameobj.immovable) {
+    // If this object is immovable, its velocity does not change
+    newV1n = v1n;
+    newV2n = -restitution * v2n;
+  } else if (otherObject.immovable) {
+    // If the other object is immovable, its velocity does not change
+    newV1n = -restitution * v1n;
+    newV2n = v2n;
+  } else {
+    let mdiff = this.gameobj.mass - otherObject.mass;
+    let invMassSum = 1 / (this.gameobj.mass + otherObject.mass);
+    newV1n =
+      restitution * (mdiff * v1n + 2 * otherObject.mass * v2n) * invMassSum;
+    newV2n =
+      restitution * (mdiff * v2n + 2 * this.gameobj.mass * v1n) * invMassSum;
+  }
+
+  const RESTING_THRESHOLD = 0.1;
+
+  // If the object is moving downwards slowly enough, consider it to be at rest
+  if (collisionNormal.y < 0 && Math.abs(newV1n) < RESTING_THRESHOLD) {
+    newV1n = 0;
+  }
 
   // Convert the velocities back to the original coordinate system
-  this.gameobj.velocity = Vector3.add(
-    Vector3.elementMult(collisionNormal, newV1n),
-    Vector3.elementMult(collisionTangent, newV1t)
-  );
-  otherObject.velocity = Vector3.add(
-    Vector3.elementMult(collisionNormal, newV2n),
-    Vector3.elementMult(collisionTangent, newV2t)
-  );
+  this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
+
+  otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
+
+  // Displace the objects out of the collision
+  let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
+  if (!this.gameobj.immovable) {
+    this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
+  }
+  if (!otherObject.immovable) {
+    otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
+  }
 };

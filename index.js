@@ -25,17 +25,16 @@ let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 
 const gObject1 = new GameObject(new Vector3(-30, 0, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
-const gObject3 = new GameObject(new Vector3(0, 10, 10), customMesh3);
-gObject3.setMass(10000000);
-
+const gObject3 = new GameObject(new Vector3(0, 10, 20), customMesh3);
+gObject3.immovable = true;
 const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
 
 const cube1 = new MeshCube(10);
 const gObject5 = new GameObject(new Vector3(0, -200, 30), cube1);
 const cube2 = new MeshCube(10);
-const gObject6 = new GameObject(new Vector3(-30, 0, 30), cube2);
-
-const scene = new Scene([gObject5, gObject3]);
+const gObject6 = new GameObject(new Vector3(30, -200, 30), cube2);
+gObject6.velocity.x = -10;
+const scene = new Scene([gObject5, gObject3, gObject6]);
 // const scene = new Scene([gObject4]);
 // const scene = new Scene([gObject5, gObject2]);
 const renderer = new Renderer();

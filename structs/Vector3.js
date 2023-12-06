@@ -106,6 +106,19 @@ Vector3.prototype.subtract = function (b) {
   return new Vector3(this.x - b.x, this.y - b.y, this.z - b.z);
 };
 
+Vector3.prototype.subtract_ = function (b) {
+  if (typeof b === "number") {
+    this.x -= b;
+    this.y -= b;
+    this.z -= b;
+    return;
+  }
+
+  this.x -= b.x;
+  this.y -= b.y;
+  this.z -= b.z;
+};
+
 Vector3.prototype.elementMult = function (b) {
   if (typeof b === "number")
     return new Vector3(this.x * b, this.y * b, this.z * b);

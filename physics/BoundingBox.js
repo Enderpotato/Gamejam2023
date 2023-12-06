@@ -29,7 +29,7 @@ BoundingBox.createFromMinMax = function (min, max) {
   return new BoundingBox(pos, w, l, h);
 };
 
-BoundingBox.intersect = function (a, b) {
+BoundingBox.intersectE = function (a, b) {
   return (
     a.minX <= b.maxX &&
     a.maxX >= b.minX &&
@@ -37,6 +37,17 @@ BoundingBox.intersect = function (a, b) {
     a.maxY >= b.minY &&
     a.minZ <= b.maxZ &&
     a.maxZ >= b.minZ
+  );
+};
+
+BoundingBox.intersect = function (a, b) {
+  return (
+    a.minX < b.maxX &&
+    a.maxX > b.minX &&
+    a.minY < b.maxY &&
+    a.maxY > b.minY &&
+    a.minZ < b.maxZ &&
+    a.maxZ > b.minZ
   );
 };
 

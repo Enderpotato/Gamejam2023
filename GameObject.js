@@ -7,11 +7,12 @@ export default class GameObject {
     this.rotation = Vector3.zeros();
     this.mesh = mesh;
     this.collider = new Collider(this);
+    this.immovable = false;
     if (mesh != null) mesh.position = position;
 
     this.mass = 1;
     this.inverseMass = 1 / this.mass;
-    this.restitution = 1; // bounciness
+    this.restitution = 0.1; // bounciness
 
     this.velocity = Vector3.zeros();
     this.acc = Vector3.zeros();
@@ -28,6 +29,7 @@ GameObject.prototype.setMass = function (mass) {
 GameObject.prototype.update = function (dt) {
   // semi-implicit euler integration
   this.acc = Vector3.elementMult(this.force, this.inverseMass);
+  if (this.immovable) this.acc = Vector3.zeros();
   this.velocity.add_(this.acc.elementMult(dt));
   this.position.add_(this.velocity.elementMult(dt));
   this.acc = Vector3.zeros();
