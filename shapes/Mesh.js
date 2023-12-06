@@ -4,36 +4,18 @@ import { Vector2T } from "../structs/Vector2.js";
 import ShapeMorph from "./ShapeMorph.js";
 
 export default class Mesh {
-  constructor(position, textureImg) {
+  constructor(textureImg) {
     this.triangles = [];
     this.meshTriangles = [];
-
-    this.position = position;
-    this.rotation = new Vector3(0, 0, 0);
     this.textureImg = textureImg || null;
   }
-
-  update(dt) {
-    let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
-    // i, o, p key for axis rotation
-    const speed = 0.002 * dt;
-    if (keyIsDown(73)) rotate_x = speed;
-    if (keyIsDown(79)) rotate_y = speed;
-    if (keyIsDown(80)) rotate_z = speed;
-
-    this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
-
-    const quat = Quaternion.fromEulerLogical(
-      this.rotation.x,
-      this.rotation.y,
-      this.rotation.z,
-      "XYZ"
-    );
-    this.triangles = this.meshTriangles.map((triangle) => {
-      return ShapeMorph.transformToWorld(triangle, quat, this.position);
-    });
-  }
 }
+
+Mesh.prototype.update = function (position, quat) {
+  this.triangles = this.meshTriangles.map((triangle) => {
+    return ShapeMorph.transformToWorld(triangle, quat, position);
+  });
+};
 
 Mesh.prototype.setTexture = function (textureImg) {
   this.textureImg = textureImg; // p5.Image
@@ -76,6 +58,7 @@ Mesh.prototype.createFromObj = function (filename) {
         this.meshTriangles.push(triangle);
       });
     });
+  return this;
 };
 
 function parseLine(line, vertices, faces, textures) {

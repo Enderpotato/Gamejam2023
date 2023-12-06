@@ -7,6 +7,14 @@ export default class Vector3 {
   }
 }
 
+Vector3.zeros = function () {
+  return new Vector3(0, 0, 0);
+};
+
+Vector3.ones = function () {
+  return new Vector3(1, 1, 1);
+};
+
 Vector3.add = function (a, b) {
   if (typeof b === "number") return new Vector3(a.x + b, a.y + b, a.z + b);
   return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
@@ -45,6 +53,14 @@ Vector3.mag = function (a) {
 
 Vector3.magSq = function (a) {
   return a.x * a.x + a.y * a.y + a.z * a.z;
+};
+
+Vector3.distance = function (a, b) {
+  return Math.sqrt(
+    (a.x - b.x) * (a.x - b.x) +
+      (a.y - b.y) * (a.y - b.y) +
+      (a.z - b.z) * (a.z - b.z)
+  );
 };
 
 Vector3.normalize = function (a) {
@@ -90,6 +106,19 @@ Vector3.prototype.subtract = function (b) {
   return new Vector3(this.x - b.x, this.y - b.y, this.z - b.z);
 };
 
+Vector3.prototype.subtract_ = function (b) {
+  if (typeof b === "number") {
+    this.x -= b;
+    this.y -= b;
+    this.z -= b;
+    return;
+  }
+
+  this.x -= b.x;
+  this.y -= b.y;
+  this.z -= b.z;
+};
+
 Vector3.prototype.elementMult = function (b) {
   if (typeof b === "number")
     return new Vector3(this.x * b, this.y * b, this.z * b);
@@ -102,6 +131,25 @@ Vector3.prototype.elementDiv = function (b) {
     return new Vector3(this.x / b, this.y / b, this.z / b);
 
   return new Vector3(this.x / b.x, this.y / b.y, this.z / b.z);
+};
+
+Vector3.prototype.max = function (b) {
+  if (typeof b === "number")
+    return new Vector3(
+      Math.max(this.x, b),
+      Math.max(this.y, b),
+      Math.max(this.z, b)
+    );
+
+  return new Vector3(
+    Math.max(this.x, b.x),
+    Math.max(this.y, b.y),
+    Math.max(this.z, b.z)
+  );
+};
+
+Vector3.prototype.abs = function () {
+  return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
 };
 
 Vector3.prototype.dot = function (b) {
@@ -140,6 +188,10 @@ Vector3.prototype.toArray = function () {
 
 Vector3.prototype.clone = function () {
   return new Vector3(this.x, this.y, this.z);
+};
+
+Vector3.prototype.map = function (f) {
+  return new Vector3(f(this.x), f(this.y), f(this.z));
 };
 
 Vector3.prototype.quaternionRotate = function (q) {

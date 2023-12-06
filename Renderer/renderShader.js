@@ -3,9 +3,11 @@ import Triangle from "../shapes/Triangle.js";
 import Cube from "../shapes/TestShapes/Cube.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
+import Player from "../Player.js";
 import { camera } from "../index.js";
 import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
+import GameObject from "../GameObject.js";
 
 export default function renderWithShader(scene, renderer) {
   let trianglesToRender = [];
@@ -13,7 +15,10 @@ export default function renderWithShader(scene, renderer) {
     if (object instanceof Cube) console.log("cube");
     if (object instanceof Mesh || object instanceof MeshCube) {
       renderMesh(object);
+      return;
     }
+    if (object instanceof Player) return;
+    if (object instanceof GameObject) renderMesh(object.mesh);
   });
 }
 

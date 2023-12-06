@@ -1,6 +1,7 @@
 import Vector3 from "./structs/Vector3.js";
 import { camera } from "./index.js";
 import { matrixPointAt, matrixQuickInverse } from "./helperFuncs/testfuncs.js";
+import BoundingBox from "./physics/BoundingBox.js";
 
 const PosElement = document.getElementById("camera-pos");
 const RotElement = document.getElementById("camera-rot");
@@ -15,6 +16,13 @@ export default class Camera {
 
     this.yawAngle = 0; // Y axis
     this.pitchAngle = 0; // X axis
+    this.boundingBoxWidth = 2;
+    this.boundingBox = new BoundingBox(
+      this.position,
+      this.boundingBoxWidth,
+      this.boundingBoxWidth,
+      this.boundingBoxWidth
+    );
   }
 
   update(dt) {
@@ -33,6 +41,13 @@ export default class Camera {
     this.lookDir = new Vector3(0, 0, 1).quaternionRotate(rotQuat).normalize();
     let target = Vector3.add(this.position, this.lookDir);
     this.cam.lookAt(target.x, target.y, target.z);
+
+    this.boundingBox = new BoundingBox(
+      this.position,
+      this.boundingBoxWidth,
+      this.boundingBoxWidth,
+      this.boundingBoxWidth
+    );
   }
 }
 
@@ -43,8 +58,9 @@ Camera.prototype.calcCameraMatrix = function (pos, target, up) {
 
 export function cameraControl(deltaTime) {
   // reset input velocity
-  camera.inputVel = new Vector3(0, 0, 0);
-  const speed = 0.04 * deltaTime;
+  camera.inputVelZ = new Vector3(0, 0, 0);
+  camera.inputVelX = new Vector3(0, 0, 0);
+  const speed = 40 * deltaTime; // 40 units per second
   let forwardW = camera.lookDir.clone().elementMult(speed);
   let rightW = Vector3.cross(camera.lookDir, new Vector3(0, 1, 0))
     .normalize()
@@ -52,14 +68,18 @@ export function cameraControl(deltaTime) {
   // w and s key
   if (keyIsDown(87)) {
     camera.position.add_(forwardW);
+    camera.inputVelZ = forwardW;
   } else if (keyIsDown(83)) {
     camera.position.add_(forwardW.neg());
+    camera.inputVelZ = forwardW.neg();
   }
   // a and d key
   if (keyIsDown(65)) {
     camera.position.add_(rightW.neg());
+    camera.inputVelX = rightW.neg();
   } else if (keyIsDown(68)) {
     camera.position.add_(rightW);
+    camera.inputVelX = rightW;
   }
 
   // q and e key
@@ -69,7 +89,7 @@ export function cameraControl(deltaTime) {
     camera.position.add_(new Vector3(0, speed, 0));
   }
 
-  const rotationSpeed = 0.002 * deltaTime;
+  const rotationSpeed = 2 * deltaTime; // 2 radians per second
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
