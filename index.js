@@ -78,12 +78,13 @@ function setup() {
 }
 
 function draw() {
-  FPSElement.innerHTML = Math.round(frameRate());
+  deltaTime /= 1000;
+  deltaTime = Math.min(deltaTime, 1 / 30);
+  FPSElement.innerHTML = Math.round(1 / deltaTime);
 
   background(0);
   clear();
   shader(bestShader);
-  deltaTime /= 1000;
 
   cameraControl(deltaTime);
   camera.update(deltaTime);
