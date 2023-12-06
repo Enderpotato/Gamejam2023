@@ -10,6 +10,7 @@ import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
 import GameObject from "./GameObject.js";
 import Player from "./Player.js";
+import Light from "./Light.js";
 
 const FPSElement = document.getElementById("fps-debug");
 
@@ -55,6 +56,10 @@ export const AspectRatio = HEIGHT / WIDTH;
 var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
 export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
+const Lights = [
+  new Light([0, 0, 0], [1, 1, 1]),
+  new Light([0, 0, 60], [1, 1, 1]),
+];
 
 let canvas;
 export let frame;
@@ -97,6 +102,18 @@ function draw() {
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uCameraPosition", camera.position.toArray());
+  bestShader.setUniform("uNumLights", Lights.length);
+
+  let lightPositions = [];
+  let lightColors = [];
+
+  Lights.forEach((light) => {
+    lightPositions.push(...light.position);
+    lightColors.push(...light.color);
+  });
+  bestShader.setUniform("uNumLights", Lights.length);
+  bestShader.setUniform("uLightPosition", lightPositions);
+  bestShader.setUniform("uLightColor", lightColors);
 }
 
 function keyPressed() {

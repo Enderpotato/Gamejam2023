@@ -1,4 +1,5 @@
 precision mediump float;
+#define MAX_LIGHTS 20
 
 varying vec2 vTexCoord;
 varying vec3 vNormal;
@@ -6,29 +7,38 @@ varying vec3 vWorldPosition;
 
 uniform sampler2D uMatcapTexture;
 uniform vec3 uCameraPosition;
+uniform int uNumLights;
+uniform vec3 uLightPosition[MAX_LIGHTS];
+uniform vec3 uLightColor[MAX_LIGHTS];
 
 void main() {
 
     // ambient lighting (global illumination)
     vec3 ambient = vec3(0.5, 0.5, 0.5);
 
-    // diffuse lighting (lambertian) lighting
-    // light color, light source, normal, diffuse strength
     vec3 normal = normalize(vNormal.xyz);
-    vec3 lightColor = vec3(1.0, 1.0, 1.0); // color - white
-
-    // vector pointing from the surface to the light source
-    vec3 lightSource = normalize(vec3(0, 0, 0) - vWorldPosition); // light source at (0, 0, 0)
-
-    float diffuseStrength = max(0.0, dot(normal, lightSource));
-    vec3 diffuse = lightColor * diffuseStrength;
-
-    // specular lighting 
+    vec3 diffuse = vec3(0, 0, 0);
+    vec3 specular = vec3(0, 0, 0);
     vec3 cameraSource = vec3(uCameraPosition.x, uCameraPosition.y, uCameraPosition.z); // camera at (0, 0, 0
     vec3 viewSource = normalize(cameraSource - vWorldPosition);
-    vec3 reflectSource = reflect(-lightSource, normal);
-    float specularStrength = pow(max(0.0, dot(viewSource, reflectSource)), 4.0);
-    vec3 specular = lightColor * specularStrength;
+    for(int i = 0; i < MAX_LIGHTS; i++) {
+        if(i > uNumLights)
+            break;
+        // diffuse lighting (lambertian) lighting
+        // light color, light source, normal, diffuse strength
+        vec3 lightColor = uLightColor[i];
+
+        // vector pointing from the surface to the light source
+        vec3 lightSource = normalize(uLightPosition[i] - vWorldPosition);
+
+        float diffuseStrength = max(0.0, dot(normal, lightSource));
+        diffuse += lightColor * diffuseStrength;
+
+        // specular lighting
+        vec3 reflectSource = reflect(-lightSource, normal);
+        float specularStrength = pow(max(0.0, dot(viewSource, reflectSource)), 4.0);
+        specular += lightColor * specularStrength;
+    }
 
     // lighting = ambient + diffuse + specular (blinn-phong model)
     vec3 lighting = vec3(0, 0, 0);
