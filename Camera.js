@@ -1,6 +1,5 @@
 import Vector3 from "./structs/Vector3.js";
 import { camera } from "./index.js";
-import { matrixPointAt, matrixQuickInverse } from "./helperFuncs/testfuncs.js";
 import BoundingBox from "./physics/BoundingBox.js";
 
 const PosElement = document.getElementById("camera-pos");
@@ -51,9 +50,51 @@ export default class Camera {
   }
 }
 
-Camera.prototype.calcCameraMatrix = function (pos, target, up) {
-  this.matCamera = matrixPointAt(pos, target, up);
-  this.matView = matrixQuickInverse(this.matCamera);
+Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
+  let tanHalfFov = Math.tan(fov / 2);
+
+  // Calculate the dimensions of the near and far clipping planes
+  let nearHeight = 2 * tanHalfFov * near;
+  let nearWidth = nearHeight * aspect;
+  let farHeight = 2 * tanHalfFov * far;
+  let farWidth = farHeight * aspect;
+
+  // Calculate the corners of the near clipping plane
+  let nearCenter = Vector3.add(
+    this.position,
+    Vector3.elementMult(this.lookDir, near)
+  );
+  let nearRight = Vector3.elementMult(
+    Vector3.cross(this.lookDir, new Vector3(0, 1, 0)),
+    nearWidth / 2
+  );
+  let nearTop = Vector3.elementMult(new Vector3(0, 1, 0), nearHeight / 2);
+  let nearCorners = [
+    Vector3.add3(nearCenter, nearRight, nearTop), // top right
+    Vector3.add3(nearCenter, nearRight, Vector3.neg(nearTop)), // bottom right
+    Vector3.add3(nearCenter, Vector3.neg(nearRight), nearTop), // top left
+    Vector3.add3(nearCenter, Vector3.neg(nearRight), Vector3.neg(nearTop)), // bottom left
+  ];
+
+  // Calculate the corners of the far clipping plane
+  let farCenter = Vector3.add(
+    this.position,
+    Vector3.elementMult(this.lookDir, far)
+  );
+  let farRight = Vector3.elementMult(
+    Vector3.cross(this.lookDir, new Vector3(0, 1, 0)),
+    farWidth / 2
+  );
+  let farTop = Vector3.elementMult(new Vector3(0, 1, 0), farHeight / 2);
+  let farCorners = [
+    Vector3.add3(farCenter, farRight, farTop), // top right
+    Vector3.add3(farCenter, farRight, Vector3.neg(farTop)), // bottom right
+    Vector3.add3(farCenter, Vector3.neg(farRight), farTop), // top left
+    Vector3.add3(farCenter, Vector3.neg(farRight), Vector3.neg(farTop)), // bottom left
+  ];
+
+  // Return the corners of the near and far clipping planes
+  return { nearCorners, farCorners };
 };
 
 export function cameraControl(deltaTime) {
@@ -105,7 +146,6 @@ export function cameraControl(deltaTime) {
     camera.pitchAngle += rotationSpeed;
   }
 
-  // console.log(camera.inputVel);
   PosElement.innerHTML = `Camera Position: 
   ${camera.position.x.toFixed()},
    ${camera.position.y.toFixed()},

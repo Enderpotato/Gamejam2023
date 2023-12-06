@@ -6,6 +6,9 @@ varying vec3 vNormal;
 varying vec3 vWorldPosition;
 
 uniform sampler2D uMatcapTexture;
+uniform float uRoughness;
+uniform float uMetallic;
+
 uniform vec3 uCameraPosition;
 uniform int uNumLights;
 uniform vec3 uLightPosition[MAX_LIGHTS];
@@ -44,7 +47,7 @@ void main() {
     vec3 lighting = vec3(0, 0, 0);
     // lighting = ambient * 0.2 + diffuse * 0.7 + specular; // very metallic
     lighting = ambient * 0.2 + diffuse + specular * 0.4; // less metallic
-    // lighting = vec3(1.0, 1.0, 1.0);
+    // lighting = ambient * (1.0 - uMetallic) + diffuse * uRoughness + specular * uMetallic; // in between
 
     vec4 matcapColor = texture2D(uMatcapTexture, vTexCoord);
 

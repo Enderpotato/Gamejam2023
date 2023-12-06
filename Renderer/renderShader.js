@@ -10,15 +10,16 @@ import { Textures } from "../preload.js";
 import GameObject from "../GameObject.js";
 
 export default function renderWithShader(scene, renderer) {
-  let trianglesToRender = [];
+  let objectsToRender = [];
   scene.objects.forEach((object) => {
-    if (object instanceof Cube) console.log("cube");
-    if (object instanceof Mesh || object instanceof MeshCube) {
-      renderMesh(object);
-      return;
-    }
     if (object instanceof Player) return;
-    if (object instanceof GameObject) renderMesh(object.mesh);
+    if (object instanceof GameObject) {
+      objectsToRender.push(object);
+    }
+  });
+
+  objectsToRender.forEach((object) => {
+    renderMesh(object.mesh);
   });
 }
 

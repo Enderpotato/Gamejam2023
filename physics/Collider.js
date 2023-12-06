@@ -113,3 +113,8 @@ Collider.prototype.onCollision = function (otherCollider) {
     otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
   }
 };
+
+Collider.prototype.drawBoundingBox = function () {
+  if (this.boundingBox == null) this.createBoundingBox();
+  this.boundingBox.draw();
+};

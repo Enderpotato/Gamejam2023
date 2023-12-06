@@ -24,7 +24,7 @@ let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
 let customMesh4 = new Mesh().createFromObj("./assets/testObjs/steve.obj");
 let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 
-const gObject1 = new GameObject(new Vector3(-30, 0, 30), customMesh1);
+const gObject1 = new GameObject(new Vector3(0, -200, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
 const gObject3 = new GameObject(new Vector3(0, 10, 20), customMesh3);
 gObject3.immovable = true;
@@ -56,10 +56,7 @@ export const AspectRatio = HEIGHT / WIDTH;
 var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
 export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
-const Lights = [
-  new Light([0, 0, 0], [1, 1, 1]),
-  new Light([0, 0, 60], [1, 1, 1]),
-];
+const Lights = [new Light()];
 
 let canvas;
 export let frame;
@@ -90,14 +87,12 @@ function draw() {
   background(0);
   clear();
   shader(bestShader);
+  noStroke();
 
   cameraControl(deltaTime);
   camera.update(deltaTime);
   scene.update(deltaTime);
-
-  renderer.render(scene, true);
-  renderer.clear();
-  noStroke();
+  let frustum = camera.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
 
   bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
@@ -108,12 +103,21 @@ function draw() {
   let lightColors = [];
 
   Lights.forEach((light) => {
-    lightPositions.push(...light.position);
-    lightColors.push(...light.color);
+    lightPositions.push(...light.getUPosition());
+    lightColors.push(...light.getUColor());
   });
   bestShader.setUniform("uNumLights", Lights.length);
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);
+
+  renderer.render(scene, true, frustum);
+  renderer.clear();
+
+  // draw shit with normal functions
+  resetShader();
+  scene.objects.forEach((gObj) => {
+    gObj.collider.drawBoundingBox();
+  });
 }
 
 function keyPressed() {
