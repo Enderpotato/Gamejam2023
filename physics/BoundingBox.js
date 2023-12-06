@@ -29,7 +29,7 @@ BoundingBox.createFromMinMax = function (min, max) {
   return new BoundingBox(pos, w, l, h);
 };
 
-BoundingBox.intersectE = function (a, b) {
+BoundingBox.intersect = function (a, b) {
   return (
     a.minX <= b.maxX &&
     a.maxX >= b.minX &&
@@ -37,17 +37,6 @@ BoundingBox.intersectE = function (a, b) {
     a.maxY >= b.minY &&
     a.minZ <= b.maxZ &&
     a.maxZ >= b.minZ
-  );
-};
-
-BoundingBox.intersect = function (a, b) {
-  return (
-    a.minX < b.maxX &&
-    a.maxX > b.minX &&
-    a.minY < b.maxY &&
-    a.maxY > b.minY &&
-    a.minZ < b.maxZ &&
-    a.maxZ > b.minZ
   );
 };
 
@@ -80,10 +69,49 @@ BoundingBox.createFromMesh = function (gameobj) {
 };
 
 BoundingBox.prototype.draw = function () {
-  stroke(255, 0, 0);
-  noFill();
-  push();
-  translate(this.pos.x, this.pos.y, this.pos.z);
-  box(this.w, this.l, this.h);
-  pop();
+  // Draw the bounding box
+  fill(255, 0, 0, 30);
+  beginShape(TRIANGLES);
+  vertex(this.maxX, this.maxY, this.maxZ);
+  vertex(this.maxX, this.maxY, this.minZ);
+  vertex(this.maxX, this.minY, this.maxZ);
+  vertex(this.maxX, this.minY, this.maxZ);
+  vertex(this.maxX, this.maxY, this.minZ);
+  vertex(this.maxX, this.minY, this.minZ);
+
+  vertex(this.minX, this.maxY, this.maxZ);
+  vertex(this.minX, this.maxY, this.minZ);
+  vertex(this.minX, this.minY, this.maxZ);
+  vertex(this.minX, this.minY, this.maxZ);
+  vertex(this.minX, this.maxY, this.minZ);
+  vertex(this.minX, this.minY, this.minZ);
+
+  vertex(this.maxX, this.maxY, this.maxZ);
+  vertex(this.maxX, this.maxY, this.minZ);
+  vertex(this.minX, this.maxY, this.maxZ);
+  vertex(this.minX, this.maxY, this.maxZ);
+  vertex(this.maxX, this.maxY, this.minZ);
+  vertex(this.minX, this.maxY, this.minZ);
+
+  vertex(this.maxX, this.minY, this.maxZ);
+  vertex(this.maxX, this.minY, this.minZ);
+  vertex(this.minX, this.minY, this.maxZ);
+  vertex(this.minX, this.minY, this.maxZ);
+  vertex(this.maxX, this.minY, this.minZ);
+  vertex(this.minX, this.minY, this.minZ);
+
+  vertex(this.maxX, this.maxY, this.maxZ);
+  vertex(this.maxX, this.minY, this.maxZ);
+  vertex(this.minX, this.maxY, this.maxZ);
+  vertex(this.minX, this.maxY, this.maxZ);
+  vertex(this.maxX, this.minY, this.maxZ);
+  vertex(this.minX, this.minY, this.maxZ);
+
+  vertex(this.maxX, this.maxY, this.minZ);
+  vertex(this.maxX, this.minY, this.minZ);
+  vertex(this.minX, this.maxY, this.minZ);
+  vertex(this.minX, this.maxY, this.minZ);
+  vertex(this.maxX, this.minY, this.minZ);
+  vertex(this.minX, this.minY, this.minZ);
+  endShape();
 };

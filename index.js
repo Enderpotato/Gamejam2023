@@ -5,7 +5,7 @@ import { cameraControl } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
-import { scene, sceneSetTextures } from "./setScene.js";
+import { scene, sceneSetTextures } from "./sceneSetup.js";
 import Player from "./Player.js";
 import Light from "./Light.js";
 
@@ -63,7 +63,6 @@ function draw() {
   scene.update(deltaTime);
   let frustum = cameraC.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
 
-  bestShader.setUniform("millis", millis());
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uCameraPosition", cameraC.position.toArray());
   bestShader.setUniform("uNumLights", Lights.length);
@@ -82,19 +81,15 @@ function draw() {
   renderer.render(scene, true, frustum);
   renderer.clear();
 
-  // draw shit with normal functions
   resetShader();
-
+  // draw shit with normal functions
   scene.objects.forEach((gObj) => {
-    gObj.collider.drawBoundingBox(); // shit doesnt work oof
+    // Draw bounding box
+    // gObj.collider.boundingBox.draw();
   });
 }
 
-function keyPressed() {
-  if (keyCode === 32) {
-    gObject5.velocity = new Vector3(0, 100, 0);
-  }
-}
+function keyPressed() {}
 
 window.preload = preloadAssets;
 window.setup = setup;
