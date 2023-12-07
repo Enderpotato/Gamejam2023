@@ -5,13 +5,14 @@ export default class GameObject {
   constructor(position, mesh) {
     this.position = position;
     this.rotation = Vector3.zeros();
+    this.rotation.z = Math.PI; // idk why meshes are always rolled 180 degrees, dis to fix it
     this.mesh = mesh;
     this.collider = new Collider(this);
     this.immovable = false;
     if (mesh != null) mesh.position = position;
 
     this.mass = 1;
-    this.inverseMass = 1 / this.mass;
+    this.invMass = 1 / this.mass;
     this.restitution = 0.1; // bounciness
 
     this.velocity = Vector3.zeros();
@@ -23,12 +24,12 @@ export default class GameObject {
 
 GameObject.prototype.setMass = function (mass) {
   this.mass = mass;
-  this.inverseMass = 1 / mass;
+  this.invMass = 1 / mass;
 };
 
 GameObject.prototype.update = function (dt) {
   // semi-implicit euler integration
-  this.acc = Vector3.elementMult(this.force, this.inverseMass);
+  this.acc = Vector3.elementMult(this.force, this.invMass);
   if (this.immovable) this.acc = Vector3.zeros();
   this.velocity.add_(this.acc.elementMult(dt));
   this.position.add_(this.velocity.elementMult(dt));
@@ -43,14 +44,12 @@ GameObject.prototype.update = function (dt) {
   if (keyIsDown(80)) rotate_z = speed;
   this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
 
-  this.collider.createBoundingBox();
-
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
     this.rotation.y,
     this.rotation.z,
     "XYZ"
   );
-
   this.mesh.update(this.position, quat);
+  this.collider.createBoundingBox();
 };

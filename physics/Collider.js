@@ -2,6 +2,8 @@ import BoundingBox from "./BoundingBox.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Vector3 from "../structs/Vector3.js";
+import MeshCuboid from "../shapes/TestShapes/MeshCuboid.js";
+import Player from "../Player.js";
 
 export default class Collider {
   constructor(gameobj) {
@@ -24,48 +26,52 @@ Collider.prototype.createBoundingBox = function () {
     this.boundingBox = BoundingBox.createFromMesh(this.gameobj);
     return;
   }
-  if (mesh instanceof MeshCube) {
-    this.boundingBox = BoundingBox.createFromCube(this.gameobj);
+  if (mesh instanceof MeshCuboid) {
+    this.boundingBox = BoundingBox.createFromCuboid(this.gameobj);
     return;
   }
 };
 
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
-  // Calculate the overlap between the objects
-  let overlap = new Vector3(
-    this.boundingBox.w / 2 +
-      otherCollider.boundingBox.w / 2 -
-      Math.abs(this.gameobj.position.x - otherObject.position.x),
-    this.boundingBox.l / 2 +
-      otherCollider.boundingBox.l / 2 -
-      Math.abs(this.gameobj.position.y - otherObject.position.y),
-    this.boundingBox.h / 2 +
-      otherCollider.boundingBox.h / 2 -
-      Math.abs(this.gameobj.position.z - otherObject.position.z)
-  );
+  if (this.gameobj.immovable && otherObject.immovable) return;
 
-  // Calculate the collision normal
+  // Calculate the overlap on each axis
+  let overlap = new Vector3(
+    Math.min(this.boundingBox.maxX, otherCollider.boundingBox.maxX) -
+      Math.max(this.boundingBox.minX, otherCollider.boundingBox.minX),
+    Math.min(this.boundingBox.maxY, otherCollider.boundingBox.maxY) -
+      Math.max(this.boundingBox.minY, otherCollider.boundingBox.minY),
+    Math.min(this.boundingBox.maxZ, otherCollider.boundingBox.maxZ) -
+      Math.max(this.boundingBox.minZ, otherCollider.boundingBox.minZ)
+  ).max(0);
+
+  // Find the minimum overlap axis
+  let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
+
+  // Calculate the collision normal based on the minimum overlap axis
   let collisionNormal;
-  if (overlap.x < overlap.y && overlap.x < overlap.z) {
-    collisionNormal = new Vector3(
-      Math.sign(this.gameobj.position.x - otherObject.position.x),
-      0,
-      0
-    );
-  } else if (overlap.y < overlap.z) {
-    collisionNormal = new Vector3(
-      0,
-      Math.sign(this.gameobj.position.y - otherObject.position.y),
-      0
-    );
+  if (minOverlap == overlap.x) {
+    collisionNormal = new Vector3(1, 0, 0);
+  } else if (minOverlap == overlap.y) {
+    collisionNormal = new Vector3(0, 1, 0);
   } else {
-    collisionNormal = new Vector3(
-      0,
-      0,
-      Math.sign(this.gameobj.position.z - otherObject.position.z)
-    );
+    collisionNormal = new Vector3(0, 0, 1);
   }
+
+  // Determine which bounding box is overlapping which
+  if (
+    (overlap.x &&
+      this.boundingBox.position.x > otherCollider.boundingBox.position.x) ||
+    (overlap.y &&
+      this.boundingBox.position.y > otherCollider.boundingBox.position.y) ||
+    (overlap.z &&
+      this.boundingBox.position.z > otherCollider.boundingBox.position.z)
+  ) {
+    collisionNormal = collisionNormal.neg();
+  }
+  if (collisionNormal.y > 0) this.isCollidingBelow = true;
+  if (collisionNormal.y < 0) otherCollider.isCollidingBelow = true;
 
   // Project the velocities onto the collision normal
   let v1n = this.gameobj.velocity.dot(collisionNormal);
@@ -92,24 +98,28 @@ Collider.prototype.onCollision = function (otherCollider) {
       restitution * (mdiff * v2n + 2 * this.gameobj.mass * v1n) * invMassSum;
   }
 
-  const RESTING_THRESHOLD = 0.1;
+  // round velocities to 0
+  if (Math.abs(newV1n) < 0.01) newV1n = 0;
+  if (Math.abs(newV2n) < 0.01) newV2n = 0;
 
-  // If the object is moving downwards slowly enough, consider it to be at rest
-  if (collisionNormal.y < 0 && Math.abs(newV1n) < RESTING_THRESHOLD) {
-    newV1n = 0;
-  }
-
-  // Convert the velocities back to the original coordinate system
   this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
-
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  // Displace the objects out of the collision
-  let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
-  if (!this.gameobj.immovable) {
-    this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
+  let overlapMag = minOverlap; //+ 0.0001;
+  // Resolve penetration
+  let thisObjectImmovable =
+    this.gameobj.immovable || this.gameobj instanceof Player;
+  let otherObjectImmovable =
+    otherObject.immovable || otherObject instanceof Player;
+
+  if (thisObjectImmovable && !otherObjectImmovable) {
+    otherObject.position.add_(collisionNormal.elementMult(overlapMag));
+    return;
   }
-  if (!otherObject.immovable) {
-    otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
+  if (otherObjectImmovable && !thisObjectImmovable) {
+    this.gameobj.position.add_(collisionNormal.elementMult(-overlapMag));
+    return;
   }
+  this.gameobj.position.add_(collisionNormal.elementMult(-overlapMag));
+  otherObject.position.add_(collisionNormal.elementMult(overlapMag));
 };

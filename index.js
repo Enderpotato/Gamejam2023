@@ -1,34 +1,30 @@
 import Renderer from "./Renderer/Renderer.js";
 import Vector3 from "./structs/Vector3.js";
 import Camera from "./Camera.js";
-import { cameraControl } from "./Camera.js";
+import { cameraControlDebug } from "./Camera.js";
 import Map from "./map.js";
 import preloadAssets, { Textures } from "./preload.js";
 import { bestShader } from "./preload.js";
-import { scene, sceneSetTextures } from "./sceneSetup.js";
+import { scene, sceneSetTextures, Lights, player } from "./sceneSetup.js";
 import Player from "./Player.js";
-import Light from "./Light.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
-let player;
-
 let cam;
 
-const WIDTH = 600;
+const WIDTH = 700;
 const HEIGHT = 450;
 const MAP_WIDTH = 400;
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
-export const ZNEAR = 1;
+export const ZNEAR = 0.1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
 var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
 
 export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
-const Lights = [new Light()];
 
 let canvas;
 export let frame;
@@ -44,8 +40,8 @@ function setup() {
   cameraC = new Camera(cam);
   sceneSetTextures();
 
-  player = new Player(cameraC);
-  // scene.addObject(player);
+  player.setCamera(cameraC);
+  scene.addObject(player);
   noStroke();
 }
 
@@ -58,7 +54,8 @@ function draw() {
   shader(bestShader);
   noStroke();
 
-  cameraControl(deltaTime, cameraC);
+  // cameraControlDebug(deltaTime, cameraC);
+  player.update(deltaTime);
   cameraC.update(deltaTime);
   scene.update(deltaTime);
   let frustum = cameraC.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
@@ -71,6 +68,7 @@ function draw() {
   let lightColors = [];
 
   Lights.forEach((light) => {
+    light.update(deltaTime);
     lightPositions.push(...light.getUPosition());
     lightColors.push(...light.getUColor());
   });
@@ -84,12 +82,13 @@ function draw() {
   resetShader();
   // draw shit with normal functions
   scene.objects.forEach((gObj) => {
-    // Draw bounding box
-    // gObj.collider.boundingBox.draw();
+    gObj.collider.boundingBox.draw();
   });
 }
 
-function keyPressed() {}
+function keyPressed() {
+  if (keyCode === 32) frameRate(1);
+}
 
 window.preload = preloadAssets;
 window.setup = setup;

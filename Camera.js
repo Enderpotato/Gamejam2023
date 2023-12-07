@@ -48,6 +48,18 @@ export default class Camera {
       this.boundingBoxWidth,
       this.boundingBoxWidth
     );
+
+    PosElement.innerHTML = `Camera Position: 
+  ${this.position.x.toFixed()},
+   ${this.position.y.toFixed()},
+    ${this.position.z.toFixed()}`;
+    RotElement.innerHTML = `Camera Rotation:
+  ${this.yawAngle.toFixed(3)},
+   ${this.pitchAngle.toFixed(3)}`;
+    LookElement.innerHTML = `Camera Look Direction:
+  ${this.lookDir.x.toFixed(3)},
+   ${this.lookDir.y.toFixed(3)},
+    ${this.lookDir.z.toFixed(3)}`;
   }
 }
 
@@ -98,7 +110,7 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
   return { nearCorners, farCorners };
 };
 
-export function cameraControl(deltaTime, cameraC) {
+export function cameraControlDebug(deltaTime, cameraC) {
   const speed = 40 * deltaTime; // 40 units per second
   let forwardW = cameraC.lookDir.clone().elementMult(speed);
   let rightW = Vector3.cross(cameraC.lookDir, new Vector3(0, 1, 0))
@@ -139,16 +151,4 @@ export function cameraControl(deltaTime, cameraC) {
   } else if (keyIsDown(DOWN_ARROW)) {
     cameraC.pitchAngle += -rotationSpeed;
   }
-
-  PosElement.innerHTML = `Camera Position: 
-  ${cameraC.position.x.toFixed()},
-   ${cameraC.position.y.toFixed()},
-    ${cameraC.position.z.toFixed()}`;
-  RotElement.innerHTML = `Camera Rotation:
-  ${cameraC.yawAngle.toFixed(3)},
-   ${cameraC.pitchAngle.toFixed(3)}`;
-  LookElement.innerHTML = `Camera Look Direction:
-  ${cameraC.lookDir.x.toFixed(3)},
-   ${cameraC.lookDir.y.toFixed(3)},
-    ${cameraC.lookDir.z.toFixed(3)}`;
 }

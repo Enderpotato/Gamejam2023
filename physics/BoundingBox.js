@@ -1,33 +1,25 @@
 import Vector3 from "../structs/Vector3.js";
 
 export default class BoundingBox {
-  constructor(pos_vec, w, l, h) {
-    this.w = w;
-    this.l = l;
-    this.h = h;
-    this.pos = pos_vec;
+  constructor(min, max) {
+    this.minX = min.x;
+    this.minY = min.y;
+    this.minZ = min.z;
 
-    this.minX = pos_vec.x - w / 2;
-    this.minY = pos_vec.y - l / 2;
-    this.minZ = pos_vec.z - h / 2;
+    this.maxX = max.x;
+    this.maxY = max.y;
+    this.maxZ = max.z;
 
-    this.maxX = pos_vec.x + w / 2;
-    this.maxY = pos_vec.y + l / 2;
-    this.maxZ = pos_vec.z + h / 2;
+    this.w = this.maxX - this.minX;
+    this.l = this.maxY - this.minY;
+    this.h = this.maxZ - this.minZ;
+    this.position = new Vector3(
+      (this.maxX + this.minX) / 2,
+      (this.maxY + this.minY) / 2,
+      (this.maxZ + this.minZ) / 2
+    );
   }
 }
-
-BoundingBox.createFromMinMax = function (min, max) {
-  let w = max.x - min.x;
-  let l = max.y - min.y;
-  let h = max.z - min.z;
-  let pos = new Vector3(
-    (max.x + min.x) / 2,
-    (max.y + min.y) / 2,
-    (max.z + min.z) / 2
-  );
-  return new BoundingBox(pos, w, l, h);
-};
 
 BoundingBox.intersect = function (a, b) {
   return (
@@ -40,9 +32,24 @@ BoundingBox.intersect = function (a, b) {
   );
 };
 
-BoundingBox.createFromCube = function (gameobj) {
-  let width = gameobj.mesh.width;
-  return new BoundingBox(gameobj.position, width, width, width);
+BoundingBox.createFromCuboid = function (gameobj) {
+  let halfWidth = gameobj.mesh.w * 0.5;
+  let halfLength = gameobj.mesh.l * 0.5;
+  let halfHeight = gameobj.mesh.h * 0.5;
+
+  let min = new Vector3(
+    gameobj.position.x - halfWidth,
+    gameobj.position.y - halfLength,
+    gameobj.position.z - halfHeight
+  );
+
+  let max = new Vector3(
+    gameobj.position.x + halfWidth,
+    gameobj.position.y + halfLength,
+    gameobj.position.z + halfHeight
+  );
+
+  return new BoundingBox(min, max);
 };
 
 BoundingBox.createFromMesh = function (gameobj) {
@@ -64,54 +71,15 @@ BoundingBox.createFromMesh = function (gameobj) {
       max.z = Math.max(max.z, vertex.z);
     }
   }
-
-  return BoundingBox.createFromMinMax(min, max);
+  return new BoundingBox(min, max);
 };
 
 BoundingBox.prototype.draw = function () {
-  // Draw the bounding box
-  fill(255, 0, 0, 30);
-  beginShape(TRIANGLES);
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
+  stroke(255, 0, 0);
 
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-
-  vertex(this.maxX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.minX, this.maxY, this.maxZ);
-  vertex(this.maxX, this.minY, this.maxZ);
-  vertex(this.minX, this.minY, this.maxZ);
-
-  vertex(this.maxX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.minX, this.maxY, this.minZ);
-  vertex(this.maxX, this.minY, this.minZ);
-  vertex(this.minX, this.minY, this.minZ);
-  endShape();
+  noFill();
+  push();
+  translate(this.position.x, this.position.y, this.position.z);
+  box(this.w, this.l, this.h);
+  pop();
 };

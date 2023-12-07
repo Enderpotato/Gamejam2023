@@ -1,4 +1,4 @@
-import Vector3 from "./structs/Vector3.js";
+import Vector3 from "../structs/Vector3.js";
 
 export default class Light {
   constructor(position, color) {
@@ -6,6 +6,8 @@ export default class Light {
     this.color = color || new Vector3(1, 1, 1);
   }
 }
+
+Light.prototype.update = function (dt) {};
 
 Light.prototype.getUPosition = function () {
   return this.position.toArray();
