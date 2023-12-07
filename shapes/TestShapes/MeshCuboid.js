@@ -8,6 +8,7 @@ export default class MeshCuboid {
     this.w = width;
     this.l = length;
     this.h = height;
+    this.textureImg = null;
 
     // initialize triangles using position and width
     this.meshTriangles = [];
@@ -159,4 +160,8 @@ MeshCuboid.prototype.update = function (position, quat) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position);
   });
+};
+
+MeshCuboid.prototype.setTexture = function (textureImg) {
+  this.textureImg = textureImg; // p5.Image
 };

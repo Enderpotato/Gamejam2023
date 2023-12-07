@@ -14,6 +14,8 @@ export default class Collider {
 }
 
 Collider.prototype.collide = function (other) {
+  this.isCollidingBelow = false;
+  other.isCollidingBelow = false;
   if (this.boundingBox == null) this.createBoundingBox();
   if (other.boundingBox == null) other.createBoundingBox();
   return BoundingBox.intersect(this.boundingBox, other.boundingBox);
@@ -31,15 +33,10 @@ Collider.prototype.createBoundingBox = function () {
   }
 };
 
-Collider.prototype.getOverlap = function (axis, otherCollider) {
-  return Math.max(0, this.boundingBox[axis] - otherCollider.boundingBox[axis]);
-};
-
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
   if (this.gameobj.immovable && otherObject.immovable) return;
-  this.isCollidingBelow = false;
-  otherCollider.isCollidingBelow = false;
+
   // Calculate the overlap on each axis
   let overlap = new Vector3(
     Math.min(this.boundingBox.maxX, otherCollider.boundingBox.maxX) -
@@ -106,7 +103,7 @@ Collider.prototype.onCollision = function (otherCollider) {
   this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  let overlapMag = minOverlap + 0.01;
+  let overlapMag = minOverlap + 0.0001;
 
   // haha idk how to fix so i did this
   // if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
