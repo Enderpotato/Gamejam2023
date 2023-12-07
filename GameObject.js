@@ -11,7 +11,7 @@ export default class GameObject {
     if (mesh != null) mesh.position = position;
 
     this.mass = 1;
-    this.inverseMass = 1 / this.mass;
+    this.invMass = 1 / this.mass;
     this.restitution = 0.1; // bounciness
 
     this.velocity = Vector3.zeros();
@@ -24,12 +24,12 @@ export default class GameObject {
 
 GameObject.prototype.setMass = function (mass) {
   this.mass = mass;
-  this.inverseMass = 1 / mass;
+  this.invMass = 1 / mass;
 };
 
 GameObject.prototype.update = function (dt) {
   // semi-implicit euler integration
-  this.acc = Vector3.elementMult(this.force, this.inverseMass);
+  this.acc = Vector3.elementMult(this.force, this.invMass);
   if (this.immovable) this.acc = Vector3.zeros();
   this.velocity.add_(this.acc.elementMult(dt));
   this.position.add_(this.velocity.elementMult(dt));

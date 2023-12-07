@@ -32,42 +32,49 @@ Collider.prototype.createBoundingBox = function () {
   }
 };
 
+Collider.prototype.getOverlap = function (axis, otherCollider) {
+  return Math.max(0, this.boundingBox[axis] - otherCollider.boundingBox[axis]);
+};
+
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
+  if (this.gameobj.immovable && otherObject.immovable) return;
   this.isCollidingBelow = false;
   otherCollider.isCollidingBelow = false;
   // Calculate the overlap on each axis
   let overlap = new Vector3(
-    Math.max(0, this.boundingBox.maxX - otherCollider.boundingBox.minX),
-    Math.max(0, this.boundingBox.maxY - otherCollider.boundingBox.minY),
-    Math.max(0, this.boundingBox.maxZ - otherCollider.boundingBox.minZ)
-  );
+    Math.min(this.boundingBox.maxX, otherCollider.boundingBox.maxX) -
+      Math.max(this.boundingBox.minX, otherCollider.boundingBox.minX),
+    Math.min(this.boundingBox.maxY, otherCollider.boundingBox.maxY) -
+      Math.max(this.boundingBox.minY, otherCollider.boundingBox.minY),
+    Math.min(this.boundingBox.maxZ, otherCollider.boundingBox.maxZ) -
+      Math.max(this.boundingBox.minZ, otherCollider.boundingBox.minZ)
+  ).max(0);
 
-  // Calculate the collision normal
+  // Find the minimum overlap axis
+  let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
+
+  // Calculate the collision normal based on the minimum overlap axis
   let collisionNormal;
-  if (overlap.x < overlap.y && overlap.x < overlap.z) {
-    collisionNormal = new Vector3(
-      Math.sign(this.gameobj.position.x - otherObject.position.x),
-      0,
-      0
-    );
-    overlap = new Vector3(overlap.x, 0, 0);
-  } else if (overlap.y < overlap.z) {
-    collisionNormal = new Vector3(
-      0,
-      Math.sign(this.gameobj.position.y - otherObject.position.y),
-      0
-    );
-    overlap = new Vector3(0, overlap.y, 0);
+  if (minOverlap == overlap.x) {
+    collisionNormal = new Vector3(1, 0, 0);
+  } else if (minOverlap == overlap.y) {
+    collisionNormal = new Vector3(0, 1, 0);
   } else {
-    collisionNormal = new Vector3(
-      0,
-      0,
-      Math.sign(this.gameobj.position.z - otherObject.position.z)
-    );
-    overlap = new Vector3(0, 0, overlap.z);
+    collisionNormal = new Vector3(0, 0, 1);
   }
 
+  // Determine which bounding box is overlapping which
+  if (
+    (overlap.x &&
+      this.boundingBox.position.x > otherCollider.boundingBox.position.x) ||
+    (overlap.y &&
+      this.boundingBox.position.y > otherCollider.boundingBox.position.y) ||
+    (overlap.z &&
+      this.boundingBox.position.z > otherCollider.boundingBox.position.z)
+  ) {
+    collisionNormal = collisionNormal.neg();
+  }
   // Project the velocities onto the collision normal
   let v1n = this.gameobj.velocity.dot(collisionNormal);
   let v2n = otherObject.velocity.dot(collisionNormal);
@@ -93,47 +100,28 @@ Collider.prototype.onCollision = function (otherCollider) {
       restitution * (mdiff * v2n + 2 * this.gameobj.mass * v1n) * invMassSum;
   }
 
-  const RESTING_THRESHOLD = 0.1;
+  // round velocities to 0
+  if (Math.abs(newV1n) < 0.01) newV1n = 0;
+  if (Math.abs(newV2n) < 0.01) newV2n = 0;
 
-  // If the object is moving downwards slowly enough, consider it to be at rest
-  if (collisionNormal.y > 0 && Math.abs(newV1n) < RESTING_THRESHOLD) {
-    newV1n = 0;
-  }
-  if (collisionNormal.y < 0 && Math.abs(newV2n) < RESTING_THRESHOLD) {
-    newV2n = 0;
-  }
-
-  // Convert the velocities back to the original coordinate system
   this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
-
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  let overlapMag = overlap.mag() * 0.5 + 0.001;
+  let overlapMag = minOverlap * 1.01;
 
   // haha idk how to fix so i did this
-  if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
-    collisionNormal.y *= -1;
+  // if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
+  //   collisionNormal.y *= -1;
 
   // Resolve penetration
-  if (!this.gameobj.immovable) {
-    this.gameobj.position.x += collisionNormal.x * overlapMag;
-    this.gameobj.position.y += collisionNormal.y * overlapMag;
-    this.gameobj.position.z += collisionNormal.z * overlapMag;
-
-    // If the object is on the ground, stop applying gravity
-    if (collisionNormal.y < 0) {
-      this.isCollidingBelow = true;
-      this.gameobj.position.y += 0.001;
-    }
+  if (this.gameobj.immovable && !otherObject.immovable) {
+    otherObject.position.add_(collisionNormal.elementMult(overlapMag));
+    return;
   }
-  if (!otherObject.immovable) {
-    otherObject.position.x -= collisionNormal.x * overlapMag;
-    otherObject.position.y -= collisionNormal.y * overlapMag;
-    otherObject.position.z -= collisionNormal.z * overlapMag;
-
-    if (collisionNormal.y > 0) {
-      otherCollider.isCollidingBelow = true;
-      otherObject.position.y += 0.001;
-    }
+  if (otherObject.immovable && !this.gameobj.immovable) {
+    this.gameobj.position.add_(collisionNormal.elementMult(-overlapMag));
+    return;
   }
+  this.gameobj.position.add_(collisionNormal.elementMult(-overlapMag));
+  otherObject.position.add_(collisionNormal.elementMult(overlapMag));
 };

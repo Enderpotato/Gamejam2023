@@ -13,7 +13,7 @@ export default class BoundingBox {
     this.w = this.maxX - this.minX;
     this.l = this.maxY - this.minY;
     this.h = this.maxZ - this.minZ;
-    this.pos = new Vector3(
+    this.position = new Vector3(
       (this.maxX + this.minX) / 2,
       (this.maxY + this.minY) / 2,
       (this.maxZ + this.minZ) / 2
@@ -77,7 +77,7 @@ BoundingBox.prototype.draw = function () {
 
   noFill();
   push();
-  translate(this.pos.x, this.pos.y, this.pos.z);
+  translate(this.position.x, this.position.y, this.position.z);
   box(this.w, this.l, this.h);
   pop();
 };

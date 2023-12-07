@@ -1,5 +1,6 @@
 import Mesh from "./shapes/Mesh.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
+import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import GameObject from "./GameObject.js";
 import Scene from "./Scene.js";
@@ -18,13 +19,15 @@ gObject3.immovable = true;
 const gObject4 = new GameObject(new Vector3(-30, -200, 30), customMesh5);
 gObject4.velocity.x = 8;
 
-const cube1 = new MeshCube(10);
+const cube1 = new MeshCuboid(10, 10, 20);
 const gObject5 = new GameObject(new Vector3(30, -200, 30), cube1);
 gObject5.velocity.x = -8;
-const cube2 = new MeshCube(100);
-const gObject6 = new GameObject(new Vector3(0, 70, 20), cube2);
+const cube2 = new MeshCuboid(100, 20, 100);
+const gObject6 = new GameObject(new Vector3(0, 30, 20), cube2);
 gObject6.immovable = true;
-export const scene = new Scene([gObject1, gObject5, gObject6]);
+const cube3 = new MeshCuboid(10, 10, 20);
+const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
+export const scene = new Scene([gObject6, gObject7, gObject5, gObject1]);
 export { gObject1, gObject2, gObject3, gObject4, gObject5, gObject6 };
 
 export function sceneSetTextures() {
