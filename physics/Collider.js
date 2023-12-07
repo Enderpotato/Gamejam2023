@@ -2,6 +2,7 @@ import BoundingBox from "./BoundingBox.js";
 import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Vector3 from "../structs/Vector3.js";
+import MeshCuboid from "../shapes/TestShapes/MeshCuboid.js";
 
 export default class Collider {
   constructor(gameobj) {
@@ -19,15 +20,13 @@ Collider.prototype.collide = function (other) {
 };
 
 Collider.prototype.createBoundingBox = function () {
-  this.boundingBox = BoundingBox.createFromMesh(this.gameobj);
-  return;
   let mesh = this.gameobj.mesh;
   if (mesh instanceof Mesh) {
     this.boundingBox = BoundingBox.createFromMesh(this.gameobj);
     return;
   }
-  if (mesh instanceof MeshCube) {
-    this.boundingBox = BoundingBox.createFromCube(this.gameobj);
+  if (mesh instanceof MeshCuboid) {
+    this.boundingBox = BoundingBox.createFromCuboid(this.gameobj);
     return;
   }
 };
@@ -107,7 +106,7 @@ Collider.prototype.onCollision = function (otherCollider) {
   this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  let overlapMag = minOverlap * 1.01;
+  let overlapMag = minOverlap + 0.01;
 
   // haha idk how to fix so i did this
   // if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)

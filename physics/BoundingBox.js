@@ -32,19 +32,21 @@ BoundingBox.intersect = function (a, b) {
   );
 };
 
-BoundingBox.createFromCube = function (gameobj) {
-  let width = gameobj.mesh.width;
+BoundingBox.createFromCuboid = function (gameobj) {
+  let halfWidth = gameobj.mesh.w * 0.5;
+  let halfLength = gameobj.mesh.l * 0.5;
+  let halfHeight = gameobj.mesh.h * 0.5;
 
   let min = new Vector3(
-    gameobj.position.x - width / 2,
-    gameobj.position.y - width / 2,
-    gameobj.position.z - width / 2
+    gameobj.position.x - halfWidth,
+    gameobj.position.y - halfLength,
+    gameobj.position.z - halfHeight
   );
 
   let max = new Vector3(
-    gameobj.position.x + width / 2,
-    gameobj.position.y + width / 2,
-    gameobj.position.z + width / 2
+    gameobj.position.x + halfWidth,
+    gameobj.position.y + halfLength,
+    gameobj.position.z + halfHeight
   );
 
   return new BoundingBox(min, max);
