@@ -89,7 +89,9 @@ function draw() {
   });
 }
 
-function keyPressed() {}
+function keyPressed() {
+  if (keyCode === 32) frameRate(1);
+}
 
 window.preload = preloadAssets;
 window.setup = setup;

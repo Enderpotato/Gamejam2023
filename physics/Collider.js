@@ -32,17 +32,11 @@ Collider.prototype.createBoundingBox = function () {
 
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
-  // Calculate the overlap between the objects
+  // Calculate the overlap on each axis
   let overlap = new Vector3(
-    this.boundingBox.w / 2 +
-      otherCollider.boundingBox.w / 2 -
-      Math.abs(this.gameobj.position.x - otherObject.position.x),
-    this.boundingBox.l / 2 +
-      otherCollider.boundingBox.l / 2 -
-      Math.abs(this.gameobj.position.y - otherObject.position.y),
-    this.boundingBox.h / 2 +
-      otherCollider.boundingBox.h / 2 -
-      Math.abs(this.gameobj.position.z - otherObject.position.z)
+    Math.max(0, this.boundingBox.maxX - otherCollider.boundingBox.minX),
+    Math.max(0, this.boundingBox.maxY - otherCollider.boundingBox.minY),
+    Math.max(0, this.boundingBox.maxZ - otherCollider.boundingBox.minZ)
   );
 
   // Calculate the collision normal
@@ -53,18 +47,21 @@ Collider.prototype.onCollision = function (otherCollider) {
       0,
       0
     );
+    overlap = new Vector3(overlap.x, 0, 0);
   } else if (overlap.y < overlap.z) {
     collisionNormal = new Vector3(
       0,
       Math.sign(this.gameobj.position.y - otherObject.position.y),
       0
     );
+    overlap = new Vector3(0, overlap.y, 0);
   } else {
     collisionNormal = new Vector3(
       0,
       0,
       Math.sign(this.gameobj.position.z - otherObject.position.z)
     );
+    overlap = new Vector3(0, 0, overlap.z);
   }
 
   // Project the velocities onto the collision normal
@@ -95,8 +92,11 @@ Collider.prototype.onCollision = function (otherCollider) {
   const RESTING_THRESHOLD = 0.1;
 
   // If the object is moving downwards slowly enough, consider it to be at rest
-  if (collisionNormal.y < 0 && Math.abs(newV1n) < RESTING_THRESHOLD) {
+  if (collisionNormal.y > 0 && Math.abs(newV1n) < RESTING_THRESHOLD) {
     newV1n = 0;
+  }
+  if (collisionNormal.y < 0 && Math.abs(newV2n) < RESTING_THRESHOLD) {
+    newV2n = 0;
   }
 
   // Convert the velocities back to the original coordinate system
@@ -104,22 +104,19 @@ Collider.prototype.onCollision = function (otherCollider) {
 
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  // Displace the objects out of the collision
-  let minOverlap = Math.min(overlap.x, overlap.y, overlap.z);
-  if (this.gameobj.immovable) {
-    otherObject.position.subtract_(collisionNormal.elementMult(minOverlap * 2));
-  } else if (otherObject.immovable) {
-    this.gameobj.position.add_(collisionNormal.elementMult(minOverlap * 2));
-  } else {
-    this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
-    otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
+  let overlapMag = overlap.mag() * 0.3 + 0.001;
+  if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
+    overlapMag *= -1;
+
+  // Resolve penetration
+  if (!this.gameobj.immovable) {
+    this.gameobj.position.x += collisionNormal.x * overlapMag;
+    this.gameobj.position.y += collisionNormal.y * overlapMag;
+    this.gameobj.position.z += collisionNormal.z * overlapMag;
   }
-
-  // if (!this.gameobj.immovable) {
-
-  //   this.gameobj.position.add_(collisionNormal.elementMult(minOverlap));
-  // }
-  // if (!otherObject.immovable) {
-  //   otherObject.position.subtract_(collisionNormal.elementMult(minOverlap));
-  // }
+  if (!otherObject.immovable) {
+    otherObject.position.x -= collisionNormal.x * overlapMag;
+    otherObject.position.y -= collisionNormal.y * overlapMag;
+    otherObject.position.z -= collisionNormal.z * overlapMag;
+  }
 };

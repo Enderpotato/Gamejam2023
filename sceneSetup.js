@@ -18,11 +18,13 @@ gObject3.immovable = true;
 const gObject4 = new GameObject(new Vector3(-20, 0, 30), customMesh5);
 
 const cube1 = new MeshCube(10);
-const gObject5 = new GameObject(new Vector3(0, -200, 30), cube1);
-const cube2 = new MeshCube(10);
-const gObject6 = new GameObject(new Vector3(30, -200, 30), cube2);
-// gObject6.velocity.x = -10;
-export const scene = new Scene([gObject1, gObject3, gObject6]);
+const gObject5 = new GameObject(new Vector3(30, -200, 30), cube1);
+gObject5.velocity.x = -8;
+const cube2 = new MeshCube(100);
+const gObject6 = new GameObject(new Vector3(0, 70, 20), cube2);
+gObject6.immovable = true;
+export const scene = new Scene([gObject1, gObject3]);
+export { gObject1, gObject2, gObject3, gObject4, gObject5, gObject6 };
 
 export function sceneSetTextures() {
   customMesh1.setTexture(Textures["white"]);

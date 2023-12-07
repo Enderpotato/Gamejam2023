@@ -44,14 +44,12 @@ GameObject.prototype.update = function (dt) {
   if (keyIsDown(80)) rotate_z = speed;
   this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
 
-  this.collider.createBoundingBox();
-
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
     this.rotation.y,
     this.rotation.z,
     "XYZ"
   );
-
   this.mesh.update(this.position, quat);
+  this.collider.createBoundingBox();
 };
