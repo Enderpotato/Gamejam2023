@@ -19,6 +19,8 @@ Collider.prototype.collide = function (other) {
 };
 
 Collider.prototype.createBoundingBox = function () {
+  this.boundingBox = BoundingBox.createFromMesh(this.gameobj);
+  return;
   let mesh = this.gameobj.mesh;
   if (mesh instanceof Mesh) {
     this.boundingBox = BoundingBox.createFromMesh(this.gameobj);
@@ -32,6 +34,8 @@ Collider.prototype.createBoundingBox = function () {
 
 Collider.prototype.onCollision = function (otherCollider) {
   let otherObject = otherCollider.gameobj;
+  this.isCollidingBelow = false;
+  otherCollider.isCollidingBelow = false;
   // Calculate the overlap on each axis
   let overlap = new Vector3(
     Math.max(0, this.boundingBox.maxX - otherCollider.boundingBox.minX),
@@ -104,19 +108,32 @@ Collider.prototype.onCollision = function (otherCollider) {
 
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  let overlapMag = overlap.mag() * 0.3 + 0.001;
+  let overlapMag = overlap.mag() * 0.5 + 0.001;
+
+  // haha idk how to fix so i did this
   if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
-    overlapMag *= -1;
+    collisionNormal.y *= -1;
 
   // Resolve penetration
   if (!this.gameobj.immovable) {
     this.gameobj.position.x += collisionNormal.x * overlapMag;
     this.gameobj.position.y += collisionNormal.y * overlapMag;
     this.gameobj.position.z += collisionNormal.z * overlapMag;
+
+    // If the object is on the ground, stop applying gravity
+    if (collisionNormal.y < 0) {
+      this.isCollidingBelow = true;
+      this.gameobj.position.y += 0.001;
+    }
   }
   if (!otherObject.immovable) {
     otherObject.position.x -= collisionNormal.x * overlapMag;
     otherObject.position.y -= collisionNormal.y * overlapMag;
     otherObject.position.z -= collisionNormal.z * overlapMag;
+
+    if (collisionNormal.y > 0) {
+      otherCollider.isCollidingBelow = true;
+      otherObject.position.y += 0.001;
+    }
   }
 };
