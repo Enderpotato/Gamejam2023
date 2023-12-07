@@ -83,7 +83,7 @@ Player.prototype.createBoundingBox = function () {
 
   let max = new Vector3(
     this.position.x + 0.5,
-    this.position.y + 2.5,
+    this.position.y + 5.5,
     this.position.z + 0.5
   );
 
