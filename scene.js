@@ -19,6 +19,7 @@ Scene.prototype.update = function (dt) {
     object.force = object.force.add(new Vector3(0, 9.8, 0));
 
     object.update(dt);
+    object.collider.isCollidingBelow = false;
   });
   let maxIterations = 10; // Maximum number of iterations to prevent infinite loops
   let iterations = 0;

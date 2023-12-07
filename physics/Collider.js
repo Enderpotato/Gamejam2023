@@ -3,6 +3,7 @@ import Mesh from "../shapes/Mesh.js";
 import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Vector3 from "../structs/Vector3.js";
 import MeshCuboid from "../shapes/TestShapes/MeshCuboid.js";
+import Player from "../Player.js";
 
 export default class Collider {
   constructor(gameobj) {
@@ -14,8 +15,6 @@ export default class Collider {
 }
 
 Collider.prototype.collide = function (other) {
-  this.isCollidingBelow = false;
-  other.isCollidingBelow = false;
   if (this.boundingBox == null) this.createBoundingBox();
   if (other.boundingBox == null) other.createBoundingBox();
   return BoundingBox.intersect(this.boundingBox, other.boundingBox);
@@ -71,6 +70,9 @@ Collider.prototype.onCollision = function (otherCollider) {
   ) {
     collisionNormal = collisionNormal.neg();
   }
+  if (collisionNormal.y > 0) this.isCollidingBelow = true;
+  if (collisionNormal.y < 0) otherCollider.isCollidingBelow = true;
+
   // Project the velocities onto the collision normal
   let v1n = this.gameobj.velocity.dot(collisionNormal);
   let v2n = otherObject.velocity.dot(collisionNormal);
@@ -103,18 +105,18 @@ Collider.prototype.onCollision = function (otherCollider) {
   this.gameobj.velocity = Vector3.elementMult(collisionNormal, newV1n);
   otherObject.velocity = Vector3.elementMult(collisionNormal, newV2n);
 
-  let overlapMag = minOverlap + 0.0001;
-
-  // haha idk how to fix so i did this
-  // if (this.gameobj.mesh instanceof Mesh && otherObject.mesh instanceof Mesh)
-  //   collisionNormal.y *= -1;
-
+  let overlapMag = minOverlap; //+ 0.0001;
   // Resolve penetration
-  if (this.gameobj.immovable && !otherObject.immovable) {
+  let thisObjectImmovable =
+    this.gameobj.immovable || this.gameobj instanceof Player;
+  let otherObjectImmovable =
+    otherObject.immovable || otherObject instanceof Player;
+
+  if (thisObjectImmovable && !otherObjectImmovable) {
     otherObject.position.add_(collisionNormal.elementMult(overlapMag));
     return;
   }
-  if (otherObject.immovable && !this.gameobj.immovable) {
+  if (otherObjectImmovable && !thisObjectImmovable) {
     this.gameobj.position.add_(collisionNormal.elementMult(-overlapMag));
     return;
   }
