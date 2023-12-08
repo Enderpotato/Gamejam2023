@@ -2,10 +2,9 @@ import Renderer from "./Renderer/Renderer.js";
 import Vector3 from "./structs/Vector3.js";
 import Camera from "./Camera.js";
 import { cameraControlDebug } from "./Camera.js";
-import preloadAssets, { Textures } from "./preload.js";
+import preloadAssets from "./preload.js";
 import { bestShader } from "./preload.js";
 import { scene, sceneSetTextures, Lights, player } from "./sceneSetup.js";
-import Player from "./Player.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();

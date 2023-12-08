@@ -51,9 +51,9 @@ export default class Camera {
     );
 
     PosElement.innerHTML = `Camera Position: 
-  ${this.position.x.toFixed()},
-   ${this.position.y.toFixed()},
-    ${this.position.z.toFixed()}`;
+  ${this.position.x.toFixed(1)},
+   ${this.position.y.toFixed(1)},
+    ${this.position.z.toFixed(1)}`;
     RotElement.innerHTML = `Camera Rotation:
   ${this.yawAngle.toFixed(3)},
    ${this.pitchAngle.toFixed(3)}`;
