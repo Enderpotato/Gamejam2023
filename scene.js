@@ -1,6 +1,4 @@
-import BoundingBox from "./physics/BoundingBox.js";
-import Vector3 from "./structs/Vector3.js";
-import { gObject1, gObject3, gObject4, gObject6 } from "./sceneSetup.js";
+import { Gravity } from "./sceneSetup.js";
 
 export default class Scene {
   constructor(objects) {
@@ -15,11 +13,13 @@ Scene.prototype.addObject = function (object) {
 Scene.prototype.update = function (dt) {
   this.objects.forEach((object) => {
     // add gravity
-    object.force = object.force.add(new Vector3(0, 9.8, 0));
+    object.force = object.force.add(Gravity);
 
     object.update(dt);
     object.collider.isCollidingBelow = false;
   });
+
+  //loop until no collisions?
   let maxIterations = 10; // Maximum number of iterations to prevent infinite loops
   let iterations = 0;
 
@@ -36,26 +36,8 @@ Scene.prototype.update = function (dt) {
       }
     }
   });
-  // while (iterations < maxIterations) {
-  //   let collisionFound = false;
-  //   this.objects.forEach((object, index) => {
-  //     for (
-  //       let otherIndex = index + 1;
-  //       otherIndex < this.objects.length;
-  //       otherIndex++
-  //     ) {
-  //       let otherObject = this.objects[otherIndex];
-  //       if (object.collider.collide(otherObject.collider)) {
-  //         object.collider.onCollision(otherObject.collider);
-  //         collisionFound = true;
-  //       }
-  //     }
-  //   });
+};
 
-  //   if (!collisionFound) {
-  //     break; // Exit the loop if no collisions were found in this pass
-  //   }
-
-  //   iterations++;
-  // }
+Scene.prototype.addObjects = function (objects) {
+  this.objects.push(...objects);
 };

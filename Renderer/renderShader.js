@@ -1,8 +1,5 @@
 import Vector3 from "../structs/Vector3.js";
 import Triangle from "../shapes/Triangle.js";
-import Cube from "../shapes/TestShapes/Cube.js";
-import Mesh from "../shapes/Mesh.js";
-import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Player from "../Player.js";
 import { cameraC } from "../index.js";
 import { bestShader } from "../preload.js";

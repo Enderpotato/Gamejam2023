@@ -1,6 +1,5 @@
 import BoundingBox from "./BoundingBox.js";
 import Mesh from "../shapes/Mesh.js";
-import MeshCube from "../shapes/TestShapes/MeshCube.js";
 import Vector3 from "../structs/Vector3.js";
 import MeshCuboid from "../shapes/TestShapes/MeshCuboid.js";
 import Player from "../Player.js";

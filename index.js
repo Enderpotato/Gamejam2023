@@ -1,5 +1,4 @@
 import Renderer from "./Renderer/Renderer.js";
-import Vector3 from "./structs/Vector3.js";
 import Camera from "./Camera.js";
 import { cameraControlDebug } from "./Camera.js";
 import preloadAssets from "./preload.js";
@@ -17,7 +16,7 @@ const MAP_WIDTH = 400;
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
-export const ZNEAR = 1;
+export const ZNEAR = 0.1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
 let canvas;
