@@ -1,5 +1,4 @@
 import Renderer from "./Renderer/Renderer.js";
-import Vector3 from "./structs/Vector3.js";
 import Camera from "./Camera.js";
 import { cameraControlDebug } from "./Camera.js";
 import preloadAssets from "./preload.js";

@@ -26,7 +26,7 @@ async function parseMap(filepath) {
 
 function parseLine(line, sceneArray, row) {
   const height = 30;
-  const Ypos = 0;
+  const Ypos = -10;
   const gridLine = line.split(",");
 
   gridLine.forEach((cell, col) => {

@@ -1,6 +1,3 @@
-import BoundingBox from "./physics/BoundingBox.js";
-import Vector3 from "./structs/Vector3.js";
-import { gObject1, gObject3, gObject4, gObject6 } from "./sceneSetup.js";
 import { Gravity } from "./sceneSetup.js";
 
 export default class Scene {
