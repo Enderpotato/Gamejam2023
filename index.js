@@ -10,7 +10,7 @@ const renderer = new Renderer();
 export let cameraC;
 let cam;
 
-const WIDTH = 700;
+const WIDTH = 800;
 const HEIGHT = 450;
 const MAP_WIDTH = 400;
 
@@ -18,7 +18,7 @@ const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 0.1;
 export const ZFAR = 1000;
-export const AspectRatio = HEIGHT / WIDTH;
+export const AspectRatio = WIDTH / HEIGHT;
 let canvas;
 export let frame;
 

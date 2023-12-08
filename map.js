@@ -1,6 +1,7 @@
 import GameObject from "./GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
+import { Textures } from "./preload.js";
 
 const MapWidth = 300;
 const MapLength = 300;
@@ -36,7 +37,9 @@ function parseLine(line, sceneArray, row) {
       const Zpos = row * cellLength + cellLength / 2 - MapLength / 2;
       const wallPosition = new Vector3(Xpos, Ypos, Zpos);
       let wallCell = new GameObject(wallPosition, wallCuboid);
+      wallCuboid.setTexture(Textures["walter"]);
       wallCell.immovable = true;
+      wallCell.rotation.x = Math.PI;
       sceneArray.push(wallCell);
     }
   });
