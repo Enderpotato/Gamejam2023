@@ -19,8 +19,6 @@ void main() {
 
     gl_Position = uProjectionMatrix * uModelViewMatrix * position;
 
-    gl_Position.y *= uAspectRatio;
-
     vTexCoord = aTexCoord;
 
     vNormal = aNormal;
