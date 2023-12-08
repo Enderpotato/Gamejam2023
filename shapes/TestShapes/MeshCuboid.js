@@ -156,9 +156,9 @@ export default class MeshCuboid {
   }
 }
 
-MeshCuboid.prototype.update = function (position, quat) {
+MeshCuboid.prototype.update = function (position, quat, scale) {
   this.triangles = this.meshTriangles.map((triangle) => {
-    return ShapeMorph.transformToWorld(triangle, quat, position);
+    return ShapeMorph.transformToWorld(triangle, quat, position, scale);
   });
 };
 

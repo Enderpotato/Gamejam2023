@@ -13,7 +13,6 @@ Scene.prototype.addObject = function (object) {
 };
 
 Scene.prototype.update = function (dt) {
-  // console.log(gObject1.velocity);
   this.objects.forEach((object) => {
     // add gravity
     object.force = object.force.add(new Vector3(0, 9.8, 0));

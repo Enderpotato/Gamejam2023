@@ -11,9 +11,9 @@ export default class Mesh {
   }
 }
 
-Mesh.prototype.update = function (position, quat) {
+Mesh.prototype.update = function (position, quat, scale) {
   this.triangles = this.meshTriangles.map((triangle) => {
-    return ShapeMorph.transformToWorld(triangle, quat, position);
+    return ShapeMorph.transformToWorld(triangle, quat, position, scale);
   });
 };
 
@@ -35,26 +35,18 @@ Mesh.prototype.createFromObj = function (filename) {
         if (parseLine(line, vertices, faces, textures)) useSlashes = true;
       });
       faces.forEach((face) => {
-        let triangle = null;
+        let triangle = new Triangle([
+          vertices[face[0][0] - 1],
+          vertices[face[1][0] - 1],
+          vertices[face[2][0] - 1],
+        ]);
         if (useSlashes) {
-          triangle = new Triangle([
-            vertices[face[0][0] - 1],
-            vertices[face[1][0] - 1],
-            vertices[face[2][0] - 1],
-          ]);
           triangle.texture = [
             textures[face[0][1] - 1],
             textures[face[1][1] - 1],
             textures[face[2][1] - 1],
           ];
-        } else {
-          triangle = new Triangle([
-            vertices[face[0][0] - 1],
-            vertices[face[1][0] - 1],
-            vertices[face[2][0] - 1],
-          ]);
         }
-
         this.meshTriangles.push(triangle);
       });
     });
@@ -91,7 +83,9 @@ function parseLine(line, vertices, faces, textures) {
   }
 
   if (tokens[0] === "vt") {
-    textures.push(new Vector2T(parseFloat(tokens[1]), parseFloat(tokens[2])));
+    textures.push(
+      new Vector2T(parseFloat(tokens[1]), 1 - parseFloat(tokens[2]))
+    );
     return;
   }
 }

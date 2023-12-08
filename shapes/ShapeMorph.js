@@ -23,9 +23,10 @@ ShapeMorph.translate = function (object, vector) {
   });
 };
 
-ShapeMorph.transformToWorld = function (tri, quaternion, position) {
+ShapeMorph.transformToWorld = function (tri, quaternion, position, scale) {
   let transformed = tri.clone();
   transformed.vertices = tri.vertices.map((vertex) => {
+    vertex = vertex.elementMult(scale);
     let rotated = vertex.quaternionRotate(quaternion);
     return rotated.add(position);
   });

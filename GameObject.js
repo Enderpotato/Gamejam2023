@@ -7,10 +7,12 @@ export default class GameObject {
     this.position = position;
     this.rotation = Vector3.zeros();
     this.rotation.z = Math.PI; // idk why meshes are always rolled 180 degrees, dis to fix it
+    this.rotation.y = Math.PI;
+    this.scale = new Vector3(1, 1, 1);
+
     this.mesh = mesh;
     this.collider = new Collider(this);
     this.immovable = false;
-    if (mesh != null) mesh.position = position;
 
     this.mass = 1;
     this.invMass = 1 / this.mass;
@@ -55,6 +57,6 @@ GameObject.prototype.update = function (dt) {
     this.rotation.z,
     "XYZ"
   );
-  this.mesh.update(this.position, quat);
+  this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
 };
