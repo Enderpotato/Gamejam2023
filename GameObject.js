@@ -1,5 +1,6 @@
 import Vector3 from "./structs/Vector3.js";
 import Collider from "./physics/Collider.js";
+import Material from "./graphics/Material.js";
 
 export default class GameObject {
   constructor(position, mesh) {
@@ -13,7 +14,7 @@ export default class GameObject {
 
     this.mass = 1;
     this.invMass = 1 / this.mass;
-    this.restitution = 0.1; // bounciness
+    this.material = new Material();
 
     this.velocity = Vector3.zeros();
     this.acc = Vector3.zeros();
@@ -21,6 +22,10 @@ export default class GameObject {
     this.angularVelocity = Vector3.zeros();
   }
 }
+
+GameObject.prototype.setMaterial = function (material) {
+  this.material = material;
+};
 
 GameObject.prototype.setMass = function (mass) {
   this.mass = mass;

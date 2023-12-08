@@ -9,7 +9,7 @@ import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
 import GameObject from "../GameObject.js";
 
-export default function renderWithShader(scene, renderer) {
+export default function renderWithShader(scene, shader) {
   let objectsToRender = [];
   scene.objects.forEach((object) => {
     if (object instanceof Player) return;
@@ -19,6 +19,8 @@ export default function renderWithShader(scene, renderer) {
   });
 
   objectsToRender.forEach((object) => {
+    shader.setUniform("uRoughness", object.material.roughness);
+    shader.setUniform("uMetallic", object.material.metallic);
     renderMesh(object.mesh);
   });
 }

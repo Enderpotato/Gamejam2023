@@ -76,7 +76,7 @@ function draw() {
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);
 
-  renderer.render(scene, true, frustum);
+  renderer.render(scene, frustum, bestShader);
   renderer.clear();
 
   resetShader();

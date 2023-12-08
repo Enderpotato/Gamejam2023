@@ -7,6 +7,7 @@ import Scene from "./Scene.js";
 import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
 import Player from "./Player.js";
+import Material from "./graphics/Material.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
@@ -30,6 +31,9 @@ gObject6.immovable = true;
 const cube3 = new MeshCuboid(10, 10, 20);
 const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
 export const scene = new Scene([gObject6, gObject7, gObject5, gObject4]);
+
+gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
+
 export { gObject1, gObject2, gObject3, gObject4, gObject5, gObject6 };
 
 export const player = new Player();

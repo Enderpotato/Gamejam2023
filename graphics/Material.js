@@ -1,7 +1,7 @@
 export default class Material {
-  constructor(roughness, metallic, color) {
-    this.roughness = roughness;
-    this.metallic = metallic;
-    this.color = color; // Vector3 [0-1]
+  constructor(roughness, metallic, bounce) {
+    this.roughness = roughness || 0.5;
+    this.metallic = metallic || 0.5;
+    this.restitution = bounce || 0.2;
   }
 }

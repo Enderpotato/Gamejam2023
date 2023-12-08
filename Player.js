@@ -76,15 +76,15 @@ Player.prototype.playerControl = function (dt) {
 
 Player.prototype.createBoundingBox = function () {
   let min = new Vector3(
-    this.position.x - 0.5,
+    this.position.x - 1,
     this.position.y - 0.5,
-    this.position.z - 0.5
+    this.position.z - 1
   );
 
   let max = new Vector3(
-    this.position.x + 0.5,
+    this.position.x + 1,
     this.position.y + 5.5,
-    this.position.z + 0.5
+    this.position.z + 1
   );
 
   this.collider.boundingBox = new BoundingBox(min, max);
