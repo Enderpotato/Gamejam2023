@@ -1,5 +1,6 @@
 import Vector3 from "./structs/Vector3.js";
 import BoundingBox from "./physics/BoundingBox.js";
+import Plane from "./structs/Plane.js";
 
 const PosElement = document.getElementById("camera-pos");
 const RotElement = document.getElementById("camera-rot");
@@ -78,15 +79,15 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
     Vector3.elementMult(this.lookDir, near)
   );
   let nearRight = Vector3.elementMult(
-    Vector3.cross(this.lookDir, new Vector3(0, 1, 0)),
+    Vector3.cross(this.lookDir, new Vector3(0, -1, 0)),
     nearWidth / 2
   );
-  let nearTop = Vector3.elementMult(new Vector3(0, 1, 0), nearHeight / 2);
+  let nearTop = Vector3.elementMult(new Vector3(0, -1, 0), nearHeight / 2);
   let nearCorners = [
-    Vector3.add3(nearCenter, nearRight, nearTop), // top right
-    Vector3.add3(nearCenter, nearRight, Vector3.neg(nearTop)), // bottom right
-    Vector3.add3(nearCenter, Vector3.neg(nearRight), nearTop), // top left
-    Vector3.add3(nearCenter, Vector3.neg(nearRight), Vector3.neg(nearTop)), // bottom left
+    Vector3.add3(nearCenter, Vector3.neg(nearRight), nearTop), // top right
+    Vector3.add3(nearCenter, Vector3.neg(nearRight), Vector3.neg(nearTop)), // bottom right
+    Vector3.add3(nearCenter, nearRight, nearTop), // top left
+    Vector3.add3(nearCenter, nearRight, Vector3.neg(nearTop)), // bottom left
   ];
 
   // Calculate the corners of the far clipping plane
@@ -95,19 +96,60 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
     Vector3.elementMult(this.lookDir, far)
   );
   let farRight = Vector3.elementMult(
-    Vector3.cross(this.lookDir, new Vector3(0, 1, 0)),
+    Vector3.cross(this.lookDir, new Vector3(0, -1, 0)),
     farWidth / 2
   );
-  let farTop = Vector3.elementMult(new Vector3(0, 1, 0), farHeight / 2);
+  let farTop = Vector3.elementMult(new Vector3(0, -1, 0), farHeight / 2);
   let farCorners = [
-    Vector3.add3(farCenter, farRight, farTop), // top right
-    Vector3.add3(farCenter, farRight, Vector3.neg(farTop)), // bottom right
-    Vector3.add3(farCenter, Vector3.neg(farRight), farTop), // top left
-    Vector3.add3(farCenter, Vector3.neg(farRight), Vector3.neg(farTop)), // bottom left
+    Vector3.add3(farCenter, Vector3.neg(farRight), farTop), // top right
+    Vector3.add3(farCenter, Vector3.neg(farRight), Vector3.neg(farTop)), // bottom right
+    Vector3.add3(farCenter, farRight, farTop), // top left
+    Vector3.add3(farCenter, farRight, Vector3.neg(farTop)), // bottom left
   ];
+  // console.log("near", nearCorners);
+  // console.log("far", farCorners);
 
-  // Return the corners of the near and far clipping planes
-  return { nearCorners, farCorners };
+  // TOP, BOTTOM, LEFT, RIGHT NORMALS ARE WRONG
+
+  // Calculate the normals of the frustum planes
+  let normals = {
+    near: Vector3.cross(
+      nearCorners[1].subtract(nearCorners[0]),
+      nearCorners[2].subtract(nearCorners[0])
+    ).normalize(), // Near plane
+    far: Vector3.cross(
+      farCorners[2].subtract(farCorners[0]),
+      farCorners[1].subtract(farCorners[0])
+    ).normalize(), // Far plane
+    left: Vector3.cross(
+      farCorners[3].subtract(nearCorners[3]),
+      nearCorners[2].subtract(nearCorners[3])
+    ).normalize(), // Left plane
+    right: Vector3.cross(
+      farCorners[0].subtract(nearCorners[0]),
+      nearCorners[1].subtract(nearCorners[0])
+    ).normalize(), // Right plane
+    bottom: Vector3.cross(
+      farCorners[1].subtract(nearCorners[1]),
+      nearCorners[3].subtract(nearCorners[1])
+    ).normalize(), // Bottom plane
+    top: Vector3.cross(
+      farCorners[0].subtract(nearCorners[0]),
+      nearCorners[0].subtract(nearCorners[2])
+    ).normalize(), // Top plane
+  };
+  // console.log(normals);
+  // Define the planes of the frustum
+  let frustum = {
+    near: new Plane(nearCorners[0], normals.near),
+    far: new Plane(farCorners[0], normals.far),
+    left: new Plane(nearCorners[3], normals.left),
+    right: new Plane(nearCorners[0], normals.right),
+    bottom: new Plane(nearCorners[1], normals.bottom),
+    top: new Plane(nearCorners[0], normals.top),
+  };
+
+  return frustum;
 };
 export function cameraControlDebug(deltaTime, cameraC) {
   const speed = 40 * deltaTime; // 40 units per second

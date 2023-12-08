@@ -12,7 +12,10 @@
       <div id="canvas"></div>
       <div>
         <button id="stop-game" onclick="noLoop()">Kill game</button>
-        <p>Frame rate: <span id="fps-debug"></span></p>
+        <div id="performance-info">
+          <p>Frame rate: <span id="fps-debug"></span></p>
+          <p>Objects being rendered: <span id="objects-rendering"></span></p>
+        </div>
         <div id="debug-text">
           <div><span id="camera-pos"></span></div>
           <div><span id="camera-rot"></span></div>

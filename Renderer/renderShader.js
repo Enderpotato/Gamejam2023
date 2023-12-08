@@ -9,15 +9,20 @@ import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
 import GameObject from "../GameObject.js";
 
+const NumObjectsElement = document.getElementById("objects-rendering");
+
 export default function renderWithShader(scene, frustum, shader) {
   let objectsToRender = [];
   scene.objects.forEach((object) => {
     if (object instanceof Player) return;
     if (object instanceof GameObject) {
-      if (objectInFrustum(object, frustum)) objectsToRender.push(object);
+      if (objectInFrustum(object, frustum)) {
+        // console.log("in frustum");
+        objectsToRender.push(object);
+      }
     }
   });
-  // console.log(objectsToRender.length);
+  NumObjectsElement.innerText = objectsToRender.length;
 
   objectsToRender.forEach((object) => {
     shader.setUniform("uRoughness", object.material.roughness);
@@ -26,64 +31,35 @@ export default function renderWithShader(scene, frustum, shader) {
   });
 }
 function objectInFrustum(object, frustum) {
-  let { nearCorners, farCorners } = frustum;
   let bbox = object.collider.boundingBox;
-  return true;
 
-  // Calculate the normals of the frustum planes
-  let normals = [
-    nearCorners[2]
-      .subtract(nearCorners[1])
-      .cross(nearCorners[0].subtract(nearCorners[1]))
-      .normalize(), // Near plane
-    farCorners[2]
-      .subtract(farCorners[1])
-      .cross(farCorners[0].subtract(farCorners[1]))
-      .normalize(), // Far plane
-    nearCorners[3]
-      .subtract(farCorners[0])
-      .cross(nearCorners[0].subtract(farCorners[0]))
-      .normalize(), // Left plane
-    nearCorners[0]
-      .subtract(farCorners[1])
-      .cross(nearCorners[1].subtract(farCorners[1]))
-      .normalize(), // Right plane
-    nearCorners[1]
-      .subtract(farCorners[2])
-      .cross(nearCorners[2].subtract(farCorners[2]))
-      .normalize(), // Bottom plane
-    nearCorners[2]
-      .subtract(farCorners[3])
-      .cross(nearCorners[3].subtract(farCorners[3]))
-      .normalize(), // Top plane
-  ];
-
-  // Check each corner of the AABB against each plane of the frustum
   let corners = [
     new Vector3(bbox.minX, bbox.minY, bbox.minZ),
-    new Vector3(bbox.minX, bbox.minY, bbox.maxZ),
-    new Vector3(bbox.minX, bbox.maxY, bbox.minZ),
-    new Vector3(bbox.minX, bbox.maxY, bbox.maxZ),
     new Vector3(bbox.maxX, bbox.minY, bbox.minZ),
-    new Vector3(bbox.maxX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.minX, bbox.maxY, bbox.minZ),
     new Vector3(bbox.maxX, bbox.maxY, bbox.minZ),
+    new Vector3(bbox.minX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.maxX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.minX, bbox.maxY, bbox.maxZ),
     new Vector3(bbox.maxX, bbox.maxY, bbox.maxZ),
   ];
+  // console.log(frustum);
 
-  // Check each plane of the frustum against each corner of the AABB
-  for (let normal of normals) {
-    let pVertex = new Vector3(
-      normal.x >= 0 ? bbox.maxX : bbox.minX,
-      normal.y >= 0 ? bbox.maxY : bbox.minY,
-      normal.z >= 0 ? bbox.maxZ : bbox.minZ
-    );
-
-    if (normal.dot(pVertex) < 0) {
-      return false; // The AABB is outside this plane of the frustum
+  for (let plane of Object.values(frustum)) {
+    let behind = 0;
+    for (let corner of corners) {
+      let pointToCorner = Vector3.subtract(corner, plane.point).normalize();
+      // console.log(Vector3.dot(plane.normal, pointToCorner));
+      if (Vector3.dot(plane.normal, pointToCorner) > 0) {
+        behind++;
+      }
+    }
+    // console.log("front", inFront);
+    if (behind === 8) {
+      return false; // The AABB is completely outside this plane
     }
   }
-
-  return true; // At least one corner is inside all planes of the frustum
+  return true;
 }
 function renderMesh(mesh) {
   let trianglesToRender = [];
