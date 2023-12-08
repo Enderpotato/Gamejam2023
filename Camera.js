@@ -109,7 +109,6 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
   // Return the corners of the near and far clipping planes
   return { nearCorners, farCorners };
 };
-
 export function cameraControlDebug(deltaTime, cameraC) {
   const speed = 40 * deltaTime; // 40 units per second
   let forwardW = cameraC.lookDir.clone().elementMult(speed);

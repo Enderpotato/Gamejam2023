@@ -30,7 +30,7 @@ const gObject6 = new GameObject(new Vector3(0, 30, 20), cube2);
 gObject6.immovable = true;
 const cube3 = new MeshCuboid(10, 10, 20);
 const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
-export const scene = new Scene([gObject6, gObject3]);
+export const scene = new Scene([gObject6, gObject3, gObject7]);
 
 gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
 

@@ -72,6 +72,12 @@ Player.prototype.playerControl = function (dt) {
   } else if (keyIsDown(DOWN_ARROW)) {
     this.pitchAngle += -rotationSpeed;
   }
+
+  if (this.yawAngle > TAU) this.yawAngle -= TAU;
+  if (this.yawAngle < -TAU) this.yawAngle += TAU;
+
+  if (this.pitchAngle > HALF_PI) this.pitchAngle = HALF_PI;
+  if (this.pitchAngle < -HALF_PI) this.pitchAngle = -HALF_PI;
 };
 
 Player.prototype.createBoundingBox = function () {

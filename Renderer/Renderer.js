@@ -18,7 +18,7 @@ export default class Renderer {
 
   render(scene, frustum, shader = null) {
     if (shader != null) {
-      this.renderWithShader(scene, shader);
+      this.renderWithShader(scene, frustum, shader);
       return;
     }
     scene.objects.forEach((object) => {
