@@ -9,20 +9,58 @@ import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
 import GameObject from "../GameObject.js";
 
-export default function renderWithShader(scene, renderer) {
+const NumObjectsElement = document.getElementById("objects-rendering");
+
+export default function renderWithShader(scene, frustum, shader) {
   let objectsToRender = [];
   scene.objects.forEach((object) => {
     if (object instanceof Player) return;
     if (object instanceof GameObject) {
-      objectsToRender.push(object);
+      if (objectInFrustum(object, frustum)) {
+        // console.log("in frustum");
+        objectsToRender.push(object);
+      }
     }
   });
+  NumObjectsElement.innerText = objectsToRender.length;
 
   objectsToRender.forEach((object) => {
+    shader.setUniform("uRoughness", object.material.roughness);
+    shader.setUniform("uMetallic", object.material.metallic);
     renderMesh(object.mesh);
   });
 }
+function objectInFrustum(object, frustum) {
+  let bbox = object.collider.boundingBox;
 
+  let corners = [
+    new Vector3(bbox.minX, bbox.minY, bbox.minZ),
+    new Vector3(bbox.maxX, bbox.minY, bbox.minZ),
+    new Vector3(bbox.minX, bbox.maxY, bbox.minZ),
+    new Vector3(bbox.maxX, bbox.maxY, bbox.minZ),
+    new Vector3(bbox.minX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.maxX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.minX, bbox.maxY, bbox.maxZ),
+    new Vector3(bbox.maxX, bbox.maxY, bbox.maxZ),
+  ];
+  // console.log(frustum);
+
+  for (let plane of Object.values(frustum)) {
+    let behind = 0;
+    for (let corner of corners) {
+      let pointToCorner = Vector3.subtract(corner, plane.point).normalize();
+      // console.log(Vector3.dot(plane.normal, pointToCorner));
+      if (Vector3.dot(plane.normal, pointToCorner) > 0) {
+        behind++;
+      }
+    }
+    // console.log("front", inFront);
+    if (behind === 8) {
+      return false; // The AABB is completely outside this plane
+    }
+  }
+  return true;
+}
 function renderMesh(mesh) {
   let trianglesToRender = [];
   let validTriangles = returnValidTriangles(mesh);

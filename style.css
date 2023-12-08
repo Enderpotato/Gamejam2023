@@ -1,5 +1,7 @@
-#debug-text {
+#debug-text,
+#performance-info {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin: 0;
 }

@@ -72,19 +72,25 @@ Player.prototype.playerControl = function (dt) {
   } else if (keyIsDown(DOWN_ARROW)) {
     this.pitchAngle += -rotationSpeed;
   }
+
+  if (this.yawAngle > TAU) this.yawAngle -= TAU;
+  if (this.yawAngle < -TAU) this.yawAngle += TAU;
+
+  if (this.pitchAngle > HALF_PI) this.pitchAngle = HALF_PI;
+  if (this.pitchAngle < -HALF_PI) this.pitchAngle = -HALF_PI;
 };
 
 Player.prototype.createBoundingBox = function () {
   let min = new Vector3(
-    this.position.x - 0.5,
+    this.position.x - 1,
     this.position.y - 0.5,
-    this.position.z - 0.5
+    this.position.z - 1
   );
 
   let max = new Vector3(
-    this.position.x + 0.5,
+    this.position.x + 1,
     this.position.y + 5.5,
-    this.position.z + 0.5
+    this.position.z + 1
   );
 
   this.collider.boundingBox = new BoundingBox(min, max);

@@ -7,10 +7,11 @@ export default class Triangle {
     this.normal = null; // Vector3
 
     // for texture mapping, type Vector2T[3]
-    this.texture =
-      texture !== null
-        ? texture
-        : [new Vector2T(0, 0), new Vector2T(0, 0), new Vector2T(0, 0)];
+    this.texture = texture || [
+      new Vector2T(0, 0),
+      new Vector2T(0, 0),
+      new Vector2T(0, 0),
+    ];
     this.color = new Vector3(0, 255, 255);
   }
 }

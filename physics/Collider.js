@@ -78,7 +78,8 @@ Collider.prototype.onCollision = function (otherCollider) {
   let v2n = otherObject.velocity.dot(collisionNormal);
 
   // Calculate the new velocities along the normal direction after the collision
-  let restitution = this.gameobj.restitution * otherObject.restitution;
+  let restitution =
+    this.gameobj.material.restitution * otherObject.material.restitution;
   let newV1n, newV2n;
 
   if (this.gameobj.immovable) {
@@ -107,10 +108,12 @@ Collider.prototype.onCollision = function (otherCollider) {
 
   let overlapMag = minOverlap; //+ 0.0001;
   // Resolve penetration
-  let thisObjectImmovable =
-    this.gameobj.immovable || this.gameobj instanceof Player;
-  let otherObjectImmovable =
-    otherObject.immovable || otherObject instanceof Player;
+  // let thisObjectImmovable =
+  //   this.gameobj.immovable || this.gameobj instanceof Player;
+  // let otherObjectImmovable =
+  //   otherObject.immovable || otherObject instanceof Player;
+  let thisObjectImmovable = this.gameobj.immovable;
+  let otherObjectImmovable = otherObject.immovable;
 
   if (thisObjectImmovable && !otherObjectImmovable) {
     otherObject.position.add_(collisionNormal.elementMult(overlapMag));

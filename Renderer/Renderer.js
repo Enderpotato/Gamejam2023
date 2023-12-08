@@ -16,9 +16,9 @@ export default class Renderer {
     this.trianglesToRaster = [];
   }
 
-  render(scene, shader = false) {
-    if (shader) {
-      this.renderWithShader(scene, this);
+  render(scene, frustum, shader = null) {
+    if (shader != null) {
+      this.renderWithShader(scene, frustum, shader);
       return;
     }
     scene.objects.forEach((object) => {

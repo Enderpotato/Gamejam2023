@@ -2,11 +2,9 @@ import Renderer from "./Renderer/Renderer.js";
 import Vector3 from "./structs/Vector3.js";
 import Camera from "./Camera.js";
 import { cameraControlDebug } from "./Camera.js";
-import Map from "./map.js";
-import preloadAssets, { Textures } from "./preload.js";
+import preloadAssets from "./preload.js";
 import { bestShader } from "./preload.js";
 import { scene, sceneSetTextures, Lights, player } from "./sceneSetup.js";
-import Player from "./Player.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
@@ -19,13 +17,9 @@ const MAP_WIDTH = 400;
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
-export const ZNEAR = 0.1;
+export const ZNEAR = 1;
 export const ZFAR = 1000;
 export const AspectRatio = HEIGHT / WIDTH;
-var map_ = new Map(50, 40, -WIDTH / 2, -HEIGHT / 2);
-
-export const zBuffer = new Array(WIDTH * HEIGHT).fill(0);
-
 let canvas;
 export let frame;
 
@@ -76,7 +70,7 @@ function draw() {
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);
 
-  renderer.render(scene, true, frustum);
+  renderer.render(scene, frustum, bestShader);
   renderer.clear();
 
   resetShader();
