@@ -60,11 +60,11 @@ Collider.prototype.onCollision = function (otherCollider) {
 
   // Determine which bounding box is overlapping which
   if (
-    (overlap.x &&
+    (overlap.x == minOverlap &&
       this.boundingBox.position.x > otherCollider.boundingBox.position.x) ||
-    (overlap.y &&
+    (overlap.y == minOverlap &&
       this.boundingBox.position.y > otherCollider.boundingBox.position.y) ||
-    (overlap.z &&
+    (overlap.z == minOverlap &&
       this.boundingBox.position.z > otherCollider.boundingBox.position.z)
   ) {
     collisionNormal = collisionNormal.neg();
