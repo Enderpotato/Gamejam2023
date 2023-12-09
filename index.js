@@ -75,6 +75,12 @@ function draw() {
     lightPositions.push(...light.getUPosition());
     lightColors.push(...light.getUColor());
   });
+
+  // Clear the light data for unused lights
+  for (let i = numLights; i < Lights.length; i++) {
+    lightPositions.splice(i * 3, 3, 0, 0, 0);
+    lightColors.splice(i * 3, 3, 0, 0, 0);
+  }
   bestShader.setUniform("uNumLights", numLights);
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);

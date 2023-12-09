@@ -45,7 +45,7 @@ void main() {
 
     // lighting = ambient + diffuse + specular (blinn-phong model)
     vec3 lighting = vec3(0, 0, 0);
-    lighting = ambient * (1.0 - uMetallic) + diffuse * uRoughness + specular * uMetallic; // in between
+    lighting = ambient * (1.0 - uMetallic) * 0.4 + diffuse * uRoughness + specular * uMetallic; // in between
 
     vec4 matcapColor = texture2D(uMatcapTexture, vTexCoord);
 
