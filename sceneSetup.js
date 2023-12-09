@@ -51,7 +51,6 @@ let timeBetweenFlashes = 5; // time between flashes in seconds
 
 const lightFollow = new Light(null, new Vector3(1, 0, 0));
 lightFollow.lit = false;
-timeBetweenFlashes = boxMullerRandom() * 2 + 5; // ~ N(5, 2)
 lightFollow.update = function (dt) {
   this.position = player.position;
 
@@ -60,6 +59,8 @@ lightFollow.update = function (dt) {
   if (timeSinceLastFlash > timeBetweenFlashes + flashDuration) {
     this.lit = false;
     timeSinceLastFlash = 0;
+    flashDuration = boxMullerRandom() * 0.5 + 1; // ~ N(1, 0.5)
+    timeBetweenFlashes = boxMullerRandom() * 3 + 12; // ~ N(12, 3)
   }
   if (timeSinceLastFlash > timeBetweenFlashes && !this.lit) {
     this.lit = true;
