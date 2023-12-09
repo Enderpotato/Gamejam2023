@@ -9,7 +9,10 @@ const MapLength = 300;
 let cellWidth = 10;
 let cellLength = 10;
 
+export let Map2d = [];
+
 export async function loadMap(filepath) {
+  Map2d = [];
   const sceneArray = await parseMap(filepath);
   return sceneArray;
 }
@@ -29,8 +32,10 @@ function parseLine(line, sceneArray, row) {
   const height = 30;
   const Ypos = -10;
   const gridLine = line.split(",");
+  Map2d.push([]);
 
   gridLine.forEach((cell, col) => {
+    Map2d[row].push(parseInt(cell));
     if (parseInt(cell) == 0) {
       let wallCuboid = new MeshCuboid(cellWidth, height, cellLength);
       const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
