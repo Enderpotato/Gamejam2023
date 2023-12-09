@@ -42,7 +42,7 @@ function setup() {
 
 function draw() {
   //steve
-  steve.update(player.position, player.velocity);
+  steve.update(player);
   // console.log(player.angularVelocity)
 
   deltaTime /= 1;

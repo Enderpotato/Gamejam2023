@@ -21,9 +21,9 @@ export default class Steve{
         return this.position
     }
 
-    update(player_position, player_velocity){
-
-        this.position = player_position;
+    update(player){
+        console.log(player.position.subtract(this.position))
+        // this.position.add_((this.position.subtract_(player_position)));
         this.gObject = new GameObject(this.position, this.mesh);
     }
 }
