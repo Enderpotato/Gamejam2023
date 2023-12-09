@@ -46,10 +46,6 @@ function setup() {
 }
 
 function draw() {
-  //steve
-  steve.update(player);
-  // console.log(player.angularVelocity)
-
   deltaTime /= 1;
   deltaTime = Math.min(deltaTime, 1 / 30);
   FPSElement.innerHTML = Math.round(1 / deltaTime);

@@ -10,20 +10,28 @@ import Player from "./Player.js";
 import Material from "./graphics/Material.js";
 import { loadMap } from "./map.js";
 
-export default class Steve{
-    constructor(){
-        this.position = new Vector3(0, 0, 20);
-        this.mesh = new Mesh().createFromObj("./assets/testObjs/steve.obj");
-        this.gObject = new GameObject(this.position, this.mesh);
-    }
-
-    get_position(){
-        return this.position
-    }
-
-    update(player){
-        console.log(player.position.subtract(this.position))
-        // this.position.add_((this.position.subtract_(player_position)));
-        this.gObject = new GameObject(this.position, this.mesh);
-    }
+export default class Steve extends GameObject {
+  constructor(position, mesh) {
+    super(position);
+    this.mesh = mesh || null;
+  }
 }
+
+Steve.prototype.update = function (dt) {
+  // semi-implicit euler integration (copy-pasted from GameObject.js cuz this dont have mesh)
+  this.acc = Vector3.elementMult(this.force, this.invMass);
+  if (this.immovable) this.acc = Vector3.zeros();
+  this.velocity.add_(this.acc.elementMult(dt));
+  this.position.add_(this.velocity.elementMult(dt));
+  this.acc = Vector3.zeros();
+  this.force = Vector3.zeros();
+
+  const quat = Quaternion.fromEulerLogical(
+    this.rotation.x,
+    this.rotation.y,
+    this.rotation.z,
+    "XYZ"
+  );
+  this.mesh.update(this.position, quat, this.scale);
+  this.collider.createBoundingBox();
+};
