@@ -59,12 +59,14 @@ lightFollow.update = function (dt) {
   if (timeSinceLastFlash > timeBetweenFlashes + flashDuration) {
     this.lit = false;
     timeSinceLastFlash = 0;
-    flashDuration = boxMullerRandom() * 0.5 + 1; // ~ N(1, 0.5)
-    timeBetweenFlashes = boxMullerRandom() * 3 + 12; // ~ N(12, 3)
+    flashDuration = boxMullerRandom() * 0.5 + 2; // ~ N(2, 0.5)
+    timeBetweenFlashes = boxMullerRandom() * 3 + 10; // ~ N(10, 3)
   }
   if (timeSinceLastFlash > timeBetweenFlashes && !this.lit) {
     this.lit = true;
   }
+
+  // this.lit = true; // uncomment to always have light on
 };
 export const Lights = [lightFollow];
 

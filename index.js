@@ -11,14 +11,13 @@ import {
   steve,
   Gravity,
 } from "./sceneSetup.js";
-import pathFind from './search.js';
+import pathFind from "./search.js";
 import { Map2d } from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -51,8 +50,10 @@ function setup() {
 }
 
 function draw() {
-  deltaTime /= 1;
-  deltaTime = Math.min(deltaTime, 1 / 30);
+  deltaTime /= 1000;
+
+  // clamp deltaTime to prevent weird physics (lower fps = higher deltaTime)
+  deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
   background(0);
   clear();
