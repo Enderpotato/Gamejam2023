@@ -10,6 +10,7 @@ import Player from "./Player.js";
 import Material from "./graphics/Material.js";
 import { loadMap, Map2d } from "./map.js";
 import Steve from "./Steve.js";
+import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
@@ -37,17 +38,33 @@ const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
 export const scene = new Scene([gObject6, steve]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
-  scene.addObjects(sceneArray);
-  console.log(Map2d);
+  scene.addObjects(sceneArray, true);
 });
 
 gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
 
 export { gObject1, gObject2, gObject4, gObject5, gObject6 };
 
-const lightFollow = new Light();
+let timeSinceLastFlash = 0;
+let flashDuration = 2; // duration of flash in seconds
+let timeBetweenFlashes = 5; // time between flashes in seconds
+
+const lightFollow = new Light(null, new Vector3(1, 0, 0));
+lightFollow.lit = false;
 lightFollow.update = function (dt) {
   this.position = player.position;
+
+  timeSinceLastFlash += dt;
+  this.lit = false;
+  if (timeSinceLastFlash > timeBetweenFlashes + flashDuration) {
+    this.lit = false;
+    timeSinceLastFlash = 0;
+    flashDuration = boxMullerRandom() * 0.5 + 1; // ~ N(1, 0.5)
+    timeBetweenFlashes = boxMullerRandom() * 3 + 12; // ~ N(12, 3)
+  }
+  if (timeSinceLastFlash > timeBetweenFlashes && !this.lit) {
+    this.lit = true;
+  }
 };
 export const Lights = [lightFollow];
 

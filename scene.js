@@ -3,6 +3,7 @@ import { Gravity } from "./sceneSetup.js";
 export default class Scene {
   constructor(objects) {
     this.objects = [...objects];
+    this.walls = [];
   }
 }
 
@@ -19,11 +20,20 @@ Scene.prototype.update = function (dt) {
     object.collider.isCollidingBelow = false;
   });
 
+  this.walls.forEach((wall) => {
+    wall.update(dt);
+  });
+
   //loop until no collisions?
   let maxIterations = 10; // Maximum number of iterations to prevent infinite loops
   let iterations = 0;
 
   this.objects.forEach((object, index) => {
+    for (let wall of this.walls) {
+      if (object.collider.collide(wall.collider)) {
+        object.collider.onCollision(wall.collider);
+      }
+    }
     for (
       let otherIndex = index + 1;
       otherIndex < this.objects.length;
@@ -32,12 +42,15 @@ Scene.prototype.update = function (dt) {
       let otherObject = this.objects[otherIndex];
       if (object.collider.collide(otherObject.collider)) {
         object.collider.onCollision(otherObject.collider);
-        // collisionFound = true;
       }
     }
   });
 };
 
-Scene.prototype.addObjects = function (objects) {
+Scene.prototype.addObjects = function (objects, isWalls = false) {
+  if (isWalls) {
+    this.walls.push(...objects);
+    return;
+  }
   this.objects.push(...objects);
 };
