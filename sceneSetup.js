@@ -11,20 +11,17 @@ import Material from "./graphics/Material.js";
 import { loadMap } from "./map.js";
 import Steve from "./Steve.js";
 
-export const steve = new Steve();
-export const player = new Player();
-
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/bedroom.obj");
 let customMesh3 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
-let steveMesh = steve.mesh;
+let steveMesh = new Mesh().createFromObj("./assets/testObjs/steve.obj");
 let customMesh5 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 
 const gObject1 = new GameObject(new Vector3(0, -200, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
-const gSteve = steve.gObject; 
-//scale steve 
-gSteve.scale = new Vector3(10, 3, 3);
+export const steve = new Steve(new Vector3(0, 0, 20), steveMesh);
+export const player = new Player();
+steve.scale = new Vector3(3, 3, 3);
 const gObject4 = new GameObject(new Vector3(-30, -200, 30), customMesh5);
 gObject4.velocity.x = 8;
 
@@ -37,7 +34,7 @@ gObject6.immovable = true;
 const cube3 = new MeshCuboid(10, 10, 20);
 const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
 
-export const scene = new Scene([gObject6, gSteve]);
+export const scene = new Scene([gObject6, steve]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
   scene.addObjects(sceneArray);

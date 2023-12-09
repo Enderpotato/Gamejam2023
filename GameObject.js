@@ -45,11 +45,11 @@ GameObject.prototype.update = function (dt) {
 
   let [rotate_x, rotate_y, rotate_z] = [0, 0, 0];
   // i, o, p key for axis rotation (DEBUG)
-  const speed = 2 * dt;
-  if (keyIsDown(73)) rotate_x = speed;
-  if (keyIsDown(79)) rotate_y = speed;
-  if (keyIsDown(80)) rotate_z = speed;
-  this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
+  // const speed = 2 * dt;
+  // if (keyIsDown(73)) rotate_x = speed;
+  // if (keyIsDown(79)) rotate_y = speed;
+  // if (keyIsDown(80)) rotate_z = speed;
+  // this.rotation.add_(new Vector3(rotate_x, rotate_y, rotate_z));
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
@@ -60,4 +60,3 @@ GameObject.prototype.update = function (dt) {
   this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
 };
-
