@@ -45,9 +45,10 @@ gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
 
 export { gObject1, gObject2, gObject4, gObject5, gObject6 };
 
-const lightFollow = new Light();
+const lightFollow = new Light(null, new Vector3(1.0, 0, 0));
 lightFollow.update = function (dt) {
   this.position = player.position;
+  // this.lit = false;
 };
 export const Lights = [lightFollow];
 

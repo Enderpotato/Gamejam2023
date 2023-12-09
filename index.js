@@ -66,13 +66,16 @@ function draw() {
 
   let lightPositions = [];
   let lightColors = [];
+  let numLights = 0;
 
   Lights.forEach((light) => {
     light.update(deltaTime);
+    if (!light.lit) return;
+    numLights++;
     lightPositions.push(...light.getUPosition());
     lightColors.push(...light.getUColor());
   });
-  bestShader.setUniform("uNumLights", Lights.length);
+  bestShader.setUniform("uNumLights", numLights);
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);
 
