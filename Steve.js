@@ -1,14 +1,5 @@
-import Mesh from "./shapes/Mesh.js";
-import MeshCube from "./shapes/TestShapes/MeshCube.js";
-import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import GameObject from "./GameObject.js";
-import Scene from "./Scene.js";
-import { Textures } from "./preload.js";
-import Light from "./graphics/Light.js";
-import Player from "./Player.js";
-import Material from "./graphics/Material.js";
-import { loadMap } from "./map.js";
 
 export default class Steve extends GameObject {
   constructor(position, mesh) {
@@ -18,7 +9,7 @@ export default class Steve extends GameObject {
 }
 
 Steve.prototype.update = function (dt) {
-  // semi-implicit euler integration (copy-pasted from GameObject.js cuz this dont have mesh)
+  // semi-implicit euler integration (copy-pasted from GameObject.js)
   this.acc = Vector3.elementMult(this.force, this.invMass);
   if (this.immovable) this.acc = Vector3.zeros();
   this.velocity.add_(this.acc.elementMult(dt));

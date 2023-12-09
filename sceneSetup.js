@@ -8,7 +8,7 @@ import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
 import Player from "./Player.js";
 import Material from "./graphics/Material.js";
-import { loadMap } from "./map.js";
+import { loadMap, Map2d } from "./map.js";
 import Steve from "./Steve.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
@@ -38,6 +38,7 @@ export const scene = new Scene([gObject6, steve]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
   scene.addObjects(sceneArray);
+  console.log(Map2d);
 });
 
 gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
