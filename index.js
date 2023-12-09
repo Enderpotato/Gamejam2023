@@ -11,11 +11,14 @@ import {
   steve,
   Gravity,
 } from "./sceneSetup.js";
+import pathFind from './search.js';
+import { Map2d } from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
+
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -43,6 +46,8 @@ function setup() {
   player.setCamera(cameraC);
   scene.addObject(player);
   noStroke();
+  const pathFinder = new pathFind(Map2d, MAP_WIDTH, MAP_WIDTH);
+  pathFinder.generatePath();
 }
 
 function draw() {

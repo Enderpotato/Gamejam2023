@@ -28,7 +28,7 @@ gObject4.velocity.x = 8;
 const cube1 = new MeshCuboid(10, 10, 20);
 const gObject5 = new GameObject(new Vector3(30, -200, 30), cube1);
 gObject5.velocity.x = -8;
-const cube2 = new MeshCuboid(300, 40, 300);
+const cube2 = new MeshCuboid(300, 40, 329);
 const gObject6 = new GameObject(new Vector3(0, 25, 20), cube2);
 gObject6.immovable = true;
 const cube3 = new MeshCuboid(10, 10, 20);
@@ -38,7 +38,6 @@ export const scene = new Scene([gObject6, steve]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
   scene.addObjects(sceneArray);
-  console.log(Map2d);
 });
 
 gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
