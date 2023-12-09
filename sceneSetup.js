@@ -37,8 +37,7 @@ const gObject7 = new GameObject(new Vector3(10, -230, 30), cube3);
 export const scene = new Scene([gObject6, steve]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
-  scene.addObjects(sceneArray);
-  console.log(Map2d);
+  scene.addObjects(sceneArray, true);
 });
 
 gObject7.setMaterial(new Material(0.0, 1.0, 0.6));
