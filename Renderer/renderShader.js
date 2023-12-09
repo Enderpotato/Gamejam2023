@@ -14,7 +14,14 @@ export default function renderWithShader(scene, frustum, shader) {
     if (object instanceof Player) return;
     if (object instanceof GameObject) {
       if (objectInFrustum(object, frustum)) {
-        // console.log("in frustum");
+        objectsToRender.push(object);
+      }
+    }
+  });
+  scene.walls.forEach((object) => {
+    if (object instanceof Player) return;
+    if (object instanceof GameObject) {
+      if (objectInFrustum(object, frustum)) {
         objectsToRender.push(object);
       }
     }
