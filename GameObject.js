@@ -60,3 +60,4 @@ GameObject.prototype.update = function (dt) {
   this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
 };
+

@@ -3,7 +3,9 @@ import Camera from "./Camera.js";
 import { cameraControlDebug } from "./Camera.js";
 import preloadAssets from "./preload.js";
 import { bestShader } from "./preload.js";
-import { scene, sceneSetTextures, Lights, player } from "./sceneSetup.js";
+import { scene, sceneSetTextures, Lights, player, steve, Gravity } from "./sceneSetup.js";
+
+
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
@@ -16,8 +18,8 @@ const MAP_WIDTH = 400;
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
-export const ZNEAR = 0.1;
-export const ZFAR = 1000;
+export const ZNEAR = 1;
+export const ZFAR = 200;
 export const AspectRatio = WIDTH / HEIGHT;
 let canvas;
 export let frame;
@@ -39,7 +41,11 @@ function setup() {
 }
 
 function draw() {
-  deltaTime /= 1000;
+  //steve
+  steve.update(player.position, player.velocity);
+  // console.log(player.angularVelocity)
+
+  deltaTime /= 1;
   deltaTime = Math.min(deltaTime, 1 / 30);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
   background(0);
