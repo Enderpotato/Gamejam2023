@@ -64,7 +64,6 @@ export function castRay(rayDirection, rayOrigin) {
       hit = true;
     }
   }
-  console.log(mapX, mapY);
 
   // convert map coord to world coords
   let hitX = mapX * cellWidth - MapWidth / 2;
@@ -72,8 +71,8 @@ export function castRay(rayDirection, rayOrigin) {
 
   if (hitY < 0) hitY += cellHeight;
   if (hitX < 0) hitX += cellWidth;
-  console.log(hitX, hitY);
+  hit = new Vector2(hitX, hitY);
   rayLength = Math.sqrt((hitX - rayOrigin.x) ** 2 + (hitY - rayOrigin.z) ** 2);
 
-  return rayLength;
+  return { rayLength, hit };
 }

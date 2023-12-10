@@ -73,5 +73,6 @@ export function sceneSetTextures() {
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
   cube2.setTexture(Textures["bricks"]);
+
   console.log(castRay(new Vector3(0, 0, -1), new Vector3(0, 0, 0)));
 }
