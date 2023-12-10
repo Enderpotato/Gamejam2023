@@ -47,17 +47,17 @@ function objectInFrustum(object, frustum) {
     new Vector3(bbox.maxX, bbox.maxY, bbox.minZ),
     new Vector3(bbox.maxX, bbox.maxY, bbox.maxZ),
   ];
-  // console.log(frustum);
 
+  let margin = 0.1;
   for (let plane of Object.values(frustum)) {
-    let inFront = 0;
+    let behind = 0;
     for (let corner of corners) {
       let pointToCorner = Vector3.subtract(corner, plane.point).normalize();
-      if (Vector3.dot(plane.normal, pointToCorner) < 0) {
-        inFront++;
+      if (Vector3.dot(plane.normal, pointToCorner) > margin) {
+        behind++;
       }
     }
-    if (inFront === 0) {
+    if (behind === 8) {
       return false; // The AABB is completely outside this plane
     }
   }
