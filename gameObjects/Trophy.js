@@ -20,6 +20,6 @@ Trophy.prototype.collideWithPlayer = function () {
       scene.objects.splice(index, 1);
     }
     // bro i swear this is not me copilot literally generated this
-    // window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
   }
 };
