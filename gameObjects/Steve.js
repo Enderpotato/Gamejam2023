@@ -1,5 +1,6 @@
 import Vector3 from "../structs/Vector3.js";
 import GameObject from "./GameObject.js";
+import { player } from "./sceneSetup.js";
 
 export default class Steve extends GameObject {
   constructor(position, mesh) {
@@ -16,6 +17,7 @@ Steve.prototype.update = function (dt) {
   this.position.add_(this.velocity.elementMult(dt));
   this.acc = Vector3.zeros();
   this.force = Vector3.zeros();
+
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
