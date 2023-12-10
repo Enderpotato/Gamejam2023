@@ -57,6 +57,11 @@ Player.prototype.playerControl = function (dt) {
     this.velocity.y = -8;
   }
 
+  // e
+  if (keyIsDown(69)) {
+    this.velocity.y = -8;
+  }
+
   const rotationSpeed = 2 * deltaTime; // 2 radians per second
 
   // left and right arrow key for rotation

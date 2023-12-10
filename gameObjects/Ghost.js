@@ -1,6 +1,8 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import Material from "../graphics/Material.js";
+import { player } from "../sceneSetup.js";
+import { castRay } from "../helperFuncs/raycast.js";
 
 export default class Ghost extends GameObject {
   constructor(position, mesh) {
@@ -18,6 +20,14 @@ Ghost.prototype.update = function (dt) {
   this.position.add_(this.velocity.elementMult(dt));
   this.acc = Vector3.zeros();
   this.force = Vector3.zeros();
+
+  //idk (im racist)
+  this.velocity = (player.position.subtract(this.position)).normalize().elementMult(15.);
+  
+  console.log(castRay(new Vector3(0, 0, -1), this.position));
+  console.log(castRay(new Vector3(0, 0, 1), this.position));
+  console.log(castRay(new Vector3(1, 0, 0), this.position));
+  console.log(castRay(new Vector3(-1, 0, 0), this.position));
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,

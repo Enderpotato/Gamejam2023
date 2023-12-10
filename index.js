@@ -28,7 +28,7 @@ const MAP_WIDTH = 400;
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 0.3;
-export const ZFAR = 200;
+export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
 let canvas;
 export let frame;
@@ -45,14 +45,7 @@ function setup() {
   sceneSetTextures();
 
   player.setCamera(cameraC);
-  scene.addObject(player);
   noStroke();
-  // const pathFinder = new pathFind(Map2d, MAP_WIDTH, MAP_WIDTH);
-  // for (let i = 0; i < 200; i++){
-  //   pathFinder.generatePath();
-  // }
-  let a = new Vector3(3, 2, 5)
-  console.log(a.normalize_());
 }
 
 function draw() {

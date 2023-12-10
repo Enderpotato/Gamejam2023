@@ -35,7 +35,7 @@ const cube2 = new MeshCuboid(300, 40, 300);
 const gObject6 = new GameObject(new Vector3(0, 25, 0), cube2);
 gObject6.immovable = true;
 
-export const scene = new Scene([gObject6, ghost, trophy]);
+export const scene = new Scene([gObject6, ghost, trophy, player]);
 export const Gravity = new Vector3(0, 10, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
   scene.addObjects(sceneArray, true);
@@ -72,7 +72,4 @@ export function sceneSetTextures() {
   steveMesh.setTexture(Textures["steve"]);
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
-  cube2.setTexture(Textures["bricks"]);
-
-  console.log(castRay(new Vector3(0, 0, -1), new Vector3(0, 0, 0)));
-}
+  cube2.setTexture(Textures["bricks"]);}
