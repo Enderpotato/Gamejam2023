@@ -6,6 +6,7 @@ import { scene } from "../sceneSetup.js";
 export default class Trophy extends GameObject {
   constructor(position, mesh) {
     super(position, mesh);
+    this.scale = new Vector3(2, 2, 2);
   }
 }
 
