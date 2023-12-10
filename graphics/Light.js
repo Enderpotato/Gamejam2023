@@ -4,6 +4,7 @@ export default class Light {
   constructor(position, color) {
     this.position = position || new Vector3(0, 0, 0);
     this.color = color || new Vector3(1, 1, 1);
+    this.lit = true;
   }
 }
 

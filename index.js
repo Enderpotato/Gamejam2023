@@ -11,14 +11,13 @@ import {
   steve,
   Gravity,
 } from "./sceneSetup.js";
-import pathFind from './search.js';
+import pathFind from "./search.js";
 import { Map2d } from "./map.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -51,8 +50,10 @@ function setup() {
 }
 
 function draw() {
-  deltaTime /= 1;
-  deltaTime = Math.min(deltaTime, 1 / 30);
+  deltaTime /= 1000;
+
+  // clamp deltaTime to prevent weird physics (lower fps = higher deltaTime)
+  deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
   background(0);
   clear();
@@ -71,13 +72,22 @@ function draw() {
 
   let lightPositions = [];
   let lightColors = [];
+  let numLights = 0;
 
   Lights.forEach((light) => {
     light.update(deltaTime);
+    if (!light.lit) return;
+    numLights++;
     lightPositions.push(...light.getUPosition());
     lightColors.push(...light.getUColor());
   });
-  bestShader.setUniform("uNumLights", Lights.length);
+
+  // Clear the light data for unused lights
+  for (let i = numLights; i < Lights.length; i++) {
+    lightPositions.splice(i * 3, 3, 0, 0, 0);
+    lightColors.splice(i * 3, 3, 0, 0, 0);
+  }
+  bestShader.setUniform("uNumLights", numLights);
   bestShader.setUniform("uLightPosition", lightPositions);
   bestShader.setUniform("uLightColor", lightColors);
 
