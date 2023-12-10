@@ -7,6 +7,13 @@ export default class Vector3 {
   }
 }
 
+Vector3.prototype.normalize_ = function () {
+  let invMag = 1 / Vector3.mag(this);
+  this.x *= invMag;
+  this.y *= invMag;
+  this.z *= invMag;
+};
+
 Vector3.zeros = function () {
   return new Vector3(0, 0, 0);
 };

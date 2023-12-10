@@ -74,6 +74,12 @@ BoundingBox.createFromMesh = function (gameobj) {
   return new BoundingBox(min, max);
 };
 
+BoundingBox.prototype.translateBottomDown = function (amount) {
+  this.maxY += amount;
+  this.position.y -= amount;
+  this.l += amount;
+};
+
 BoundingBox.prototype.draw = function () {
   stroke(255, 0, 0);
 

@@ -1,15 +1,21 @@
-import GameObject from "./GameObject.js";
+import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
 
+// lmao back to 2d coords
 const MapWidth = 300;
-const MapLength = 300;
+const MapHeight = 300;
 
 let cellWidth = 10;
-let cellLength = 10;
+let cellHeight = 10;
+
+let MapGridW = 0;
+let MapGridH = 0;
 
 export let Map2d = [];
+
+export { MapWidth, MapHeight, cellWidth, cellHeight, MapGridW, MapGridH };
 
 export async function loadMap(filepath) {
   Map2d = [];
@@ -22,8 +28,10 @@ async function parseMap(filepath) {
   const response = await fetch(filepath);
   let data = await response.text();
   data = data.split("\n");
-  cellLength = Math.round(300 / data.length);
-  cellWidth = Math.round(300 / data[0].split(",").length);
+  MapGridW = data[0].split(",").length;
+  MapGridH = data.length - 1;
+  cellHeight = Math.round(300 / MapGridH);
+  cellWidth = Math.round(300 / MapGridW);
   data.forEach((line, row) => parseLine(line, sceneArray, row));
   return sceneArray;
 }
@@ -32,14 +40,15 @@ function parseLine(line, sceneArray, row) {
   const height = 30;
   const Ypos = -10;
   const gridLine = line.split(",");
+  if (gridLine.length < MapGridW) return;
   Map2d.push([]);
 
   gridLine.forEach((cell, col) => {
     Map2d[row].push(parseInt(cell));
     if (parseInt(cell) == 0) {
-      let wallCuboid = new MeshCuboid(cellWidth, height, cellLength);
+      let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
       const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
-      const Zpos = row * cellLength + cellLength / 2 - MapLength / 2;
+      const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
       const wallPosition = new Vector3(Xpos, Ypos, Zpos);
       let wallCell = new GameObject(wallPosition, wallCuboid);
       wallCuboid.setTexture(Textures["walter"]);

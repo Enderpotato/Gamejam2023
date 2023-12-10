@@ -1,10 +1,10 @@
 import Vector3 from "../structs/Vector3.js";
 import Triangle from "../shapes/Triangle.js";
-import Player from "../Player.js";
+import Player from "../gameObjects/Player.js";
 import { cameraC } from "../index.js";
 import { bestShader } from "../preload.js";
 import { Textures } from "../preload.js";
-import GameObject from "../GameObject.js";
+import GameObject from "../gameObjects/GameObject.js";
 
 const NumObjectsElement = document.getElementById("objects-rendering");
 

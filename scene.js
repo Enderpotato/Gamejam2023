@@ -1,4 +1,5 @@
-import { Gravity } from "./sceneSetup.js";
+import Player from "./gameObjects/Player.js";
+import { Gravity, player } from "./sceneSetup.js";
 
 export default class Scene {
   constructor(objects) {
@@ -41,6 +42,13 @@ Scene.prototype.update = function (dt) {
     ) {
       let otherObject = this.objects[otherIndex];
       if (object.collider.collide(otherObject.collider)) {
+        if (object instanceof Player) {
+          otherObject.collideWithPlayer();
+        }
+        if (otherObject instanceof Player) {
+          object.collideWithPlayer();
+        }
+
         object.collider.onCollision(otherObject.collider);
       }
     }

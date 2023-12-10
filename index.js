@@ -11,6 +11,10 @@ import {
   steve,
   Gravity,
 } from "./sceneSetup.js";
+// import pathFind from "./search.js";
+import Direction from "./search2.js";
+import { Map2d } from "./map.js";
+import Vector3 from "./structs/Vector3.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
@@ -43,11 +47,19 @@ function setup() {
   player.setCamera(cameraC);
   scene.addObject(player);
   noStroke();
+  // const pathFinder = new pathFind(Map2d, MAP_WIDTH, MAP_WIDTH);
+  // for (let i = 0; i < 200; i++){
+  //   pathFinder.generatePath();
+  // }
+  let a = new Vector3(3, 2, 5)
+  console.log(a.normalize_());
 }
 
 function draw() {
-  deltaTime /= 1;
-  deltaTime = Math.min(deltaTime, 1 / 30);
+  deltaTime /= 1000;
+
+  // clamp deltaTime to prevent weird physics (lower fps = higher deltaTime)
+  deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
   background(0);
   clear();

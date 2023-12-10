@@ -1,6 +1,6 @@
-import Vector3 from "./structs/Vector3.js";
-import Collider from "./physics/Collider.js";
-import Material from "./graphics/Material.js";
+import Vector3 from "../structs/Vector3.js";
+import Collider from "../physics/Collider.js";
+import Material from "../graphics/Material.js";
 
 export default class GameObject {
   constructor(position, mesh) {
@@ -60,3 +60,5 @@ GameObject.prototype.update = function (dt) {
   this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
 };
+
+GameObject.prototype.collideWithPlayer = function () {};
