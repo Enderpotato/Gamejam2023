@@ -61,8 +61,8 @@ lightFollow.update = function (dt) {
     this.lit = true;
   }
 
-  // this.color = new Vector3(1, 1, 1); // uncomment to have white light
-  // this.lit = true; // uncomment to always have light on
+  this.color = new Vector3(1, 1, 1); // uncomment to have white light
+  this.lit = true; // uncomment to always have light on
 };
 export const Lights = [lightFollow];
 
