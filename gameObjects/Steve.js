@@ -26,3 +26,7 @@ Steve.prototype.update = function (dt) {
   this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
 };
+
+Steve.prototype.collideWithPlayer = function () {
+  // idk
+};
