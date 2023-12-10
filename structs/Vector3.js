@@ -193,6 +193,15 @@ Vector3.prototype.normalize = function () {
   return new Vector3(this.x / mag, this.y / mag, this.z / mag);
 };
 
+Vector3.prototype.normalize_ = function () {
+  let mag = this.mag();
+  if (mag === 0) return;
+  mag = 1 / mag;
+  this.x *= mag;
+  this.y *= mag;
+  this.z *= mag;
+};
+
 Vector3.prototype.neg = function () {
   return new Vector3(-this.x, -this.y, -this.z);
 };

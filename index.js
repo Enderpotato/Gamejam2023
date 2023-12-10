@@ -47,12 +47,9 @@ function setup() {
   player.setCamera(cameraC);
   scene.addObject(player);
   noStroke();
-  // const pathFinder = new pathFind(Map2d, MAP_WIDTH, MAP_WIDTH);
-  // for (let i = 0; i < 200; i++){
-  //   pathFinder.generatePath();
-  // }
-  let a = new Vector3(3, 2, 5)
-  console.log(a.normalize_());
+  let a = new Vector3(3, 2, 5);
+  a.normalize_();
+  console.log(a);
 }
 
 function draw() {
