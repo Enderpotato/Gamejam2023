@@ -20,12 +20,8 @@ export function castRay(rayDirection, rayOrigin) {
   // calculate initial values
   let mapX = Math.floor(rayX / cellWidth);
   let mapY = Math.floor(rayY / cellHeight);
-
-  console.log(mapX, mapY);
-
-  let deltaDistX = rayDir.x < 0.001 ? 0 : Math.abs(1 / rayDir.x);
-  let deltaDistY = rayDir.y < 0.001 ? 0 : Math.abs(1 / rayDir.y);
-  console.log(deltaDistX, deltaDistY);
+  let deltaDistX = Math.abs(1 / rayDir.x);
+  let deltaDistY = Math.abs(1 / rayDir.y);
 
   let stepX, stepY;
   let sideDistX, sideDistY;
@@ -52,8 +48,32 @@ export function castRay(rayDirection, rayOrigin) {
     sideDistY = 0;
   }
 
-  console.log(MapGridW, MapGridH);
-  console.log(sideDistX, sideDistY);
+  let hit = false;
+  let side = 0;
+  while (!hit) {
+    if (sideDistX < sideDistY) {
+      sideDistX += deltaDistX;
+      mapX += stepX;
+      side = 0;
+    } else {
+      sideDistY += deltaDistY;
+      mapY += stepY;
+      side = 1;
+    }
+    if (Map2d[mapY][mapX] == 0) {
+      hit = true;
+    }
+  }
+  console.log(mapX, mapY);
+
+  // convert map coord to world coords
+  let hitX = mapX * cellWidth - MapWidth / 2;
+  let hitY = mapY * cellHeight - MapHeight / 2;
+
+  if (hitY < 0) hitY += cellHeight;
+  if (hitX < 0) hitX += cellWidth;
+  console.log(hitX, hitY);
+  rayLength = Math.sqrt((hitX - rayOrigin.x) ** 2 + (hitY - rayOrigin.z) ** 2);
 
   return rayLength;
 }
