@@ -1,4 +1,4 @@
-import GameObject from "./GameObject.js";
+import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";

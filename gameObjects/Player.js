@@ -1,6 +1,6 @@
 import GameObject from "./GameObject.js";
-import BoundingBox from "./physics/BoundingBox.js";
-import Vector3 from "./structs/Vector3.js";
+import BoundingBox from "../physics/BoundingBox.js";
+import Vector3 from "../structs/Vector3.js";
 
 export default class Player extends GameObject {
   constructor(position, camera) {
@@ -10,8 +10,6 @@ export default class Player extends GameObject {
     this.yawAngle = 0; // Y axis
     this.pitchAngle = 0; // X axis
   }
-
-
 }
 
 Player.prototype.setCamera = function (camera) {
@@ -98,6 +96,6 @@ Player.prototype.createBoundingBox = function () {
   this.collider.boundingBox = new BoundingBox(min, max);
 };
 
-Player.prototype.get_pos = function(){
+Player.prototype.get_pos = function () {
   return Vector3(this.position.x, this.position.z);
-}
+};

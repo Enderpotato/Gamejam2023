@@ -1,4 +1,4 @@
-import Vector3 from "./structs/Vector3.js";
+import Vector3 from "../structs/Vector3.js";
 import GameObject from "./GameObject.js";
 
 export default class Steve extends GameObject {
@@ -25,4 +25,8 @@ Steve.prototype.update = function (dt) {
   );
   this.mesh.update(this.position, quat, this.scale);
   this.collider.createBoundingBox();
+};
+
+Steve.prototype.collideWithPlayer = function () {
+  // idk
 };
