@@ -7,7 +7,7 @@ export default class Vector3 {
   }
 }
 
-Vector3.normalize_ = function () {
+Vector3.prototype.normalize_ = function () {
   let invMag = 1 / Vector3.mag(this);
   this.x *= invMag;
   this.y *= invMag;

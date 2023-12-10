@@ -7,7 +7,7 @@ import {
     Gravity,
   } from "./sceneSetup.js";
 import Vector3 from "./structs/Vector3.js";
-import Player from "./Player.js";
+import Player from "./gameObjects/Player.js";
 
 export default class Direction{
     constructor(){
