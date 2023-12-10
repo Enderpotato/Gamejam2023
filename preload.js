@@ -16,6 +16,7 @@ export default function preloadAssets() {
     "diamond"
   );
   Textures.addTexture(loadImage("assets/textures/steve.png"), "steve");
+  Textures.addTexture(loadImage("assets/textures/ghost.png"), "ghost");
   Textures.addTexture(loadImage("assets/textures/walter.png"), "walter");
   Textures.addTexture(loadImage("assets/textures/trophy.png"), "trophy");
 
