@@ -1,4 +1,4 @@
-import Vector3 from "./structs/Vector3.js";
+import Vector3 from "../structs/Vector3.js";
 import GameObject from "./GameObject.js";
 
 export default class Steve extends GameObject {

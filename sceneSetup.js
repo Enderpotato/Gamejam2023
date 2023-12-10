@@ -2,16 +2,16 @@ import Mesh from "./shapes/Mesh.js";
 import MeshCube from "./shapes/TestShapes/MeshCube.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
-import GameObject from "./GameObject.js";
+import GameObject from "./gameObjects/GameObject.js";
 import Scene from "./Scene.js";
 import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
-import Player from "./Player.js";
+import Player from "./gameObjects/Player.js";
 import Material from "./graphics/Material.js";
 import { loadMap, Map2d } from "./map.js";
-import Steve from "./Steve.js";
+import Steve from "./gameObjects/Steve.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
-import Trophy from "./Trophy.js";
+import Trophy from "./gameObjects/Trophy.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
@@ -58,7 +58,7 @@ lightFollow.update = function (dt) {
     this.lit = true;
   }
 
-  // this.color = new Vector3(1, 1, 1); // uncomment to have white light
+  this.color = new Vector3(1, 1, 1); // uncomment to have white light
   this.lit = true; // uncomment to always have light on
 };
 export const Lights = [lightFollow];
