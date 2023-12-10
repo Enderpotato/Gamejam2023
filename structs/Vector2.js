@@ -5,6 +5,29 @@ export default class Vector2 {
   }
 }
 
+Vector2.prototype.add = function (b) {
+  return new Vector2(this.x + b.x, this.y + b.y);
+};
+
+Vector2.prototype.sub = function (b) {
+  return new Vector2(this.x - b.x, this.y - b.y);
+};
+
+Vector2.prototype.mag = function () {
+  return Math.sqrt(this.x * this.x + this.y * this.y);
+};
+
+Vector2.prototype.normalize = function () {
+  let mag = this.mag();
+  return new Vector2(this.x / mag, this.y / mag);
+};
+
+Vector2.prototype.normalize_ = function () {
+  let mag = this.mag();
+  this.x /= mag;
+  this.y /= mag;
+};
+
 // for texture coordinates
 export class Vector2T {
   constructor(u, v, w = 1) {

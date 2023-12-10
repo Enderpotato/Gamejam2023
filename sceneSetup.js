@@ -13,6 +13,7 @@ import Steve from "./gameObjects/Steve.js";
 import Ghost from "./gameObjects/Ghost.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
 import Trophy from "./gameObjects/Trophy.js";
+import { castRay } from "./helperFuncs/raycast.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
@@ -72,4 +73,5 @@ export function sceneSetTextures() {
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
   cube2.setTexture(Textures["bricks"]);
+  console.log(castRay(new Vector3(1, 0, 1), new Vector3(0, 0, 0)));
 }

@@ -29,7 +29,7 @@ async function parseMap(filepath) {
   let data = await response.text();
   data = data.split("\n");
   MapGridW = data[0].split(",").length;
-  MapGridH = data.length;
+  MapGridH = data.length - 1;
   cellHeight = Math.round(300 / MapGridH);
   cellWidth = Math.round(300 / MapGridW);
   data.forEach((line, row) => parseLine(line, sceneArray, row));
