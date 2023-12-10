@@ -1,6 +1,10 @@
 import Vector3 from "../structs/Vector3.js";
 import GameObject from "./GameObject.js";
+<<<<<<< Updated upstream
 import { player } from "../sceneSetup.js";
+=======
+// import { player } from "./sceneSetup.js";
+>>>>>>> Stashed changes
 
 export default class Steve extends GameObject {
   constructor(position, mesh) {
