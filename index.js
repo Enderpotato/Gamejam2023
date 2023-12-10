@@ -28,7 +28,7 @@ const MAP_WIDTH = 400;
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 0.3;
-export const ZFAR = 400;
+export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
 let canvas;
 export let frame;

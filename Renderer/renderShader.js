@@ -39,27 +39,25 @@ function objectInFrustum(object, frustum) {
 
   let corners = [
     new Vector3(bbox.minX, bbox.minY, bbox.minZ),
-    new Vector3(bbox.maxX, bbox.minY, bbox.minZ),
-    new Vector3(bbox.minX, bbox.maxY, bbox.minZ),
-    new Vector3(bbox.maxX, bbox.maxY, bbox.minZ),
     new Vector3(bbox.minX, bbox.minY, bbox.maxZ),
-    new Vector3(bbox.maxX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.minX, bbox.maxY, bbox.minZ),
     new Vector3(bbox.minX, bbox.maxY, bbox.maxZ),
+    new Vector3(bbox.maxX, bbox.minY, bbox.minZ),
+    new Vector3(bbox.maxX, bbox.minY, bbox.maxZ),
+    new Vector3(bbox.maxX, bbox.maxY, bbox.minZ),
     new Vector3(bbox.maxX, bbox.maxY, bbox.maxZ),
   ];
   // console.log(frustum);
 
   for (let plane of Object.values(frustum)) {
-    let behind = 0;
+    let inFront = 0;
     for (let corner of corners) {
       let pointToCorner = Vector3.subtract(corner, plane.point).normalize();
-      // console.log(Vector3.dot(plane.normal, pointToCorner));
-      if (Vector3.dot(plane.normal, pointToCorner) > 0) {
-        behind++;
+      if (Vector3.dot(plane.normal, pointToCorner) < 0) {
+        inFront++;
       }
     }
-    // console.log("front", inFront);
-    if (behind === 8) {
+    if (inFront === 0) {
       return false; // The AABB is completely outside this plane
     }
   }
