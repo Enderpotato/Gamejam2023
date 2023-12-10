@@ -1,10 +1,12 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
+import Material from "../graphics/Material.js";
 
 export default class Ghost extends GameObject {
   constructor(position, mesh) {
     super(position, mesh);
-    this.scale = new Vector3(2, 2, 2);
+    this.scale = new Vector3(3, 3, 3);
+    this.setMaterial(new Material(0.9, 0.4, 0.1));
   }
 }
 
