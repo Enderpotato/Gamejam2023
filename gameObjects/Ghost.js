@@ -10,7 +10,7 @@ export default class Ghost extends GameObject {
     super(position, mesh);
     this.scale = new Vector3(3, 3, 3);
     this.setMaterial(new Material(0.9, 0.4, 0.1));
-    this.direction = new Direction();
+    this.direction = new Direction(16);
   }
 }
 
@@ -24,7 +24,7 @@ Ghost.prototype.update = function (dt) {
   this.force = Vector3.zeros();
 
   //idk (im racist)
-  let ghostVel = this.direction.getDirection(this.position, player.position).normalize().elementMult(deltaTime*10);
+  let ghostVel = this.direction.getDirection(this.position, player.position, ghost.rotation.y).normalize().elementMult(deltaTime*10);
   this.position.add_(ghostVel);
   // let noisyVector = new Vector3(noise(this.position.x), 0, noise(this.position.y)).normalize().elementMult(deltaTime);
   // console.log(player.position)
@@ -43,7 +43,6 @@ Ghost.prototype.update = function (dt) {
   } else if (Math.sign(relativePositionToGhost.x) == -1 && Math.sign(relativePositionToGhost.z) == 1){
     this.rotation.y = -PI - Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
   }
-  // console.log(Math.sign(relativePositionToGhost.x), Math.sign(relativePositionToGhost.z))
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
