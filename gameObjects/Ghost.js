@@ -24,26 +24,26 @@ Ghost.prototype.update = function (dt) {
   this.force = Vector3.zeros();
 
   //idk (im racist)
-  this.position.add_(this.direction.getDirection(this.position, player.position).normalize().elementMult(deltaTime*10));
+  let ghostVel = this.direction.getDirection(this.position, player.position).normalize().elementMult(deltaTime*10);
+  this.position.add_(ghostVel);
   // let noisyVector = new Vector3(noise(this.position.x), 0, noise(this.position.y)).normalize().elementMult(deltaTime);
   // console.log(player.position)
   // this.position.add_(noisyVector.normalize());
   // console.log(this.direction);
   
   let PI = Math.PI;
-  let yRotations = [0, PI/4, PI/2, 3*PI/4, PI, -3*PI/4, -PI/2, -PI/4];
-  let relativePosition = this.position.subtract(player.position);
+  let relativePositionToGhost = this.position.subtract(player.position);
 
-  if (Math.sign(relativePosition.x) == -1 && Math.sign(relativePosition.z) == -1){
-    this.rotation.y = -Math.atan(relativePosition.x/relativePosition.z);
-  } else if (Math.sign(relativePosition.x) == 1 && Math.sign(relativePosition.z) == -1){
-    this.rotation.y = -Math.atan(relativePosition.x/relativePosition.z);
-  } else if (Math.sign(relativePosition.x) == 1 && Math.sign(relativePosition.z) == 1){
-    this.rotation.y = PI - Math.atan(relativePosition.x/relativePosition.z);
-  } else if (Math.sign(relativePosition.x) == -1 && Math.sign(relativePosition.z) == 1){
-    this.rotation.y = -PI - Math.atan(relativePosition.x/relativePosition.z);
+  if (Math.sign(relativePositionToGhost.x) == -1 && Math.sign(relativePositionToGhost.z) == -1){
+    this.rotation.y = -Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
+  } else if (Math.sign(relativePositionToGhost.x) == 1 && Math.sign(relativePositionToGhost.z) == -1){
+    this.rotation.y = -Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
+  } else if (Math.sign(relativePositionToGhost.x) == 1 && Math.sign(relativePositionToGhost.z) == 1){
+    this.rotation.y = PI - Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
+  } else if (Math.sign(relativePositionToGhost.x) == -1 && Math.sign(relativePositionToGhost.z) == 1){
+    this.rotation.y = -PI - Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
   }
-  // console.log(Math.sign(relativePosition.x), Math.sign(relativePosition.z))
+  // console.log(Math.sign(relativePositionToGhost.x), Math.sign(relativePositionToGhost.z))
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
