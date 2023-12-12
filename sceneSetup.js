@@ -24,7 +24,7 @@ let trophyMesh = new Mesh().createFromObj("./assets/game3dModels/trophy.obj");
 
 const gObject1 = new GameObject(new Vector3(0, -200, 30), customMesh1);
 const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
-const trophy = new Trophy(new Vector3(0, 0, 50), trophyMesh);
+const trophy = new Trophy(new Vector3(1000, 0, 50), trophyMesh);
 trophy.setMaterial(new Material(0, 1, 0.1));
 export const steve = new Steve(new Vector3(0, 0, 20), steveMesh);
 export const ghost = new Ghost(new Vector3(0, 0, 20), ghostMesh);
