@@ -22,34 +22,34 @@ export default class Direction {
           Math.cos(i * deltaDirVector),
           0,
           Math.sin(i * deltaDirVector)
-        )
+        ).normalize()
       );
     }
   }
 }
 
-Direction.prototype.getDirection = function (
-  ghostPosition,
-  playerPostion,
-  ghostFacing
-) {
-  let avg_vector = new Vector3(0, 0, 0);
-  let playerToGhost = ghostPosition.subtract(playerPostion);
-  for (let i = 0; i < this.vectors.length; i++) {
-    this.vectors[i] = get_weighted_vector(
-      castRay(this.directions[i], ghostPosition).rayLength,
-      this.directions[i]
+Direction.prototype.getDirection = function (ghostPosition, playerPostion) {
+  let toPlayerDir = playerPostion.subtract(ghostPosition).normalize();
+  toPlayerDir.y = 0;
+
+  let dangerWeights = new Array(this.directions.length);
+  let targetWeights = new Array(this.directions.length);
+  for (let i = 0; i < this.directions.length; i++) {
+    targetWeights[i] =
+      Math.max(0, Vector3.dot(this.directions[i], toPlayerDir)) * 10;
+
+    // inverse of distance since the closer the ghost to the wall the more it wanna avoid it
+    dangerWeights[i] =
+      100 / castRay(this.directions[i], ghostPosition).rayLength;
+  }
+  let finalDir = new Vector3(0, 0, 0);
+  for (let i = 0; i < this.directions.length; i++) {
+    finalDir.add_(
+      this.directions[i].elementMult(targetWeights[i] - dangerWeights[i])
     );
-    avg_vector.subtract_(this.vectors[i]);
   }
 
-  playerToGhost = ghostPosition.subtract(playerPostion);
-
-  avg_vector.y = 0;
-  playerToGhost.y = 0;
-  avg_vector.add_(playerToGhost.elementMult(5));
-
-  return avg_vector.neg();
+  return finalDir;
 };
 
 function get_weighted_vector(weight, vector) {
