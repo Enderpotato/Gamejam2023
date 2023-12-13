@@ -35,14 +35,12 @@ Ghost.prototype.update = function (dt) {
   if (this.hostile) {
     let ghostVel = this.direction
       .getDirection(this.position, player.position)
-      .normalize()
       .elementMult(deltaTime * 10);
     this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
     this.position.add_(ghostVel);
   } else {
     let ghostVel = this.direction
       .wanderDirection(this.position)
-      .normalize()
       .elementMult(deltaTime * 10);
     this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
     this.position.add_(ghostVel);
