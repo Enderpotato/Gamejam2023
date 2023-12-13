@@ -12,7 +12,7 @@ export default class Ghost extends GameObject {
     this.scale = new Vector3(3, 3, 3);
     this.setMaterial(new Material(0.9, 0.4, 0.1));
     this.hostile = false;
-    this.direction = new Direction(8);
+    this.direction = new Direction(12);
   }
 }
 
@@ -51,4 +51,8 @@ Ghost.prototype.update = function (dt) {
 
   // floating effect
   this.collider.boundingBox.translateBottomDown(2);
+};
+
+Ghost.prototype.collideWithPlayer = function () {
+  console.log("boo");
 };
