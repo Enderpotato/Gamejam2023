@@ -4,6 +4,7 @@ import Material from "../graphics/Material.js";
 import { ghost, player } from "../sceneSetup.js";
 import { castRay } from "../helperFuncs/raycast.js";
 import Direction from "../search2.js";
+import Vector2 from "../structs/Vector2.js";
 
 export default class Ghost extends GameObject {
   constructor(position, mesh) {
@@ -25,18 +26,21 @@ Ghost.prototype.update = function (dt) {
   this.force = Vector3.zeros();
 
   //idk (im racist)
-  let ghostVel = this.direction
-    .getDirection(this.position, player.position, ghost.rotation.y)
-    .normalize()
-    .elementMult(deltaTime * 10);
+  let ghostVel = new Vector3(0, 0, 0);
+  let vectorToPlayer = player.position.subtract(this.position);
+  let distToPlayer = new Vector2(vectorToPlayer.x, vectorToPlayer.z).mag();
+  // if player dist is less than dist to wall, then ghost is hostile
+  this.hostile =
+    castRay(vectorToPlayer, this.position).rayLength > distToPlayer;
+  if (this.hostile) {
+    ghostVel = this.direction
+      .getDirection(this.position, player.position, ghost.rotation.y)
+      .normalize()
+      .elementMult(deltaTime * 10);
+  }
   this.position.add_(ghostVel);
-  let PI = Math.PI;
-  let relativePositionToGhost = this.position.subtract(player.position);
 
-  this.rotation.y = Math.atan2(
-    relativePositionToGhost.x,
-    -relativePositionToGhost.z
-  );
+  this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
 
   const quat = Quaternion.fromEulerLogical(
     this.rotation.x,
