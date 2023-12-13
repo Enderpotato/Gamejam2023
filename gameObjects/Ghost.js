@@ -1,7 +1,8 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
+import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
-import { ghost, player } from "../sceneSetup.js";
+import { player } from "../sceneSetup.js";
 import { castRay } from "../helperFuncs/raycast.js";
 import Direction from "../search2.js";
 
@@ -10,7 +11,9 @@ export default class Ghost extends GameObject {
     super(position, mesh);
     this.scale = new Vector3(3, 3, 3);
     this.setMaterial(new Material(0.9, 0.4, 0.1));
-    this.direction = new Direction(16);
+    this.hostile = false;
+    this.hostileCooldown = 0;
+    this.direction = new Direction(8);
   }
 }
 
@@ -24,24 +27,23 @@ Ghost.prototype.update = function (dt) {
   this.force = Vector3.zeros();
 
   //idk (im racist)
-  let ghostVel = this.direction.getDirection(this.position, player.position, ghost.rotation.y).normalize().elementMult(deltaTime*10);
-  this.position.add_(ghostVel);
-  // let noisyVector = new Vector3(noise(this.position.x), 0, noise(this.position.y)).normalize().elementMult(deltaTime);
-  // console.log(player.position)
-  // this.position.add_(noisyVector.normalize());
-  // console.log(this.direction);
-  
-  let PI = Math.PI;
-  let relativePositionToGhost = this.position.subtract(player.position);
+  let vectorToPlayer = player.position.subtract(this.position);
+  let distToPlayer = new Vector2(vectorToPlayer.x, vectorToPlayer.z).mag();
+  // player is within 50 units (ghost can detect through walls)
+  this.hostile = distToPlayer < 50;
 
-  if (Math.sign(relativePositionToGhost.x) == -1 && Math.sign(relativePositionToGhost.z) == -1){
-    this.rotation.y = -Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
-  } else if (Math.sign(relativePositionToGhost.x) == 1 && Math.sign(relativePositionToGhost.z) == -1){
-    this.rotation.y = -Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
-  } else if (Math.sign(relativePositionToGhost.x) == 1 && Math.sign(relativePositionToGhost.z) == 1){
-    this.rotation.y = PI - Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
-  } else if (Math.sign(relativePositionToGhost.x) == -1 && Math.sign(relativePositionToGhost.z) == 1){
-    this.rotation.y = -PI - Math.atan(relativePositionToGhost.x/relativePositionToGhost.z);
+  if (this.hostile) {
+    let ghostVel = this.direction
+      .getDirection(this.position, player.position)
+      .elementMult(deltaTime * 10);
+    this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
+    this.position.add_(ghostVel);
+  } else {
+    let ghostVel = this.direction
+      .wanderDirection(this.position)
+      .elementMult(deltaTime * 10);
+    this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
+    this.position.add_(ghostVel);
   }
 
   const quat = Quaternion.fromEulerLogical(
@@ -55,4 +57,8 @@ Ghost.prototype.update = function (dt) {
 
   // floating effect
   this.collider.boundingBox.translateBottomDown(2);
+};
+
+Ghost.prototype.collideWithPlayer = function () {
+  console.log("boo");
 };

@@ -45,7 +45,7 @@ function parseLine(line, sceneArray, row) {
 
   gridLine.forEach((cell, col) => {
     Map2d[row].push(parseInt(cell));
-    if (parseInt(cell) == 0) {
+    if (parseInt(cell) > -1) {
       let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
       const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
       const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
