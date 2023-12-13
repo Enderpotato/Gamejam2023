@@ -65,12 +65,13 @@ export function castRay(rayDirection, rayOrigin) {
     }
   }
 
+  // adjust mapX and mapY to be the cell that was hit
+  if (Math.sign(rayDir.x) == 1) mapX += 1;
+  if (Math.sign(rayDir.y) == 1) mapY += 1;
+
   // convert map coord to world coords
   let hitX = mapX * cellWidth - MapWidth / 2;
   let hitY = mapY * cellHeight - MapHeight / 2;
-
-  if (hitY < 0) hitY += cellHeight;
-  if (hitX < 0) hitX += cellWidth;
   hit = new Vector2(hitX, hitY);
   rayLength = Math.sqrt((hitX - rayOrigin.x) ** 2 + (hitY - rayOrigin.z) ** 2);
 
