@@ -2,7 +2,7 @@ import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
-import { ghost, player } from "../sceneSetup.js";
+import { player } from "../sceneSetup.js";
 import { castRay } from "../helperFuncs/raycast.js";
 import Direction from "../search2.js";
 
@@ -12,7 +12,8 @@ export default class Ghost extends GameObject {
     this.scale = new Vector3(3, 3, 3);
     this.setMaterial(new Material(0.9, 0.4, 0.1));
     this.hostile = false;
-    this.direction = new Direction(12);
+    this.hostileCooldown = 0;
+    this.direction = new Direction(8);
   }
 }
 
@@ -28,12 +29,19 @@ Ghost.prototype.update = function (dt) {
   //idk (im racist)
   let vectorToPlayer = player.position.subtract(this.position);
   let distToPlayer = new Vector2(vectorToPlayer.x, vectorToPlayer.z).mag();
-  // if player dist is less than dist to wall, then ghost is hostile
-  this.hostile =
-    castRay(vectorToPlayer, this.position).rayLength > distToPlayer;
+  // player is within 50 units (ghost can detect through walls)
+  this.hostile = distToPlayer < 50;
+
   if (this.hostile) {
     let ghostVel = this.direction
       .getDirection(this.position, player.position)
+      .normalize()
+      .elementMult(deltaTime * 10);
+    this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
+    this.position.add_(ghostVel);
+  } else {
+    let ghostVel = this.direction
+      .wanderDirection(this.position)
       .normalize()
       .elementMult(deltaTime * 10);
     this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
