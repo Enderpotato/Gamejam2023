@@ -13,7 +13,6 @@ import Steve from "./gameObjects/Steve.js";
 import Ghost from "./gameObjects/Ghost.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
 import Trophy from "./gameObjects/Trophy.js";
-import { castRay } from "./helperFuncs/raycast.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
 let customMesh2 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
@@ -36,7 +35,7 @@ const gObject6 = new GameObject(new Vector3(0, 25, 0), cube2);
 gObject6.immovable = true;
 
 export const scene = new Scene([gObject6, ghost, trophy, player]);
-export const Gravity = new Vector3(0, 10, 0);
+export const Gravity = new Vector3(0, 13, 0);
 loadMap("./assets/maps/map1.csv").then((sceneArray) => {
   scene.addObjects(sceneArray, true);
 });
@@ -72,4 +71,5 @@ export function sceneSetTextures() {
   steveMesh.setTexture(Textures["steve"]);
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
-  cube2.setTexture(Textures["bricks"]);}
+  cube2.setTexture(Textures["bricks"]);
+}

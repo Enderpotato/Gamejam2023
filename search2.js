@@ -55,7 +55,7 @@ Direction.prototype.getDirection = function (ghostPosition, playerPostion) {
 
 Direction.prototype.wanderDirection = function (ghostPosition) {
   let wanderStrength = 1; // Adjust this value as needed
-  let persistence = 5; // Add this value
+  let persistence = 4; // Add this value
 
   let dangerWeights = new Array(this.directions.length);
   let wanderWeights = new Array(this.directions.length);
