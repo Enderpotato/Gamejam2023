@@ -85,7 +85,7 @@ function draw() {
   resetShader();
   // draw shit with normal functions
   scene.objects.forEach((gObj) => {
-    gObj.collider.boundingBox.draw();
+    // gObj.collider.boundingBox.draw();
   });
 }
 

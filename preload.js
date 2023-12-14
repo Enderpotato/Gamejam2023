@@ -14,13 +14,14 @@ let steveMesh;
 export let ghostMesh;
 export let trophyMesh;
 export let player;
-export let scene;
+export const scene = new Scene([]);
+export const floorMesh = new MeshCuboid(300, 40, 300);
 
 function loadErrorCallback(err) {
   console.log("error loading image");
 }
 
-export default async function preloadAssets() {
+function loadTextures() {
   Textures.addTexture(loadImage("/assets/textures/bricks.png"), "bricks");
   Textures.addTexture(loadImage("/assets/textures/sand.png"), "sand");
   Textures.addTexture(loadImage("assets/textures/white.png"), "white");
@@ -32,6 +33,10 @@ export default async function preloadAssets() {
   Textures.addTexture(loadImage("assets/textures/ghost.png"), "ghost");
   Textures.addTexture(loadImage("assets/textures/walter.png"), "walter");
   Textures.addTexture(loadImage("assets/textures/trophy.png"), "trophy");
+}
+
+export default async function preloadAssets() {
+  loadTextures();
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 
@@ -39,18 +44,17 @@ export default async function preloadAssets() {
   ghostMesh = Mesh.createFromObj("./assets/game3dModels/ghost.obj");
   trophyMesh = Mesh.createFromObj("./assets/game3dModels/trophy.obj");
 
-  const cube2 = new MeshCuboid(300, 40, 300);
-
   steveMesh.setTexture(Textures["steve"]);
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
-  cube2.setTexture(Textures["bricks"]);
+  floorMesh.setTexture(Textures["bricks"]);
 
   player = new Player();
-  const gObject6 = new GameObject(new Vector3(0, 25, 0), cube2);
+  const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
   gObject6.immovable = true;
 
-  scene = new Scene([gObject6, player]);
+  scene.addObjects([gObject6, player]);
 
   await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  console.log(scene.objects);
 }
