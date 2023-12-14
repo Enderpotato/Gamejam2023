@@ -1,20 +1,8 @@
 import Renderer from "./Renderer/Renderer.js";
+import preloadAssets, { bestShader, player, scene } from "./preload.js";
 import Camera from "./Camera.js";
-import { cameraControlDebug } from "./Camera.js";
-import preloadAssets from "./preload.js";
-import { bestShader } from "./preload.js";
-import {
-  scene,
-  sceneSetTextures,
-  Lights,
-  player,
-  steve,
-  Gravity,
-} from "./sceneSetup.js";
-// import pathFind from "./search.js";
-import Direction from "./search2.js";
-import { Map2d } from "./map.js";
-import Vector3 from "./structs/Vector3.js";
+import sceneSetup from "./sceneSetup.js";
+import { sceneSetTextures, Lights, Gravity } from "./sceneSetup.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
@@ -43,6 +31,7 @@ function setup() {
   cam.lookAt(0, 0, 1);
   cameraC = new Camera(cam);
   sceneSetTextures();
+  sceneSetup();
 
   player.setCamera(cameraC);
   noStroke();
@@ -96,7 +85,7 @@ function draw() {
   resetShader();
   // draw shit with normal functions
   scene.objects.forEach((gObj) => {
-    // gObj.collider.boundingBox.draw();
+    gObj.collider.boundingBox.draw();
   });
 }
 

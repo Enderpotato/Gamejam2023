@@ -13,6 +13,8 @@ export default function renderWithShader(scene, frustum, shader) {
   scene.objects.forEach((object) => {
     if (object instanceof Player) return;
     if (object instanceof GameObject) {
+      // objectsToRender.push(object);
+      // return;
       if (objectInFrustum(object, frustum)) {
         objectsToRender.push(object);
       }

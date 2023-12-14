@@ -1,5 +1,5 @@
 import Player from "./gameObjects/Player.js";
-import { Gravity, player } from "./sceneSetup.js";
+import { Gravity } from "./sceneSetup.js";
 
 export default class Scene {
   constructor(objects) {

@@ -21,7 +21,8 @@ Mesh.prototype.setTexture = function (textureImg) {
   this.textureImg = textureImg; // p5.Image
 };
 
-Mesh.prototype.createFromObj = function (filename) {
+Mesh.createFromObj = function (filename) {
+  let mesh = new Mesh();
   // fetch file
   fetch(filename)
     .then((response) => response.text())
@@ -47,10 +48,10 @@ Mesh.prototype.createFromObj = function (filename) {
             textures[face[2][1] - 1],
           ];
         }
-        this.meshTriangles.push(triangle);
+        mesh.meshTriangles.push(triangle);
       });
     });
-  return this;
+  return mesh;
 };
 
 function parseLine(line, vertices, faces, textures) {

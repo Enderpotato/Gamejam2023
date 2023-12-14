@@ -1,14 +1,5 @@
-import {
-  scene,
-  sceneSetTextures,
-  Lights,
-  player,
-  steve,
-  Gravity,
-} from "./sceneSetup.js";
 import Vector3 from "./structs/Vector3.js";
 import Player from "./gameObjects/Player.js";
-import { ghost } from "./sceneSetup.js";
 import { castRay } from "./helperFuncs/raycast.js";
 
 export default class Direction {
