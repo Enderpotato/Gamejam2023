@@ -1,16 +1,13 @@
 import Player from "./gameObjects/Player.js";
-import { Gravity, player } from "./sceneSetup.js";
+import { Gravity } from "./sceneSetup.js";
 
 export default class Scene {
   constructor(objects) {
     this.objects = [...objects];
     this.walls = [];
+    this.nonPhysicals = []; // for objects with no physics( ghost spawnpoints)
   }
 }
-
-Scene.prototype.addObject = function (object) {
-  this.objects.push(object);
-};
 
 Scene.prototype.update = function (dt) {
   this.objects.forEach((object) => {
@@ -23,6 +20,10 @@ Scene.prototype.update = function (dt) {
 
   this.walls.forEach((wall) => {
     wall.update(dt);
+  });
+
+  this.nonPhysicals.forEach((nonPhysical) => {
+    nonPhysical.update(dt);
   });
 
   //loop until no collisions?
@@ -55,10 +56,14 @@ Scene.prototype.update = function (dt) {
   });
 };
 
-Scene.prototype.addObjects = function (objects, isWalls = false) {
-  if (isWalls) {
-    this.walls.push(...objects);
-    return;
-  }
+Scene.prototype.addObjects = function (objects) {
   this.objects.push(...objects);
+};
+
+Scene.prototype.addWalls = function (walls) {
+  this.walls.push(...walls);
+};
+
+Scene.prototype.addNonPhysicals = function (nonPhysicals) {
+  this.nonPhysicals.push(...nonPhysicals);
 };

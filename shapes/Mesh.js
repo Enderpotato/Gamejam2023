@@ -11,6 +11,14 @@ export default class Mesh {
   }
 }
 
+Mesh.prototype.clone = function () {
+  let mesh = new Mesh(this.textureImg);
+  mesh.meshTriangles = this.meshTriangles.map((triangle) => {
+    return triangle.clone();
+  });
+  return mesh;
+};
+
 Mesh.prototype.update = function (position, quat, scale) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position, scale);
@@ -21,7 +29,8 @@ Mesh.prototype.setTexture = function (textureImg) {
   this.textureImg = textureImg; // p5.Image
 };
 
-Mesh.prototype.createFromObj = function (filename) {
+Mesh.createFromObj = function (filename) {
+  let mesh = new Mesh();
   // fetch file
   fetch(filename)
     .then((response) => response.text())
@@ -47,10 +56,10 @@ Mesh.prototype.createFromObj = function (filename) {
             textures[face[2][1] - 1],
           ];
         }
-        this.meshTriangles.push(triangle);
+        mesh.meshTriangles.push(triangle);
       });
     });
-  return this;
+  return mesh;
 };
 
 function parseLine(line, vertices, faces, textures) {

@@ -2,7 +2,7 @@ import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
-import { player } from "../sceneSetup.js";
+import { player } from "../preload.js";
 import { castRay } from "../helperFuncs/raycast.js";
 import Direction from "../search2.js";
 
