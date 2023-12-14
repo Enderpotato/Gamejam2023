@@ -2,8 +2,7 @@ import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
-import { player } from "../preload.js";
-import { castRay } from "../helperFuncs/raycast.js";
+import { player, scene } from "../preload.js";
 import Direction from "../search2.js";
 
 export default class Ghost extends GameObject {
@@ -13,11 +12,18 @@ export default class Ghost extends GameObject {
     this.setMaterial(new Material(0.9, 0.4, 0.1));
     this.hostile = false;
     this.hostileCooldown = 0;
+    this.lifetime = 100;
     this.direction = new Direction(8);
   }
 }
 
 Ghost.prototype.update = function (dt) {
+  this.lifetime -= dt;
+  if (this.lifetime < 0) {
+    let index = scene.objects.indexOf(this);
+    scene.objects.splice(index, 1);
+  }
+
   // semi-implicit euler integration (copy-pasted from GameObject.js)
   this.acc = Vector3.elementMult(this.force, this.invMass);
   if (this.immovable) this.acc = Vector3.zeros();

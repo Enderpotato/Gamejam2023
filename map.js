@@ -5,6 +5,7 @@ import { Textures } from "./preload.js";
 import { trophyMesh } from "./preload.js";
 import Trophy from "./gameObjects/Trophy.js";
 import Material from "./graphics/Material.js";
+import GhostSpawner from "./gameObjects/GhostSpawner.js";
 
 // lmao back to 2d coords
 const MapWidth = 300;
@@ -58,10 +59,10 @@ function parseLine(line, sceneDict, row) {
     let cellId = parseInt(cell);
     if (cellId <= 0) return;
 
+    const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
+    const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
     if (cellId === 1) {
       let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
-      const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
-      const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
       const wallPosition = new Vector3(Xpos, Ypos, Zpos);
       let wallCell = new GameObject(wallPosition, wallCuboid);
       wallCell.mesh.setTexture(Textures["walter"]);
@@ -72,11 +73,11 @@ function parseLine(line, sceneDict, row) {
     }
 
     if (cellId === 2) {
+      let ghostSpawner = new GhostSpawner(new Vector3(Xpos, 0, Zpos));
+      sceneDict.nonPhysicals.push(ghostSpawner);
     }
 
     if (cellId === 3) {
-      const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
-      const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
       const trophyPosition = new Vector3(Xpos, -10, Zpos);
       let trophy = new Trophy(trophyPosition, trophyMesh);
       trophy.setMaterial(new Material(0, 1, 0.1));
