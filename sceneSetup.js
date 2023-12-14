@@ -1,20 +1,32 @@
 import Mesh from "./shapes/Mesh.js";
-import MeshCube from "./shapes/TestShapes/MeshCube.js";
-import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
-import GameObject from "./gameObjects/GameObject.js";
-import Scene from "./Scene.js";
 import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
-import { player } from "./preload.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
+import Player from "./gameObjects/Player.js";
+import Scene from "./scene.js";
+import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 
 let customMesh1 = Mesh.createFromObj("./assets/testObjs/teapot.obj");
 
-// export const ghost = new Ghost(new Vector3(0, 0, 20), ghostMesh);
 export const Gravity = new Vector3(0, 13, 0);
+let steveMesh;
+export let ghostMesh;
+export let trophyMesh;
+export const floorMesh = new MeshCuboid(300, 40, 300);
+export const player = new Player(new Vector3(0, 0, 0));
+export const scene = new Scene([]);
 
-export default function sceneSetup() {}
+export function setupMeshes() {
+  steveMesh = Mesh.createFromObj("./assets/game3dModels/steve.obj");
+  ghostMesh = Mesh.createFromObj("./assets/game3dModels/ghost.obj");
+  trophyMesh = Mesh.createFromObj("./assets/game3dModels/trophy.obj");
+
+  steveMesh.setTexture(Textures["steve"]);
+  ghostMesh.setTexture(Textures["ghost"]);
+  trophyMesh.setTexture(Textures["trophy"]);
+  floorMesh.setTexture(Textures["bricks"]);
+}
 
 let timeSinceLastFlash = 0;
 let flashDuration = 2; // duration of flash in seconds

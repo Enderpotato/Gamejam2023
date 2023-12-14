@@ -2,7 +2,7 @@ import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
-import { trophyMesh } from "./preload.js";
+import { trophyMesh } from "./sceneSetup.js";
 import Trophy from "./gameObjects/Trophy.js";
 import Material from "./graphics/Material.js";
 import GhostSpawner from "./gameObjects/GhostSpawner.js";

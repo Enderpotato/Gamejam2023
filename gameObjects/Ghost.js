@@ -2,7 +2,7 @@ import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
-import { player, scene } from "../preload.js";
+import { player, scene } from "../sceneSetup.js";
 import Direction from "../search2.js";
 
 export default class Ghost extends GameObject {

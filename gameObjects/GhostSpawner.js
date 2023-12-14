@@ -1,6 +1,6 @@
 import { boxMullerRandom } from "../helperFuncs/testfuncs.js";
 import Ghost from "./Ghost.js";
-import { ghostMesh, scene } from "../preload.js";
+import { ghostMesh, scene } from "../sceneSetup.js";
 
 export default class GhostSpawner {
   constructor(position) {

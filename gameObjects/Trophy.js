@@ -1,6 +1,6 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
-import { scene } from "../preload.js";
+import { scene } from "../sceneSetup.js";
 
 export default class Trophy extends GameObject {
   constructor(position, mesh) {
@@ -18,5 +18,5 @@ Trophy.prototype.collideWithPlayer = function () {
     scene.objects.splice(index, 1);
   }
   // bro i swear this is not me copilot literally generated this
-  window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  // window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 };
