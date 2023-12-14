@@ -100,7 +100,3 @@ Player.prototype.createBoundingBox = function () {
 
   this.collider.boundingBox = new BoundingBox(min, max);
 };
-
-Player.prototype.get_pos = function () {
-  return Vector3(this.position.x, this.position.z);
-};
