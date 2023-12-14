@@ -7,16 +7,11 @@ import Player from "./gameObjects/Player.js";
 import Scene from "./scene.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 
-let customMesh1 = Mesh.createFromObj("./assets/testObjs/teapot.obj");
-
-export const Gravity = new Vector3(0, 13, 0);
+// ------------ MESHES ----------------
 let steveMesh;
 export let ghostMesh;
 export let trophyMesh;
 export const floorMesh = new MeshCuboid(300, 40, 300);
-export const player = new Player(new Vector3(0, 0, 0));
-export const scene = new Scene([]);
-
 export function setupMeshes() {
   steveMesh = Mesh.createFromObj("./assets/game3dModels/steve.obj");
   ghostMesh = Mesh.createFromObj("./assets/game3dModels/ghost.obj");
@@ -28,6 +23,13 @@ export function setupMeshes() {
   floorMesh.setTexture(Textures["bricks"]);
 }
 
+export const player = new Player(new Vector3(0, 0, 0));
+
+export const scene = new Scene([]);
+
+export const Gravity = new Vector3(0, 13, 0);
+
+// ------------ LIGHTS ----------------
 let timeSinceLastFlash = 0;
 let flashDuration = 2; // duration of flash in seconds
 let timeBetweenFlashes = 5; // time between flashes in seconds
@@ -52,8 +54,5 @@ lightFollow.update = function (dt) {
   this.color = new Vector3(1, 1, 1); // uncomment to have white light
   this.lit = true; // uncomment to always have light on
 };
-export const Lights = [lightFollow];
 
-export function sceneSetTextures() {
-  customMesh1.setTexture(Textures["white"]);
-}
+export const Lights = [lightFollow];

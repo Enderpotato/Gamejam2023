@@ -2,7 +2,7 @@ import Renderer from "./Renderer/Renderer.js";
 import preloadAssets, { bestShader } from "./preload.js";
 import Camera from "./Camera.js";
 import { player, scene } from "./sceneSetup.js";
-import { sceneSetTextures, Lights, Gravity } from "./sceneSetup.js";
+import { Lights } from "./sceneSetup.js";
 import { cameraControlDebug } from "./Camera.js";
 
 const FPSElement = document.getElementById("fps-debug");
