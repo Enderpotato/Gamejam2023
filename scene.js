@@ -5,6 +5,7 @@ export default class Scene {
   constructor(objects) {
     this.objects = [...objects];
     this.walls = [];
+    this.nonPhysicals = []; // for objects with no physics( ghost spawnpoints)
   }
 }
 
@@ -23,6 +24,10 @@ Scene.prototype.update = function (dt) {
 
   this.walls.forEach((wall) => {
     wall.update(dt);
+  });
+
+  this.nonPhysicals.forEach((nonPhysical) => {
+    nonPhysical.update(dt);
   });
 
   //loop until no collisions?

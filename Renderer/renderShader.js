@@ -72,7 +72,7 @@ function renderMesh(mesh) {
   trianglesToRender.forEach((tri) => {
     shaderRenderTriangle(
       tri,
-      mesh.textureImg ? mesh.textureImg : Textures.diamond
+      mesh.textureImg ? mesh.textureImg : Textures.white
     );
   });
   endShape(CLOSE);

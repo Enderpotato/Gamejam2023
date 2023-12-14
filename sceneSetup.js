@@ -15,14 +15,10 @@ import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
 import Trophy from "./gameObjects/Trophy.js";
 
 let customMesh1 = new Mesh().createFromObj("./assets/testObjs/teapot.obj");
-let customMesh2 = new Mesh().createFromObj("./assets/testObjs/floor.obj");
-let customMesh3 = new Mesh().createFromObj("./assets/testObjs/Videoship.obj");
 let steveMesh = new Mesh().createFromObj("./assets/game3dModels/steve.obj");
 let ghostMesh = new Mesh().createFromObj("./assets/game3dModels/ghost.obj");
 let trophyMesh = new Mesh().createFromObj("./assets/game3dModels/trophy.obj");
 
-const gObject1 = new GameObject(new Vector3(0, -200, 30), customMesh1);
-const gObject2 = new GameObject(new Vector3(-30, 0, 30), customMesh2);
 const trophy = new Trophy(new Vector3(1000, 0, 50), trophyMesh);
 trophy.setMaterial(new Material(0, 1, 0.1));
 export const steve = new Steve(new Vector3(0, 0, 20), steveMesh);
@@ -36,9 +32,7 @@ gObject6.immovable = true;
 
 export const scene = new Scene([gObject6, ghost, trophy, player]);
 export const Gravity = new Vector3(0, 13, 0);
-loadMap("./assets/maps/map1.csv").then((sceneArray) => {
-  scene.addObjects(sceneArray, true);
-});
+loadMap("./assets/maps/map1.csv", scene);
 
 let timeSinceLastFlash = 0;
 let flashDuration = 2; // duration of flash in seconds
