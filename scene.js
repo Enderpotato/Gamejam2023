@@ -9,10 +9,6 @@ export default class Scene {
   }
 }
 
-Scene.prototype.addObject = function (object) {
-  this.objects.push(object);
-};
-
 Scene.prototype.update = function (dt) {
   this.objects.forEach((object) => {
     // add gravity
@@ -60,10 +56,14 @@ Scene.prototype.update = function (dt) {
   });
 };
 
-Scene.prototype.addObjects = function (objects, isWalls = false) {
-  if (isWalls) {
-    this.walls.push(...objects);
-    return;
-  }
+Scene.prototype.addObjects = function (objects) {
   this.objects.push(...objects);
+};
+
+Scene.prototype.addWalls = function (walls) {
+  this.walls.push(...walls);
+};
+
+Scene.prototype.addNonPhysicals = function (nonPhysicals) {
+  this.nonPhysicals.push(...nonPhysicals);
 };

@@ -156,6 +156,16 @@ export default class MeshCuboid {
   }
 }
 
+MeshCuboid.prototype.clone = function () {
+  let newMesh = new MeshCuboid(this.w, this.l, this.h);
+  newMesh.meshTriangles = this.meshTriangles.map((triangle) => {
+    return triangle.clone();
+  });
+
+  newMesh.textureImg = this.textureImg;
+  return newMesh;
+};
+
 MeshCuboid.prototype.update = function (position, quat, scale) {
   this.triangles = this.meshTriangles.map((triangle) => {
     return ShapeMorph.transformToWorld(triangle, quat, position, scale);

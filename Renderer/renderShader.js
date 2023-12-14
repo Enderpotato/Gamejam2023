@@ -7,14 +7,13 @@ import { Textures } from "../preload.js";
 import GameObject from "../gameObjects/GameObject.js";
 
 const NumObjectsElement = document.getElementById("objects-rendering");
+let objectsToRender = [];
 
 export default function renderWithShader(scene, frustum, shader) {
-  let objectsToRender = [];
+  objectsToRender = [];
   scene.objects.forEach((object) => {
     if (object instanceof Player) return;
     if (object instanceof GameObject) {
-      // objectsToRender.push(object);
-      // return;
       if (objectInFrustum(object, frustum)) {
         objectsToRender.push(object);
       }
@@ -66,10 +65,7 @@ function objectInFrustum(object, frustum) {
   return true;
 }
 function renderMesh(mesh) {
-  let trianglesToRender = [];
-  let validTriangles = returnValidTriangles(mesh);
-  trianglesToRender = trianglesToRender.concat(validTriangles);
-
+  let trianglesToRender = returnValidTriangles(mesh);
   beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
     shaderRenderTriangle(
@@ -92,7 +88,6 @@ function returnValidTriangles(mesh) {
       validTriangles.push(tri);
     }
   });
-  // console.log(validTriangles.length);
   return validTriangles;
 }
 

@@ -5,6 +5,7 @@ import Player from "./gameObjects/Player.js";
 import Mesh from "./shapes/Mesh.js";
 import Scene from "./Scene.js";
 import Vector3 from "./structs/Vector3.js";
+import Trophy from "./gameObjects/Trophy.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 
 export const Textures = new TextureBuffer();
@@ -52,9 +53,11 @@ export default async function preloadAssets() {
   player = new Player();
   const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
   gObject6.immovable = true;
+  const trophy1 = new Trophy(new Vector3(20, -25, 0), trophyMesh);
+  const trophy2 = new Trophy(new Vector3(30, -25, 0), trophyMesh);
 
   scene.addObjects([gObject6, player]);
 
-  await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  await loadMap("./assets/maps/test_map.csv", scene);
   console.log(scene.objects);
 }

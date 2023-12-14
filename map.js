@@ -24,8 +24,8 @@ export async function loadMap(filepath, scene) {
   Map2d = [];
   const sceneDict = await parseMap(filepath);
   scene.addObjects(sceneDict.objects);
-  scene.addObjects(sceneDict.walls, true);
-  scene.nonPhysicals.push(...sceneDict.nonPhysicals);
+  scene.addWalls(sceneDict.walls);
+  scene.addNonPhysicals(sceneDict.nonPhysicals);
   return sceneDict;
 }
 
@@ -64,7 +64,7 @@ function parseLine(line, sceneDict, row) {
       const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
       const wallPosition = new Vector3(Xpos, Ypos, Zpos);
       let wallCell = new GameObject(wallPosition, wallCuboid);
-      wallCuboid.setTexture(Textures["walter"]);
+      wallCell.mesh.setTexture(Textures["walter"]);
       wallCell.immovable = true;
       wallCell.rotation.x = Math.PI;
       sceneDict.walls.push(wallCell);

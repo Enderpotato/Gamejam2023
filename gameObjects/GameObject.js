@@ -10,7 +10,7 @@ export default class GameObject {
     this.rotation.y = Math.PI;
     this.scale = new Vector3(1, 1, 1);
 
-    this.mesh = mesh;
+    this.mesh = mesh ? mesh.clone() : null;
     this.collider = new Collider(this);
     this.immovable = false;
 
