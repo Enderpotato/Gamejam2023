@@ -24,7 +24,6 @@ export async function loadMap(filepath, scene) {
   const sceneDict = await parseMap(filepath);
   scene.addObjects(sceneDict.walls, true);
   scene.nonPhysicals.push(...sceneDict.nonPhysicals);
-  console.log(scene);
   return sceneDict;
 }
 
@@ -37,7 +36,7 @@ async function parseMap(filepath) {
   let data = await response.text();
   data = data.split("\n");
   MapGridW = data[0].split(",").length;
-  MapGridH = data.length - 1;
+  MapGridH = data.length;
   cellHeight = Math.round(300 / MapGridH);
   cellWidth = Math.round(300 / MapGridW);
   data.forEach((line, row) => parseLine(line, sceneDict, row));
@@ -54,7 +53,7 @@ function parseLine(line, sceneDict, row) {
   gridLine.forEach((cell, col) => {
     Map2d[row].push(parseInt(cell));
     let cellId = parseInt(cell);
-    if (cellId <= -1) return;
+    if (cellId <= 0) return;
 
     let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
     const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;

@@ -32,7 +32,7 @@ gObject6.immovable = true;
 
 export const scene = new Scene([gObject6, ghost, trophy, player]);
 export const Gravity = new Vector3(0, 13, 0);
-loadMap("./assets/maps/map1.csv", scene);
+loadMap("./assets/maps/gamejam_map1.csv", scene);
 
 let timeSinceLastFlash = 0;
 let flashDuration = 2; // duration of flash in seconds
