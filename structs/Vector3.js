@@ -3,7 +3,6 @@ export default class Vector3 {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.w = 1; // need for matrix multiplication
   }
 }
 

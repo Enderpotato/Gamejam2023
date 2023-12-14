@@ -2,8 +2,9 @@ import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
-import Ghost from "./gameObjects/Ghost.js";
+import { trophyMesh } from "./sceneSetup.js";
 import Trophy from "./gameObjects/Trophy.js";
+import Material from "./graphics/Material.js";
 
 // lmao back to 2d coords
 const MapWidth = 300;
@@ -22,14 +23,18 @@ export { MapWidth, MapHeight, cellWidth, cellHeight, MapGridW, MapGridH };
 export async function loadMap(filepath, scene) {
   Map2d = [];
   const sceneDict = await parseMap(filepath);
+  console.log(sceneDict);
+  scene.addObjects(sceneDict.objects);
   scene.addObjects(sceneDict.walls, true);
   scene.nonPhysicals.push(...sceneDict.nonPhysicals);
+  // console.log(scene);
   return sceneDict;
 }
 
 async function parseMap(filepath) {
   let sceneDict = {
     walls: [],
+    objects: [],
     nonPhysicals: [],
   };
   const response = await fetch(filepath);
@@ -55,14 +60,28 @@ function parseLine(line, sceneDict, row) {
     let cellId = parseInt(cell);
     if (cellId <= 0) return;
 
-    let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
-    const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
-    const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
-    const wallPosition = new Vector3(Xpos, Ypos, Zpos);
-    let wallCell = new GameObject(wallPosition, wallCuboid);
-    wallCuboid.setTexture(Textures["walter"]);
-    wallCell.immovable = true;
-    wallCell.rotation.x = Math.PI;
-    sceneDict.walls.push(wallCell);
+    if (cellId == 1) {
+      let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
+      const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
+      const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
+      const wallPosition = new Vector3(Xpos, Ypos, Zpos);
+      let wallCell = new GameObject(wallPosition, wallCuboid);
+      wallCuboid.setTexture(Textures["walter"]);
+      wallCell.immovable = true;
+      wallCell.rotation.x = Math.PI;
+      sceneDict.walls.push(wallCell);
+    }
+
+    if (cellId === 2) {
+    }
+
+    if (cellId === 3) {
+      const Xpos = col * cellWidth + cellWidth / 2 - MapWidth / 2;
+      const Zpos = row * cellHeight + cellHeight / 2 - MapHeight / 2;
+      const trophyPosition = new Vector3(Xpos, -10, Zpos);
+      let trophy = new Trophy(trophyPosition, trophyMesh);
+      trophy.setMaterial(new Material(0, 1, 0.1));
+      sceneDict.objects.push(trophy);
+    }
   });
 }
