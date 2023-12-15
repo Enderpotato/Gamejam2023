@@ -61,7 +61,6 @@ function draw() {
   clear();
 
   if (!game.running) {
-    console.log(scene);
     if (game.win) {
       console.log("you win nigga");
     } else {
@@ -109,13 +108,12 @@ function draw() {
 
   resetShader();
   resetMatrix();
-  UI.background(0, 0);
-  UI.resetMatrix();
-  // console.log(UI);
+
   // draw shit with normal functions
-  scene.objects.forEach((gObj) => {
-    // gObj.collider.boundingBox.draw();
-  });
+  // console.log(UI);
+  // scene.objects.forEach((gObj) => {
+  //   // gObj.collider.boundingBox.draw();
+  // });
 }
 
 function keyPressed() {}
