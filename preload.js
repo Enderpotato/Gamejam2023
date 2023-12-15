@@ -3,6 +3,9 @@ import { player, scene, setupMeshes, floorMesh } from "./sceneSetup.js";
 
 export const Textures = new TextureBuffer();
 export let bestShader;
+let trophyImage, darkTrophyImage, replayImg;
+
+export { trophyImage, darkTrophyImage, replayImg };
 
 function loadTextures() {
   Textures.addTexture(loadImage("/assets/textures/bricks.png"), "bricks");
@@ -20,6 +23,9 @@ function loadTextures() {
 
 export default function preloadAssets() {
   loadTextures();
+  trophyImage = loadImage("assets/imgs/trophy.png");
+  darkTrophyImage = loadImage("assets/imgs/trophy_dark.png");
+  replayImg = loadImage("assets/imgs/replay.png");
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 

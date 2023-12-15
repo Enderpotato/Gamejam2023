@@ -52,14 +52,9 @@ Player.prototype.playerControl = function (dt) {
 
   this.position.add_(inputVelocity.normalize().elementMult(speed));
 
-  // q for jumping
-  if (keyIsDown(81) && this.collider.isCollidingBelow) {
-    this.velocity.y = -8;
-  }
-
-  // e
-  if (keyIsDown(69)) {
-    this.velocity.y = -8;
+  // space for jumping
+  if (keyIsDown(32) && this.collider.isCollidingBelow) {
+    this.velocity.y = -7;
   }
 
   const rotationSpeed = 2 * deltaTime; // 2 radians per second

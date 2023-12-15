@@ -1,3 +1,7 @@
+html {
+  background-color: rgb(100, 100, 100);
+}
+
 #camera-debug,
 #game-debug,
 #performance-info {
@@ -9,6 +13,7 @@
 
 #debug-screen {
   display: none;
+  background-color: skyblue;
   /* Add other styles as needed */
 }
 
