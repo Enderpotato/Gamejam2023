@@ -61,6 +61,7 @@ export async function restartGame() {
   scene.addObjects([gObject6, player]);
   game.numTrophies = 0;
   game.map = maps[getMapIndex()];
+  game.timer = 0;
   await loadMap(game.map, scene);
   game.currentTrophies = 0;
   game.running = true;
@@ -94,7 +95,11 @@ let flashDuration = 2; // duration of flash in seconds
 let timeBetweenFlashes = 5; // time between flashes in seconds
 
 const lightFollow = new Light(null, new Vector3(1, 0, 0));
-const lightFollow2 = new Light(null, new Vector3(0.2, 0.2, 0.2));
+const intensity = 0.1;
+const lightFollow2 = new Light(
+  null,
+  new Vector3(intensity, intensity, intensity)
+);
 lightFollow.lit = false;
 lightFollow.update = function (dt) {
   this.position = player.position;

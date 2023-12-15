@@ -39,6 +39,7 @@ export let game = {
   numTrophies: 0,
   currentTrophies: 0,
   map: maps[0],
+  timer: 0,
   winMessage: null,
 };
 
@@ -93,6 +94,7 @@ function draw() {
       textAlign(CENTER);
       fill(0, 255, 255);
       text(game.winMessage, width / 2, height / 2);
+
       return;
     }
 
@@ -100,7 +102,15 @@ function draw() {
       textSize(32);
       textAlign(CENTER);
       fill(0, 255, 0);
-      text("You win!", width / 2, height / 2);
+      text("You win!", width / 2, height / 4);
+      textSize(24);
+      textAlign(CENTER);
+      fill(255, 255, 0);
+      text(
+        "Time: " + Math.round(game.timer) + " seconds",
+        width / 2,
+        height / 2
+      );
     } else {
       textSize(32);
       textAlign(CENTER);
@@ -109,6 +119,7 @@ function draw() {
     }
     return;
   }
+  game.timer += deltaTime;
 
   // GAME GRAPHICS
   graphics.clear();
@@ -177,6 +188,11 @@ function draw() {
     }
     trophyX += trophyW + 10;
   }
+
+  textSize(20);
+  textAlign(LEFT);
+  fill(255, 255, 0);
+  text("Time: " + Math.round(game.timer), width - 110, 40);
 }
 async function mousePressed() {
   if (game.running) return;

@@ -19,6 +19,6 @@ GhostSpawner.prototype.update = function (dt) {
 
 GhostSpawner.prototype.spawnGhost = function () {
   let ghost = new Ghost(this.position.clone(), ghostMesh);
-  ghost.lifetime = boxMullerRandom() * 10 + 40; // ~ N(40, 10)
+  ghost.lifetime = boxMullerRandom() * 10 + 30; // ~ N(30, 10)
   scene.addObjects([ghost]);
 };
