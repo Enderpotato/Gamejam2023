@@ -6,10 +6,18 @@ import { Lights } from "./sceneSetup.js";
 import { cameraControlDebug } from "./Camera.js";
 
 const FPSElement = document.getElementById("fps-debug");
+const CurrentTrophiesElement = document.getElementById("current-trophies");
+const TotalTrophiesElement = document.getElementById("total-trophies");
+
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-export let game = {running: true, win: false};
+export let game = {
+  running: true,
+  win: false,
+  numTrophies: 0,
+  currentTrophies: 0,
+};
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -42,18 +50,19 @@ function draw() {
   // clamp deltaTime to prevent weird physics (lower fps = higher deltaTime)
   deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
+  CurrentTrophiesElement.innerHTML = game.currentTrophies;
+  TotalTrophiesElement.innerHTML = game.numTrophies;
+  clear();
 
   if (!game.running) {
     if (game.win) {
-      console.log('you win nigga')
-    }
-    else {
-      console.log('boo hoo nigga')
+      console.log("you win nigga");
+    } else {
+      console.log("boo hoo nigga");
     }
     return;
-  };
+  }
   background(0);
-  clear();
   shader(bestShader);
   noStroke();
 

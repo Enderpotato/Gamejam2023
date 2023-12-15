@@ -3,6 +3,7 @@ import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
 import { trophyMesh } from "./sceneSetup.js";
+import { game } from "./index.js";
 import Trophy from "./gameObjects/Trophy.js";
 import Material from "./graphics/Material.js";
 import GhostSpawner from "./gameObjects/GhostSpawner.js";
@@ -16,7 +17,6 @@ let cellHeight = 10;
 
 let MapGridW = 0;
 let MapGridH = 0;
-export let numTrophies = 0;
 
 export let Map2d = [];
 
@@ -83,7 +83,7 @@ function parseLine(line, sceneDict, row) {
       let trophy = new Trophy(trophyPosition, trophyMesh);
       trophy.setMaterial(new Material(0, 1, 0.1));
       sceneDict.objects.push(trophy);
-      numTrophies++;
+      game.numTrophies++;
       return;
     }
   });

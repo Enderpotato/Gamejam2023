@@ -1,4 +1,5 @@
-#debug-text,
+#camera-debug,
+#game-debug,
 #performance-info {
   display: flex;
   align-items: center;
