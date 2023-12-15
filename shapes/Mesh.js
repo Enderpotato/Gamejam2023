@@ -13,9 +13,7 @@ export default class Mesh {
 
 Mesh.prototype.clone = function () {
   let mesh = new Mesh(this.textureImg);
-  mesh.meshTriangles = this.meshTriangles.map((triangle) => {
-    return triangle.clone();
-  });
+  mesh.meshTriangles = this.meshTriangles;
   return mesh;
 };
 
