@@ -1,11 +1,11 @@
 import TextureBuffer from "./graphics/Texture.js";
-import { loadMap } from "./map.js";
-import GameObject from "./gameObjects/GameObject.js";
-import Vector3 from "./structs/Vector3.js";
-import { player, scene, setupMeshes, floorMesh } from "./sceneSetup.js";
+import { setupMeshes } from "./sceneSetup.js";
 
 export const Textures = new TextureBuffer();
 export let bestShader;
+let trophyImage, darkTrophyImage, replayImg;
+
+export { trophyImage, darkTrophyImage, replayImg };
 
 function loadTextures() {
   Textures.addTexture(loadImage("/assets/textures/bricks.png"), "bricks");
@@ -21,16 +21,13 @@ function loadTextures() {
   Textures.addTexture(loadImage("assets/textures/trophy.png"), "trophy");
 }
 
-export default async function preloadAssets() {
+export default function preloadAssets() {
   loadTextures();
+  trophyImage = loadImage("assets/imgs/trophy.png");
+  darkTrophyImage = loadImage("assets/imgs/trophy_dark.png");
+  replayImg = loadImage("assets/imgs/replay.png");
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 
   setupMeshes();
-
-  const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
-  gObject6.immovable = true;
-  scene.addObjects([gObject6, player]);
-
-  await loadMap("./assets/maps/gamejam_map1.csv", scene);
 }

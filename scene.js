@@ -67,3 +67,9 @@ Scene.prototype.addWalls = function (walls) {
 Scene.prototype.addNonPhysicals = function (nonPhysicals) {
   this.nonPhysicals.push(...nonPhysicals);
 };
+
+Scene.prototype.clear = function () {
+  this.objects = [];
+  this.walls = [];
+  this.nonPhysicals = [];
+};

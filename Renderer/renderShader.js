@@ -1,9 +1,8 @@
 import Vector3 from "../structs/Vector3.js";
 import Triangle from "../shapes/Triangle.js";
 import Player from "../gameObjects/Player.js";
-import { cameraC } from "../index.js";
-import { bestShader } from "../preload.js";
-import { Textures } from "../preload.js";
+import { cameraC, graphics } from "../index.js";
+import { bestShader, Textures } from "../preload.js";
 import GameObject from "../gameObjects/GameObject.js";
 
 const NumObjectsElement = document.getElementById("objects-rendering");
@@ -66,14 +65,14 @@ function objectInFrustum(object, frustum) {
 }
 function renderMesh(mesh) {
   let trianglesToRender = returnValidTriangles(mesh);
-  beginShape(TRIANGLES);
+  graphics.beginShape(TRIANGLES);
   trianglesToRender.forEach((tri) => {
     shaderRenderTriangle(
       tri,
       mesh.textureImg ? mesh.textureImg : Textures.white
     );
   });
-  endShape(CLOSE);
+  graphics.endShape(CLOSE);
 }
 
 function returnValidTriangles(mesh) {
@@ -95,26 +94,26 @@ function shaderRenderTriangle(tri, dexter) {
   bestShader.setUniform("uMatcapTexture", dexter);
   tri.calcNormal();
   let norm = tri.normal;
-  textureMode(NORMAL);
-  texture(dexter);
-  normal(norm.x, norm.y, norm.z);
-  vertex(
+  graphics.textureMode(NORMAL);
+  graphics.texture(dexter);
+  graphics.normal(norm.x, norm.y, norm.z);
+  graphics.vertex(
     tri.vertices[0].x,
     tri.vertices[0].y,
     tri.vertices[0].z,
     tri.texture[0].u,
     tri.texture[0].v
   );
-  normal(norm.x, norm.y, norm.z);
-  vertex(
+  graphics.normal(norm.x, norm.y, norm.z);
+  graphics.vertex(
     tri.vertices[1].x,
     tri.vertices[1].y,
     tri.vertices[1].z,
     tri.texture[1].u,
     tri.texture[1].v
   );
-  normal(norm.x, norm.y, norm.z);
-  vertex(
+  graphics.normal(norm.x, norm.y, norm.z);
+  graphics.vertex(
     tri.vertices[2].x,
     tri.vertices[2].y,
     tri.vertices[2].z,

@@ -1,6 +1,7 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import { scene } from "../sceneSetup.js";
+import { game } from "../index.js";
 
 export default class Trophy extends GameObject {
   constructor(position, mesh) {
@@ -10,13 +11,15 @@ export default class Trophy extends GameObject {
 }
 
 Trophy.prototype.collideWithPlayer = function () {
-  console.log("You win!");
+  game.currentTrophies++;
+  if (game.currentTrophies == game.numTrophies) {
+    game.running = false;
+    game.win = true;
+  }
 
   let index = scene.objects.indexOf(this);
 
   if (index !== -1) {
     scene.objects.splice(index, 1);
   }
-  // bro i swear this is not me copilot literally generated this
-  // window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 };
