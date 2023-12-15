@@ -1,6 +1,9 @@
 import GameObject from "./GameObject.js";
 import Vector3 from "../structs/Vector3.js";
 import { scene } from "../sceneSetup.js";
+import { numTrophies } from "../map.js";
+
+export let currentTrophies = 0;
 
 export default class Trophy extends GameObject {
   constructor(position, mesh) {
@@ -10,7 +13,9 @@ export default class Trophy extends GameObject {
 }
 
 Trophy.prototype.collideWithPlayer = function () {
-  console.log("You win!");
+  // console.log("You win!");
+  currentTrophies++;
+  if (currentTrophies == numTrophies) console.log("you win")
 
   let index = scene.objects.indexOf(this);
 

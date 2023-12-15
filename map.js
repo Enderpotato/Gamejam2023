@@ -16,6 +16,7 @@ let cellHeight = 10;
 
 let MapGridW = 0;
 let MapGridH = 0;
+export let numTrophies = 0;
 
 export let Map2d = [];
 
@@ -82,6 +83,7 @@ function parseLine(line, sceneDict, row) {
       let trophy = new Trophy(trophyPosition, trophyMesh);
       trophy.setMaterial(new Material(0, 1, 0.1));
       sceneDict.objects.push(trophy);
+      numTrophies++;
       return;
     }
   });

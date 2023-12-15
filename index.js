@@ -9,6 +9,7 @@ const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
+let game = true;
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -41,6 +42,12 @@ function draw() {
   // clamp deltaTime to prevent weird physics (lower fps = higher deltaTime)
   deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
+
+  if (!game) {
+    
+
+    return;
+  };
   background(0);
   clear();
   shader(bestShader);
