@@ -5,9 +5,8 @@ import preloadAssets, {
   darkTrophyImage,
   replayImg,
 } from "./preload.js";
-import Camera from "./Camera.js";
+import Camera, { cameraControlDebug } from "./Camera.js";
 import { player, scene, Lights, restartGame } from "./sceneSetup.js";
-import { cameraControlDebug } from "./Camera.js";
 import Vector2 from "./structs/Vector2.js";
 
 const FPSElement = document.getElementById("fps-debug");

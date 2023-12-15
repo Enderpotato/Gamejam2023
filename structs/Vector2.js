@@ -30,20 +30,15 @@ Vector2.prototype.normalize_ = function () {
 
 // for texture coordinates
 export class Vector2T {
-  constructor(u, v, w = 1) {
+  constructor(u, v) {
     this.u = u;
     this.v = v;
-    this.w = w;
   }
 }
 Vector2T.lerp = function (a, b, t) {
-  return new Vector2T(
-    a.u + (b.u - a.u) * t,
-    a.v + (b.v - a.v) * t,
-    a.w + (b.w - a.w) * t
-  );
+  return new Vector2T(a.u + (b.u - a.u) * t, a.v + (b.v - a.v) * t);
 };
 
 Vector2T.prototype.clone = function () {
-  return new Vector2T(this.u, this.v, this.w);
+  return new Vector2T(this.u, this.v);
 };

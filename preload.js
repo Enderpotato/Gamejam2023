@@ -1,5 +1,5 @@
 import TextureBuffer from "./graphics/Texture.js";
-import { player, scene, setupMeshes, floorMesh } from "./sceneSetup.js";
+import { setupMeshes } from "./sceneSetup.js";
 
 export const Textures = new TextureBuffer();
 export let bestShader;
