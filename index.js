@@ -1,13 +1,18 @@
 import Renderer from "./Renderer/Renderer.js";
 import preloadAssets, { bestShader } from "./preload.js";
 import Camera from "./Camera.js";
-import { player, scene, Lights } from "./sceneSetup.js";
+import { player, scene, Lights, restartGame } from "./sceneSetup.js";
 import { loadMap } from "./map.js";
 import { cameraControlDebug } from "./Camera.js";
+import Vector2 from "./structs/Vector2.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const CurrentTrophiesElement = document.getElementById("current-trophies");
 const TotalTrophiesElement = document.getElementById("total-trophies");
+document.getElementById("toggle-debug").addEventListener("click", function () {
+  var debugScreen = document.getElementById("debug-screen");
+  debugScreen.classList.toggle("show");
+});
 
 const renderer = new Renderer();
 export let cameraC;
@@ -22,6 +27,8 @@ export let game = {
 const WIDTH = 800;
 const HEIGHT = 450;
 const MAP_WIDTH = 400;
+
+const RestartButton = new Vector2(WIDTH / 2, HEIGHT / 2 + 100);
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
@@ -45,8 +52,7 @@ async function setup() {
   cam.lookAt(0, 0, 1);
   cameraC = new Camera(cam);
   player.setCamera(cameraC);
-
-  await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  await restartGame();
 }
 
 function draw() {
@@ -62,15 +68,25 @@ function draw() {
     background(0);
     if (game.win) {
       textSize(32);
-      fill(255, 0, 0);
-      text("You win!", 10, 30);
+      textAlign(CENTER);
+      fill(0, 255, 0);
+      text("You win!", width / 2, height / 2);
     } else {
       textSize(32);
+      textAlign(CENTER);
       fill(255, 0, 0);
-      text("You lose!", 10, 30);
+      text("You lose!", width / 2, height / 2);
     }
+    ellipse(RestartButton.x, RestartButton.y, 100, 100);
+    textAlign(CENTER);
+    textSize(20);
+    fill(255);
+    text("Restart", RestartButton.x, RestartButton.y + 10);
+
     return;
   }
+
+  // GAME GRAPHICS
   graphics.clear();
   graphics.background(0);
   graphics.shader(bestShader);
@@ -111,6 +127,20 @@ function draw() {
   renderer.clear();
 
   image(graphics, 0, 0, width, height);
+
+  // GAME UI
+}
+function mousePressed() {
+  if (game.running) return;
+
+  if (
+    Math.sqrt(
+      Math.pow(mouseX - RestartButton.x, 2) +
+        Math.pow(mouseY - RestartButton.y, 2)
+    ) < 50
+  ) {
+    restartGame();
+  }
 }
 
 function keyPressed() {}
@@ -119,3 +149,4 @@ window.preload = preloadAssets;
 window.setup = setup;
 window.draw = draw;
 window.keyPressed = keyPressed;
+window.mousePressed = mousePressed;

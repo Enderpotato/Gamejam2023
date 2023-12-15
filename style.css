@@ -6,3 +6,12 @@
   gap: 1rem;
   margin: 0;
 }
+
+#debug-screen {
+  display: none;
+  /* Add other styles as needed */
+}
+
+#debug-screen.show {
+  display: block;
+}

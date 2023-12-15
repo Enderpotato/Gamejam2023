@@ -3,8 +3,11 @@ import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
+import { game } from "./index.js";
 import Player from "./gameObjects/Player.js";
 import Scene from "./scene.js";
+import { loadMap } from "./map.js";
+import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
 
 // ------------ MESHES ----------------
@@ -21,6 +24,19 @@ export function setupMeshes() {
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
   floorMesh.setTexture(Textures["bricks"]);
+}
+
+export async function restartGame() {
+  player.reset();
+  scene.clear();
+  const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
+  gObject6.immovable = true;
+  scene.addObjects([gObject6, player]);
+  game.numTrophies = 0;
+  await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  game.currentTrophies = 0;
+  game.running = true;
+  game.win = false;
 }
 
 export const player = new Player(new Vector3(0, 0, 0));

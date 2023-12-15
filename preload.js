@@ -1,6 +1,4 @@
 import TextureBuffer from "./graphics/Texture.js";
-import GameObject from "./gameObjects/GameObject.js";
-import Vector3 from "./structs/Vector3.js";
 import { player, scene, setupMeshes, floorMesh } from "./sceneSetup.js";
 
 export const Textures = new TextureBuffer();
@@ -26,8 +24,4 @@ export default function preloadAssets() {
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 
   setupMeshes();
-
-  const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
-  gObject6.immovable = true;
-  scene.addObjects([gObject6, player]);
 }

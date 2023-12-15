@@ -100,3 +100,11 @@ Player.prototype.createBoundingBox = function () {
 
   this.collider.boundingBox = new BoundingBox(min, max);
 };
+
+Player.prototype.reset = function () {
+  this.position = new Vector3(0, 0, 0);
+  this.velocity = new Vector3(0, 0, 0);
+  this.force = new Vector3(0, 0, 0);
+  this.yawAngle = 0;
+  this.pitchAngle = 0;
+};
