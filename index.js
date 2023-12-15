@@ -9,7 +9,7 @@ const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-export let game = {running: true};
+export let game = {running: true, win: false};
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -44,8 +44,12 @@ function draw() {
   FPSElement.innerHTML = Math.round(1 / deltaTime);
 
   if (!game.running) {
-
-    console.log('you cant do that')
+    if (game.win) {
+      console.log('you win nigga')
+    }
+    else {
+      console.log('boo hoo nigga')
+    }
     return;
   };
   background(0);

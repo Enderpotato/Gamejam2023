@@ -68,4 +68,5 @@ Ghost.prototype.update = function (dt) {
 
 Ghost.prototype.collideWithPlayer = function () {
   game.running = false;
+  game.win = false;
 };
