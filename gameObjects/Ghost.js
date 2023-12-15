@@ -38,17 +38,18 @@ Ghost.prototype.update = function (dt) {
   let distToPlayer = new Vector2(vectorToPlayer.x, vectorToPlayer.z).mag();
   // player is within 50 units (ghost can detect through walls)
   this.hostile = distToPlayer < 50;
+  const ghostSpeed = 13;
 
   if (this.hostile) {
     let ghostVel = this.direction
       .getDirection(this.position, player.position)
-      .elementMult(deltaTime * 10);
+      .elementMult(deltaTime * ghostSpeed);
     this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
     this.position.add_(ghostVel);
   } else {
     let ghostVel = this.direction
       .wanderDirection(this.position)
-      .elementMult(deltaTime * 10);
+      .elementMult(deltaTime * ghostSpeed);
     this.rotation.y = Math.atan2(-ghostVel.x, ghostVel.z);
     this.position.add_(ghostVel);
   }

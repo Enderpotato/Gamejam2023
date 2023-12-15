@@ -1,8 +1,12 @@
 import Renderer from "./Renderer/Renderer.js";
-import preloadAssets, { bestShader } from "./preload.js";
+import preloadAssets, {
+  bestShader,
+  trophyImage,
+  darkTrophyImage,
+  replayImg,
+} from "./preload.js";
 import Camera from "./Camera.js";
 import { player, scene, Lights, restartGame } from "./sceneSetup.js";
-import { loadMap } from "./map.js";
 import { cameraControlDebug } from "./Camera.js";
 import Vector2 from "./structs/Vector2.js";
 import { Lobby } from "./lobby.js";
@@ -23,6 +27,7 @@ export let game = {
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
+  winMessage: null,
 };
 
 const WIDTH = 800;
@@ -70,6 +75,17 @@ function draw() {
 
   if (!game.running) {
     background(0);
+    imageMode(CENTER);
+    image(replayImg, RestartButton.x, RestartButton.y, 200, 100);
+
+    if (game.winMessage != null) {
+      textSize(20);
+      textAlign(CENTER);
+      fill(0, 255, 255);
+      text(game.winMessage, width / 2, height / 2);
+      return;
+    }
+
     if (game.win) {
       textSize(32);
       textAlign(CENTER);
@@ -81,12 +97,6 @@ function draw() {
       fill(255, 0, 0);
       text("You lose!", width / 2, height / 2);
     }
-    ellipse(RestartButton.x, RestartButton.y, 100, 100);
-    textAlign(CENTER);
-    textSize(20);
-    fill(255);
-    text("Restart", RestartButton.x, RestartButton.y + 10);
-
     return;
   }
 
@@ -101,6 +111,12 @@ function draw() {
   cameraC.update(deltaTime);
   scene.update(deltaTime);
   let frustum = cameraC.calcFrustum(FOV, AspectRatio, ZNEAR, ZFAR);
+
+  if (player.position.y > 100) {
+    game.running = false;
+    game.win = false;
+    game.winMessage = "Screw u stop testing my physics engine!";
+  }
 
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
   bestShader.setUniform("uCameraPosition", cameraC.position.toArray());
@@ -130,18 +146,28 @@ function draw() {
   renderer.render(scene, frustum, bestShader);
   renderer.clear();
 
+  imageMode(CORNER);
   image(graphics, 0, 0, width, height);
 
   // GAME UI
+  noStroke();
+  let trophyX = 10;
+  let trophyY = 10;
+  let trophyW = 40;
+  for (let i = 0; i < game.numTrophies; i++) {
+    if (i < game.currentTrophies) {
+      image(trophyImage, trophyX, trophyY, trophyW, trophyW);
+    } else {
+      image(darkTrophyImage, trophyX, trophyY, trophyW, trophyW);
+    }
+    trophyX += trophyW + 10;
+  }
 }
 function mousePressed() {
   if (game.running) return;
-
   if (
-    Math.sqrt(
-      Math.pow(mouseX - RestartButton.x, 2) +
-        Math.pow(mouseY - RestartButton.y, 2)
-    ) < 50
+    Math.abs(mouseX - RestartButton.x) < 100 &&
+    Math.abs(mouseY - RestartButton.y) < 50
   ) {
     restartGame();
   }

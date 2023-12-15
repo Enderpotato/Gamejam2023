@@ -37,6 +37,7 @@ export async function restartGame() {
   game.currentTrophies = 0;
   game.running = true;
   game.win = false;
+  game.winMessage = null;
 }
 
 export const player = new Player(new Vector3(0, 0, 0));
@@ -67,8 +68,8 @@ lightFollow.update = function (dt) {
     this.lit = true;
   }
 
-  this.color = new Vector3(1, 1, 1); // uncomment to have white light
-  this.lit = true; // uncomment to always have light on
+  // this.color = new Vector3(1, 1, 1); // uncomment to have white light
+  // this.lit = true; // uncomment to always have light on
 };
 
 export const Lights = [lightFollow];

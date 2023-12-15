@@ -18,7 +18,7 @@ GhostSpawner.prototype.update = function (dt) {
 };
 
 GhostSpawner.prototype.spawnGhost = function () {
-  let ghost = new Ghost(this.position, ghostMesh);
+  let ghost = new Ghost(this.position.clone(), ghostMesh);
   ghost.lifetime = 40;
   scene.addObjects([ghost]);
 };
