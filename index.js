@@ -1,8 +1,8 @@
 import Renderer from "./Renderer/Renderer.js";
 import preloadAssets, { bestShader } from "./preload.js";
 import Camera from "./Camera.js";
-import { player, scene } from "./sceneSetup.js";
-import { Lights } from "./sceneSetup.js";
+import { player, scene, Lights } from "./sceneSetup.js";
+import { loadMap } from "./map.js";
 import { cameraControlDebug } from "./Camera.js";
 
 const FPSElement = document.getElementById("fps-debug");
@@ -28,12 +28,16 @@ export const invFov = 1 / Math.tan(FOV / 2);
 export const ZNEAR = 0.3;
 export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
-let canvas;
-export let frame;
 
-function setup() {
+let canvas;
+let UI;
+
+async function setup() {
   canvas = createCanvas(WIDTH, HEIGHT, WEBGL);
   canvas.parent("canvas");
+  var gl = document.getElementById("defaultCanvas0").getContext("webgl");
+
+  UI = createGraphics(WIDTH, HEIGHT);
 
   cam = createCamera();
   cam.perspective(FOV, AspectRatio, ZNEAR, ZFAR);
@@ -42,6 +46,8 @@ function setup() {
   cameraC = new Camera(cam);
   player.setCamera(cameraC);
   noStroke();
+
+  await loadMap("./assets/maps/gamejam_map1.csv", scene);
 }
 
 function draw() {
@@ -55,6 +61,7 @@ function draw() {
   clear();
 
   if (!game.running) {
+    console.log(scene);
     if (game.win) {
       console.log("you win nigga");
     } else {
@@ -101,15 +108,17 @@ function draw() {
   renderer.clear();
 
   resetShader();
+  resetMatrix();
+  UI.background(0, 0);
+  UI.resetMatrix();
+  // console.log(UI);
   // draw shit with normal functions
   scene.objects.forEach((gObj) => {
     // gObj.collider.boundingBox.draw();
   });
 }
 
-function keyPressed() {
-  if (keyCode === 32) frameRate(1);
-}
+function keyPressed() {}
 
 window.preload = preloadAssets;
 window.setup = setup;

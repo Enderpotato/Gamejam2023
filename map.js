@@ -28,6 +28,7 @@ export async function loadMap(filepath, scene) {
   scene.addObjects(sceneDict.objects);
   scene.addWalls(sceneDict.walls);
   scene.addNonPhysicals(sceneDict.nonPhysicals);
+  await Promise.all(sceneDict.objects.map((obj) => obj.load()));
   return sceneDict;
 }
 
@@ -82,6 +83,9 @@ function parseLine(line, sceneDict, row) {
       const trophyPosition = new Vector3(Xpos, -10, Zpos);
       let trophy = new Trophy(trophyPosition, trophyMesh);
       trophy.setMaterial(new Material(0, 1, 0.1));
+      trophy.load = async () => {
+        trophy.position.y = -10;
+      };
       sceneDict.objects.push(trophy);
       game.numTrophies++;
       return;

@@ -15,7 +15,6 @@ Trophy.prototype.collideWithPlayer = function () {
   if (game.currentTrophies == game.numTrophies) {
     game.running = false;
     game.win = true;
-    console.log("you win");
     // // bro i swear this is not me copilot literally generated this
     // window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
   }
