@@ -12,6 +12,7 @@ import {
   Lights,
   restartGame,
   pointerLock,
+  getMapIndex,
 } from "./sceneSetup.js";
 import Vector2 from "./structs/Vector2.js";
 
@@ -26,9 +27,10 @@ document.getElementById("toggle-debug").addEventListener("click", function () {
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-const maps = [
+export const maps = [
   "./assets/maps/gamejam_map1.csv",
   "./assets/maps/gamejam_map2.csv",
+  "./assets/maps/gamejam_map3.csv",
 ];
 
 export let game = {
@@ -36,7 +38,7 @@ export let game = {
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
-  map: maps[1],
+  map: maps[0],
   winMessage: null,
 };
 
