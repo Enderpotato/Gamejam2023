@@ -3,6 +3,7 @@ import Vector3 from "../structs/Vector3.js";
 import Vector2 from "../structs/Vector2.js";
 import Material from "../graphics/Material.js";
 import { player, scene } from "../sceneSetup.js";
+import { game } from "../index.js";
 import Direction from "../search2.js";
 
 export default class Ghost extends GameObject {
@@ -66,5 +67,5 @@ Ghost.prototype.update = function (dt) {
 };
 
 Ghost.prototype.collideWithPlayer = function () {
-  console.log("boo");
+  game.running = false;
 };

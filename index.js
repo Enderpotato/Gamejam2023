@@ -9,7 +9,7 @@ const FPSElement = document.getElementById("fps-debug");
 const renderer = new Renderer();
 export let cameraC;
 let cam;
-let game = true;
+export let game = {running: true};
 
 const WIDTH = 800;
 const HEIGHT = 450;
@@ -43,9 +43,9 @@ function draw() {
   deltaTime = Math.min(deltaTime, 0.1);
   FPSElement.innerHTML = Math.round(1 / deltaTime);
 
-  if (!game) {
-    
+  if (!game.running) {
 
+    console.log('you cant do that')
     return;
   };
   background(0);
