@@ -4,7 +4,7 @@ import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
 import { game } from "./index.js";
-import Player from "./gameObjects/Player.js";
+import Player, { rotationSpeed } from "./gameObjects/Player.js";
 import Scene from "./scene.js";
 import { loadMap } from "./map.js";
 import GameObject from "./gameObjects/GameObject.js";
@@ -26,6 +26,15 @@ export function setupMeshes() {
   floorMesh.setTexture(Textures["bricks"]);
 }
 
+export function pointerLock() {
+  const element = document.body;
+  element.requestPointerLock =
+    element.requestPointerLock ||
+    element.mozRequestPointerLock ||
+    element.webkitRequestPointerLock;
+  element.requestPointerLock();
+}
+
 export async function restartGame() {
   player.reset();
   scene.clear();
@@ -41,6 +50,20 @@ export async function restartGame() {
 }
 
 export const player = new Player(new Vector3(0, 0, 0));
+
+document.addEventListener("mousemove", (e) => {
+  const movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+  const movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+
+  const epsilon = 1;
+  let moveX = movementX;
+  let moveY = movementY;
+  if (Math.abs(movementX) <= epsilon) moveX = 0;
+  if (Math.abs(movementY) <= epsilon) moveY = 0;
+
+  player.yawAngle -= moveX * rotationSpeed;
+  player.pitchAngle -= moveY * rotationSpeed;
+});
 
 export const scene = new Scene([]);
 

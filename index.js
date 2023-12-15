@@ -6,7 +6,13 @@ import preloadAssets, {
   replayImg,
 } from "./preload.js";
 import Camera, { cameraControlDebug } from "./Camera.js";
-import { player, scene, Lights, restartGame } from "./sceneSetup.js";
+import {
+  player,
+  scene,
+  Lights,
+  restartGame,
+  pointerLock,
+} from "./sceneSetup.js";
 import Vector2 from "./structs/Vector2.js";
 
 const FPSElement = document.getElementById("fps-debug");
@@ -25,6 +31,7 @@ export let game = {
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
+  paused: false,
   winMessage: null,
 };
 
@@ -69,6 +76,7 @@ function draw() {
   TotalTrophiesElement.innerHTML = game.numTrophies;
 
   if (!game.running) {
+    document.exitPointerLock();
     background(0);
     imageMode(CENTER);
     image(replayImg, RestartButton.x, RestartButton.y, 200, 100);
@@ -94,6 +102,11 @@ function draw() {
     }
     return;
   }
+
+  // if (document.pointerLockElement != null) {
+  //   game.running = false;
+  //   game.paused = true;
+  // }
 
   // GAME GRAPHICS
   graphics.clear();
@@ -158,13 +171,15 @@ function draw() {
     trophyX += trophyW + 10;
   }
 }
-function mousePressed() {
+async function mousePressed() {
   if (game.running) return;
   if (
     Math.abs(mouseX - RestartButton.x) < 100 &&
     Math.abs(mouseY - RestartButton.y) < 50
   ) {
-    restartGame();
+    pointerLock();
+    await restartGame();
+    game.running = true;
   }
 }
 

@@ -2,6 +2,8 @@ import GameObject from "./GameObject.js";
 import BoundingBox from "../physics/BoundingBox.js";
 import Vector3 from "../structs/Vector3.js";
 
+export let rotationSpeed = 0;
+
 export default class Player extends GameObject {
   constructor(position, camera) {
     super(position ? position : new Vector3(0, 0, 0));
@@ -57,7 +59,7 @@ Player.prototype.playerControl = function (dt) {
     this.velocity.y = -7;
   }
 
-  const rotationSpeed = 2 * deltaTime; // 2 radians per second
+  rotationSpeed = 0.1 * deltaTime; // 2 radians per second
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
@@ -66,12 +68,12 @@ Player.prototype.playerControl = function (dt) {
     this.yawAngle += -rotationSpeed;
   }
 
-  // up and down arrow key for rotation
-  if (keyIsDown(UP_ARROW)) {
-    this.pitchAngle += rotationSpeed;
-  } else if (keyIsDown(DOWN_ARROW)) {
-    this.pitchAngle += -rotationSpeed;
-  }
+  // // up and down arrow key for rotation
+  // if (keyIsDown(UP_ARROW)) {
+  //   this.pitchAngle += rotationSpeed;
+  // } else if (keyIsDown(DOWN_ARROW)) {
+  //   this.pitchAngle += -rotationSpeed;
+  // }
 
   if (this.yawAngle > TAU) this.yawAngle -= TAU;
   if (this.yawAngle < -TAU) this.yawAngle += TAU;
