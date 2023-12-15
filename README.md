@@ -1,8 +1,14 @@
 # Trophy Haunt
 
-You are trapped in a room with ghosts that try to chase you and you have to collect all the trophies in the map to win.
-This is a first person shooter like game except that you cant shoot oops.
-We think this game fits the theme of "unknown" because the map is unknown and you have to wander around while avoiding all the ghosts.
+You are trapped in a room with ghosts that try to chase you and you have to collect all the trophies in the map to win. </br>
+This is a first person shooter like game except that you can't shoot(oops). </br>
+This game is made using JS (and is a web game obviously) and we also used GLSL for some custom shader things
+
+We think this game fits the theme of "unknown" because the map is unknown and you have to wander around while avoiding all the ghosts.</br>
+It matches the subtheme of "repeated" because you're playing the same map over and over unless you switch.</br>
+It matches the subtheme of "taking over" because you're 'taking over' the trophies. (I know I'm very creative) 
+
+Game deployed in this [website](https://trophyhaunt.vercel.app/)
 
 *made by Lim Enoch(3C) and Kuan Yue Han(3C)*
 
@@ -11,8 +17,8 @@ We think this game fits the theme of "unknown" because the map is unknown and yo
 - q: enable pointer lock (if not enabled already)
 - mouse control (move mouse to pan the camera in X and Y axis, aka pitch and yaw)
 
-## info
-This game is made for the RVHS GameJam 2023, website [here](https://rvhsgamejam.x10.mx/)
+## Info
+This game is made for the RVHS GameJam 2023, their website is [here](https://rvhsgamejam.x10.mx/)
 
 ## Credits
 Not all the game assets were made by us.
