@@ -26,11 +26,17 @@ document.getElementById("toggle-debug").addEventListener("click", function () {
 const renderer = new Renderer();
 export let cameraC;
 let cam;
+const maps = [
+  "./assets/maps/gamejam_map1.csv",
+  "./assets/maps/gamejam_map2.csv",
+];
+
 export let game = {
   running: false,
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
+  map: maps[1],
   winMessage: null,
 };
 

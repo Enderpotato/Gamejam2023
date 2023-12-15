@@ -43,6 +43,16 @@ footer {
   margin: 0;
 }
 
+#game-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  color: greenyellow;
+  font-family: "Courier New", Courier, monospace;
+}
+
 #debug-screen {
   display: none;
   width: 100%;

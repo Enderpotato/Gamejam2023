@@ -42,7 +42,7 @@ export async function restartGame() {
   gObject6.immovable = true;
   scene.addObjects([gObject6, player]);
   game.numTrophies = 0;
-  await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  await loadMap(game.map, scene);
   game.currentTrophies = 0;
   game.running = true;
   game.win = false;
