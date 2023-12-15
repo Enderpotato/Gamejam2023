@@ -13,6 +13,7 @@ html {
 
 #debug-screen {
   display: none;
+  padding: 1rem;
   background-color: skyblue;
   /* Add other styles as needed */
 }

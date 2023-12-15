@@ -22,7 +22,7 @@ const renderer = new Renderer();
 export let cameraC;
 let cam;
 export let game = {
-  running: true,
+  running: false,
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
@@ -58,6 +58,8 @@ async function setup() {
   cameraC = new Camera(cam);
   player.setCamera(cameraC);
   await restartGame();
+  game.running = false;
+  game.winMessage = "Trophy Haunt";
 }
 
 function draw() {
@@ -75,7 +77,7 @@ function draw() {
     image(replayImg, RestartButton.x, RestartButton.y, 200, 100);
 
     if (game.winMessage != null) {
-      textSize(20);
+      textSize(32);
       textAlign(CENTER);
       fill(0, 255, 255);
       text(game.winMessage, width / 2, height / 2);
