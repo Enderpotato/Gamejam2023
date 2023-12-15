@@ -158,9 +158,7 @@ export default class MeshCuboid {
 
 MeshCuboid.prototype.clone = function () {
   let newMesh = new MeshCuboid(this.w, this.l, this.h);
-  newMesh.meshTriangles = this.meshTriangles.map((triangle) => {
-    return triangle.clone();
-  });
+  newMesh.meshTriangles = this.meshTriangles;
 
   newMesh.textureImg = this.textureImg;
   return newMesh;
