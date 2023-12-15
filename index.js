@@ -30,22 +30,21 @@ export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
 
 let canvas;
-let UI;
+export let graphics;
 
 async function setup() {
-  canvas = createCanvas(WIDTH, HEIGHT, WEBGL);
+  canvas = createCanvas(WIDTH, HEIGHT);
   canvas.parent("canvas");
   var gl = document.getElementById("defaultCanvas0").getContext("webgl");
 
-  UI = createGraphics(WIDTH, HEIGHT);
+  graphics = createGraphics(WIDTH, HEIGHT, WEBGL);
 
-  cam = createCamera();
+  cam = graphics.createCamera();
   cam.perspective(FOV, AspectRatio, ZNEAR, ZFAR);
   cam.setPosition(0, 0, 0);
   cam.lookAt(0, 0, 1);
   cameraC = new Camera(cam);
   player.setCamera(cameraC);
-  noStroke();
 
   await loadMap("./assets/maps/gamejam_map1.csv", scene);
 }
@@ -58,19 +57,24 @@ function draw() {
   FPSElement.innerHTML = Math.round(1 / deltaTime);
   CurrentTrophiesElement.innerHTML = game.currentTrophies;
   TotalTrophiesElement.innerHTML = game.numTrophies;
-  clear();
 
   if (!game.running) {
+    background(0);
     if (game.win) {
-      console.log("you win nigga");
+      textSize(32);
+      fill(255, 0, 0);
+      text("You win!", 10, 30);
     } else {
-      console.log("boo hoo nigga");
+      textSize(32);
+      fill(255, 0, 0);
+      text("You lose!", 10, 30);
     }
     return;
   }
-  background(0);
-  shader(bestShader);
-  noStroke();
+  graphics.clear();
+  graphics.background(0);
+  graphics.shader(bestShader);
+  graphics.noStroke();
 
   // cameraControlDebug(deltaTime, cameraC);
   player.update(deltaTime);
@@ -106,14 +110,7 @@ function draw() {
   renderer.render(scene, frustum, bestShader);
   renderer.clear();
 
-  resetShader();
-  resetMatrix();
-
-  // draw shit with normal functions
-  // console.log(UI);
-  // scene.objects.forEach((gObj) => {
-  //   // gObj.collider.boundingBox.draw();
-  // });
+  image(graphics, 0, 0, width, height);
 }
 
 function keyPressed() {}
