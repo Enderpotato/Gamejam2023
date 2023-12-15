@@ -31,7 +31,6 @@ export let game = {
   win: false,
   numTrophies: 0,
   currentTrophies: 0,
-  paused: false,
   winMessage: null,
 };
 
@@ -102,11 +101,6 @@ function draw() {
     }
     return;
   }
-
-  // if (document.pointerLockElement != null) {
-  //   game.running = false;
-  //   game.paused = true;
-  // }
 
   // GAME GRAPHICS
   graphics.clear();
