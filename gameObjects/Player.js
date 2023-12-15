@@ -60,20 +60,21 @@ Player.prototype.playerControl = function (dt) {
   }
 
   rotationSpeed = 0.1 * deltaTime; // 2 radians per second
+  const arrowKeyRotationSpeed = 2 * deltaTime;
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW)) {
-    this.yawAngle += rotationSpeed;
+    this.yawAngle += arrowKeyRotationSpeed;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    this.yawAngle += -rotationSpeed;
+    this.yawAngle += -arrowKeyRotationSpeed;
   }
 
-  // // up and down arrow key for rotation
-  // if (keyIsDown(UP_ARROW)) {
-  //   this.pitchAngle += rotationSpeed;
-  // } else if (keyIsDown(DOWN_ARROW)) {
-  //   this.pitchAngle += -rotationSpeed;
-  // }
+  // up and down arrow key for rotation
+  if (keyIsDown(UP_ARROW)) {
+    this.pitchAngle += arrowKeyRotationSpeed;
+  } else if (keyIsDown(DOWN_ARROW)) {
+    this.pitchAngle += -arrowKeyRotationSpeed;
+  }
 
   if (this.yawAngle > TAU) this.yawAngle -= TAU;
   if (this.yawAngle < -TAU) this.yawAngle += TAU;

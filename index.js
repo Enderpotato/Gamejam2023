@@ -124,6 +124,11 @@ function draw() {
     game.running = false;
     game.win = false;
     game.winMessage = "Screw u stop testing my physics engine!";
+
+    setTimeout(() => {
+      // bro i swear this is not me copilot literally generated this
+      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    }, 2000);
   }
 
   bestShader.setUniform("uAspectRatio", WIDTH / HEIGHT);
@@ -183,7 +188,12 @@ async function mousePressed() {
   }
 }
 
-function keyPressed() {}
+function keyPressed() {
+  // press q to enable pointer lock
+  if (keyCode === 81) {
+    pointerLock();
+  }
+}
 
 window.preload = preloadAssets;
 window.setup = setup;
