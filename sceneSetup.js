@@ -3,12 +3,30 @@ import Vector3 from "./structs/Vector3.js";
 import { Textures } from "./preload.js";
 import Light from "./graphics/Light.js";
 import { boxMullerRandom } from "./helperFuncs/testfuncs.js";
-import { game } from "./index.js";
+import { game, maps } from "./index.js";
 import Player, { rotationSpeed } from "./gameObjects/Player.js";
 import Scene from "./scene.js";
 import { loadMap } from "./map.js";
 import GameObject from "./gameObjects/GameObject.js";
 import MeshCuboid from "./shapes/TestShapes/MeshCuboid.js";
+
+// Select all the radio buttons in the group
+const radioButtons = document.getElementsByName("map");
+
+export function getMapIndex() {
+  let selectedValue;
+
+  // Check each radio button to see if it's checked
+  for (const radioButton of radioButtons) {
+    if (radioButton.checked) {
+      selectedValue = radioButton.value;
+      break;
+    }
+  }
+  if (!selectedValue) return 0;
+
+  return parseInt(selectedValue) - 1;
+}
 
 // ------------ MESHES ----------------
 let steveMesh;
@@ -23,7 +41,7 @@ export function setupMeshes() {
   steveMesh.setTexture(Textures["steve"]);
   ghostMesh.setTexture(Textures["ghost"]);
   trophyMesh.setTexture(Textures["trophy"]);
-  floorMesh.setTexture(Textures["bricks"]);
+  floorMesh.setTexture(Textures["floor"]);
 }
 
 export function pointerLock() {
@@ -42,7 +60,8 @@ export async function restartGame() {
   gObject6.immovable = true;
   scene.addObjects([gObject6, player]);
   game.numTrophies = 0;
-  await loadMap("./assets/maps/gamejam_map1.csv", scene);
+  game.map = maps[getMapIndex()];
+  await loadMap(game.map, scene);
   game.currentTrophies = 0;
   game.running = true;
   game.win = false;
@@ -75,6 +94,7 @@ let flashDuration = 2; // duration of flash in seconds
 let timeBetweenFlashes = 5; // time between flashes in seconds
 
 const lightFollow = new Light(null, new Vector3(1, 0, 0));
+const lightFollow2 = new Light(null, new Vector3(0.2, 0.2, 0.2));
 lightFollow.lit = false;
 lightFollow.update = function (dt) {
   this.position = player.position;
@@ -95,4 +115,8 @@ lightFollow.update = function (dt) {
   // this.lit = true; // uncomment to always have light on
 };
 
-export const Lights = [lightFollow];
+lightFollow2.update = function (dt) {
+  this.position = player.position;
+};
+
+export const Lights = [lightFollow, lightFollow2];

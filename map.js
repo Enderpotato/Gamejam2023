@@ -67,7 +67,17 @@ function parseLine(line, sceneDict, row) {
       let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
       const wallPosition = new Vector3(Xpos, Ypos, Zpos);
       let wallCell = new GameObject(wallPosition, wallCuboid);
-      wallCell.mesh.setTexture(Textures["walter"]);
+      wallCell.mesh.setTexture(Textures["wall"]);
+      wallCell.immovable = true;
+      wallCell.rotation.x = Math.PI;
+      sceneDict.walls.push(wallCell);
+      return;
+    }
+    if (cellId === 4) {
+      let wallCuboid = new MeshCuboid(cellWidth, height, cellHeight);
+      const wallPosition = new Vector3(Xpos, Ypos, Zpos);
+      let wallCell = new GameObject(wallPosition, wallCuboid);
+      wallCell.mesh.setTexture(Textures["josh"]);
       wallCell.immovable = true;
       wallCell.rotation.x = Math.PI;
       sceneDict.walls.push(wallCell);

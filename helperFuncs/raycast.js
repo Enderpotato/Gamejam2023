@@ -60,7 +60,7 @@ export function castRay(rayDirection, rayOrigin) {
       mapY += stepY;
       side = 1;
     }
-    if (Map2d[mapY][mapX] == 1) {
+    if (Map2d[mapY][mapX] > 0) {
       hit = true;
     }
   }

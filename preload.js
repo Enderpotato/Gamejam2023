@@ -8,17 +8,15 @@ let trophyImage, darkTrophyImage, replayImg;
 export { trophyImage, darkTrophyImage, replayImg };
 
 function loadTextures() {
-  Textures.addTexture(loadImage("/assets/textures/bricks.png"), "bricks");
-  Textures.addTexture(loadImage("/assets/textures/sand.png"), "sand");
+  Textures.addTexture(loadImage("assets/textures/bricks.png"), "bricks");
+  Textures.addTexture(loadImage("assets/textures/metal_wall.png"), "wall");
   Textures.addTexture(loadImage("assets/textures/white.png"), "white");
-  Textures.addTexture(
-    loadImage("assets/textures/diamond_block.png"),
-    "diamond"
-  );
   Textures.addTexture(loadImage("assets/textures/Steve.png"), "steve");
   Textures.addTexture(loadImage("assets/textures/ghost.png"), "ghost");
   Textures.addTexture(loadImage("assets/textures/walter.png"), "walter");
   Textures.addTexture(loadImage("assets/textures/trophy.png"), "trophy");
+  Textures.addTexture(loadImage("assets/textures/wood_floor.png"), "floor");
+  Textures.addTexture(loadImage("assets/textures/josh.png"), "josh");
 }
 
 export default function preloadAssets() {
