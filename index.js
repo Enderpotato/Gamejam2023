@@ -9,7 +9,6 @@ import Camera from "./Camera.js";
 import { player, scene, Lights, restartGame } from "./sceneSetup.js";
 import { cameraControlDebug } from "./Camera.js";
 import Vector2 from "./structs/Vector2.js";
-import { Lobby } from "./lobby.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const CurrentTrophiesElement = document.getElementById("current-trophies");
@@ -32,7 +31,6 @@ export let game = {
 
 const WIDTH = 800;
 const HEIGHT = 450;
-const MAP_WIDTH = 400;
 
 const RestartButton = new Vector2(WIDTH / 2, HEIGHT / 2 + 100);
 
@@ -42,7 +40,6 @@ export const ZNEAR = 0.3;
 export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
 
-
 let canvas;
 export let graphics;
 
@@ -50,8 +47,6 @@ async function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   canvas.parent("canvas");
   canvas.fill(0);
-  var gl = document.getElementById("defaultCanvas0").getContext("webgl");
-
   graphics = createGraphics(WIDTH, HEIGHT, WEBGL);
 
   cam = graphics.createCamera();
@@ -64,7 +59,6 @@ async function setup() {
   game.running = false;
   game.winMessage = "Trophy Haunt";
 }
-
 
 function draw() {
   deltaTime /= 1000;
