@@ -5,6 +5,7 @@ import { player, scene, Lights, restartGame } from "./sceneSetup.js";
 import { loadMap } from "./map.js";
 import { cameraControlDebug } from "./Camera.js";
 import Vector2 from "./structs/Vector2.js";
+import { Lobby } from "./lobby.js";
 
 const FPSElement = document.getElementById("fps-debug");
 const CurrentTrophiesElement = document.getElementById("current-trophies");
@@ -36,12 +37,14 @@ export const ZNEAR = 0.3;
 export const ZFAR = 210;
 export const AspectRatio = WIDTH / HEIGHT;
 
+
 let canvas;
 export let graphics;
 
 async function setup() {
   canvas = createCanvas(WIDTH, HEIGHT);
   canvas.parent("canvas");
+  canvas.fill(0);
   var gl = document.getElementById("defaultCanvas0").getContext("webgl");
 
   graphics = createGraphics(WIDTH, HEIGHT, WEBGL);
@@ -54,6 +57,7 @@ async function setup() {
   player.setCamera(cameraC);
   await restartGame();
 }
+
 
 function draw() {
   deltaTime /= 1000;
