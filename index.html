@@ -13,7 +13,7 @@
     <main>
       <div style="display: flex; flex-direction: row">
         <div id="canvas"></div>
-        <button id="toggle-debug">Toggle Debug Screen</button>
+        <button id="toggle-debug">Toggle Debug Info</button>
         <div id="debug-screen">
           <button id="stop-game" onclick="noLoop()">Kill game</button>
           <div id="game-debug">
@@ -23,9 +23,10 @@
               ></span>
             </div>
           </div>
+          <p>Frame rate: <span id="fps-debug"></span> fps</p>
           <div id="performance-info">
-            <p>Frame rate: <span id="fps-debug"></span> fps</p>
             <p>Objects being rendered: <span id="objects-rendering"></span></p>
+            <p>Triangles being drawn: <span id="triangles-drawn"></span></p>
           </div>
           <div id="camera-debug">
             <div><span id="camera-pos"></span></div>

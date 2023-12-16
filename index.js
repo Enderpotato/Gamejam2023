@@ -3,7 +3,8 @@ import preloadAssets, {
   bestShader,
   trophyImage,
   darkTrophyImage,
-  replayImg,
+  deathScreenImage,
+  winScreenImage,
 } from "./preload.js";
 import Camera, { cameraControlDebug } from "./Camera.js";
 import {
@@ -12,7 +13,6 @@ import {
   Lights,
   restartGame,
   pointerLock,
-  getMapIndex,
 } from "./sceneSetup.js";
 import Vector2 from "./structs/Vector2.js";
 
@@ -86,37 +86,48 @@ function draw() {
   if (!game.running) {
     document.exitPointerLock();
     background(0);
-    imageMode(CENTER);
-    image(replayImg, RestartButton.x, RestartButton.y, 200, 100);
 
     if (game.winMessage != null) {
       textSize(32);
       textAlign(CENTER);
       fill(0, 255, 255);
       text(game.winMessage, width / 2, height / 2);
+      textSize(32);
+      textAlign(CENTER);
+      fill(255, 0, 0);
+      text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
 
       return;
     }
 
     if (game.win) {
+      imageMode(CORNER);
+      image(winScreenImage, 0, 0, width, height);
       textSize(32);
       textAlign(CENTER);
       fill(0, 255, 0);
       text("You win!", width / 2, height / 4);
       textSize(24);
       textAlign(CENTER);
-      fill(255, 255, 0);
+      fill(0, 0, 0);
       text(
         "Time: " + Math.round(game.timer) + " seconds",
         width / 2,
         height / 2
       );
     } else {
+      imageMode(CORNER);
+      image(deathScreenImage, 0, 0, width, height);
+
       textSize(32);
       textAlign(CENTER);
       fill(255, 0, 0);
-      text("You lose!", width / 2, height / 2);
+      text("YOU DIED!", width / 2, height / 2);
     }
+    textSize(32);
+    textAlign(CENTER);
+    fill(255, 0, 0);
+    text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
     return;
   }
   game.timer += deltaTime;
@@ -195,15 +206,11 @@ function draw() {
   text("Time: " + Math.round(game.timer), width - 110, 40);
 }
 async function mousePressed() {
+  if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
   if (game.running) return;
-  if (
-    Math.abs(mouseX - RestartButton.x) < 100 &&
-    Math.abs(mouseY - RestartButton.y) < 50
-  ) {
-    pointerLock();
-    await restartGame();
-    game.running = true;
-  }
+  pointerLock();
+  await restartGame();
+  game.running = true;
 }
 
 function keyPressed() {

@@ -10,6 +10,8 @@ export default class Light {
 
 Light.prototype.update = function (dt) {};
 
+Light.prototype.reset = function () {};
+
 Light.prototype.getUPosition = function () {
   return this.position.toArray();
 };
