@@ -3,6 +3,8 @@ import preloadAssets, {
   bestShader,
   trophyImage,
   darkTrophyImage,
+  deathScreenImage,
+  winScreenImage,
 } from "./preload.js";
 import Camera, { cameraControlDebug } from "./Camera.js";
 import {
@@ -84,39 +86,48 @@ function draw() {
   if (!game.running) {
     document.exitPointerLock();
     background(0);
-    textSize(32);
-    textAlign(CENTER);
-    fill(255, 255, 255);
-    text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
 
     if (game.winMessage != null) {
       textSize(32);
       textAlign(CENTER);
       fill(0, 255, 255);
       text(game.winMessage, width / 2, height / 2);
+      textSize(32);
+      textAlign(CENTER);
+      fill(255, 0, 0);
+      text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
 
       return;
     }
 
     if (game.win) {
+      imageMode(CORNER);
+      image(winScreenImage, 0, 0, width, height);
       textSize(32);
       textAlign(CENTER);
       fill(0, 255, 0);
       text("You win!", width / 2, height / 4);
       textSize(24);
       textAlign(CENTER);
-      fill(255, 255, 0);
+      fill(0, 0, 0);
       text(
         "Time: " + Math.round(game.timer) + " seconds",
         width / 2,
         height / 2
       );
     } else {
+      imageMode(CORNER);
+      image(deathScreenImage, 0, 0, width, height);
+
       textSize(32);
       textAlign(CENTER);
       fill(255, 0, 0);
-      text("You lose!", width / 2, height / 2);
+      text("YOU DIED!", width / 2, height / 2);
     }
+    textSize(32);
+    textAlign(CENTER);
+    fill(255, 0, 0);
+    text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
     return;
   }
   game.timer += deltaTime;

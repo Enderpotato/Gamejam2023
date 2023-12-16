@@ -3,9 +3,9 @@ import { setupMeshes } from "./sceneSetup.js";
 
 export const Textures = new TextureBuffer();
 export let bestShader;
-let trophyImage, darkTrophyImage;
+let trophyImage, darkTrophyImage, deathScreenImage, winScreenImage;
 
-export { trophyImage, darkTrophyImage };
+export { trophyImage, darkTrophyImage, deathScreenImage, winScreenImage };
 
 function loadTextures() {
   Textures.addTexture(loadImage("assets/textures/bricks.png"), "bricks");
@@ -23,6 +23,8 @@ export default function preloadAssets() {
   loadTextures();
   trophyImage = loadImage("assets/imgs/trophy.png");
   darkTrophyImage = loadImage("assets/imgs/trophy_dark.png");
+  deathScreenImage = loadImage("assets/imgs/ghost_jump.png");
+  winScreenImage = loadImage("assets/imgs/winscreen.png");
 
   bestShader = loadShader("./shader/vertex.vert", "./shader/fragment.frag");
 

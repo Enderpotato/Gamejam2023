@@ -58,6 +58,7 @@ export async function restartGame() {
   scene.clear();
   const gObject6 = new GameObject(new Vector3(0, 25, 0), floorMesh);
   gObject6.immovable = true;
+  Lights.forEach((light) => light.reset());
   scene.addObjects([gObject6, player]);
   game.numTrophies = 0;
   game.map = maps[getMapIndex()];
@@ -118,6 +119,11 @@ lightFollow.update = function (dt) {
 
   // this.color = new Vector3(1, 1, 1); // uncomment to have white light
   // this.lit = true; // uncomment to always have light on
+};
+lightFollow.reset = function () {
+  timeSinceLastFlash = 0;
+  flashDuration = 2;
+  timeBetweenFlashes = 5;
 };
 
 lightFollow2.update = function (dt) {
