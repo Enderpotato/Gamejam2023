@@ -95,7 +95,7 @@ let flashDuration = 2; // duration of flash in seconds
 let timeBetweenFlashes = 5; // time between flashes in seconds
 
 const lightFollow = new Light(null, new Vector3(1, 0, 0));
-const intensity = 0.1;
+const intensity = 0.2;
 const lightFollow2 = new Light(
   null,
   new Vector3(intensity, intensity, intensity)

@@ -6,6 +6,7 @@ import { bestShader, Textures } from "../preload.js";
 import GameObject from "../gameObjects/GameObject.js";
 
 const NumObjectsElement = document.getElementById("objects-rendering");
+const NumTrianglesElement = document.getElementById("triangles-drawn");
 let objectsToRender = [];
 
 export default function renderWithShader(scene, frustum, shader) {
@@ -27,12 +28,14 @@ export default function renderWithShader(scene, frustum, shader) {
     }
   });
   NumObjectsElement.innerText = objectsToRender.length;
+  let trianglesRendered = 0;
 
   objectsToRender.forEach((object) => {
     shader.setUniform("uRoughness", object.material.roughness);
     shader.setUniform("uMetallic", object.material.metallic);
-    renderMesh(object.mesh);
+    trianglesRendered += renderMesh(object.mesh);
   });
+  NumTrianglesElement.innerText = trianglesRendered;
 }
 function objectInFrustum(object, frustum) {
   let bbox = object.collider.boundingBox;
@@ -73,6 +76,7 @@ function renderMesh(mesh) {
     );
   });
   graphics.endShape(CLOSE);
+  return trianglesToRender.length;
 }
 
 function returnValidTriangles(mesh) {

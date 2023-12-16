@@ -3,7 +3,6 @@ import preloadAssets, {
   bestShader,
   trophyImage,
   darkTrophyImage,
-  replayImg,
 } from "./preload.js";
 import Camera, { cameraControlDebug } from "./Camera.js";
 import {
@@ -12,7 +11,6 @@ import {
   Lights,
   restartGame,
   pointerLock,
-  getMapIndex,
 } from "./sceneSetup.js";
 import Vector2 from "./structs/Vector2.js";
 
@@ -86,8 +84,10 @@ function draw() {
   if (!game.running) {
     document.exitPointerLock();
     background(0);
-    imageMode(CENTER);
-    image(replayImg, RestartButton.x, RestartButton.y, 200, 100);
+    textSize(32);
+    textAlign(CENTER);
+    fill(255, 255, 255);
+    text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
 
     if (game.winMessage != null) {
       textSize(32);
@@ -195,15 +195,11 @@ function draw() {
   text("Time: " + Math.round(game.timer), width - 110, 40);
 }
 async function mousePressed() {
+  if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) return;
   if (game.running) return;
-  if (
-    Math.abs(mouseX - RestartButton.x) < 100 &&
-    Math.abs(mouseY - RestartButton.y) < 50
-  ) {
-    pointerLock();
-    await restartGame();
-    game.running = true;
-  }
+  pointerLock();
+  await restartGame();
+  game.running = true;
 }
 
 function keyPressed() {
