@@ -106,10 +106,6 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
     Vector3.add3(farCenter, farRight, farTop), // top left
     Vector3.add3(farCenter, farRight, Vector3.neg(farTop)), // bottom left
   ];
-  // console.log("near", nearCorners);
-  // console.log("far", farCorners);
-
-  // TOP, BOTTOM, LEFT, RIGHT NORMALS ARE WRONG
 
   // Calculate the normals of the frustum planes
   let normals = {
@@ -138,7 +134,7 @@ Camera.prototype.calcFrustum = function (fov, aspect, near, far) {
       nearCorners[0].subtract(nearCorners[2])
     ).normalize(), // Top plane
   };
-  // console.log(normals);
+
   // Define the planes of the frustum
   let frustum = {
     near: new Plane(nearCorners[0], normals.near),

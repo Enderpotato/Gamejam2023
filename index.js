@@ -43,10 +43,8 @@ export let game = {
   winMessage: null,
 };
 
-const WIDTH = 800;
+const WIDTH = window.innerWidth;
 const HEIGHT = 450;
-
-const RestartButton = new Vector2(WIDTH / 2, HEIGHT / 2 + 100);
 
 const FOV = 60 * (Math.PI / 180);
 export const invFov = 1 / Math.tan(FOV / 2);
@@ -95,8 +93,7 @@ function draw() {
       textSize(32);
       textAlign(CENTER);
       fill(255, 0, 0);
-      text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
-
+      text("Click anywhere to start", width / 2, height / 2 + 50);
       return;
     }
 
@@ -127,7 +124,7 @@ function draw() {
     textSize(32);
     textAlign(CENTER);
     fill(255, 0, 0);
-    text("Click anywhere to start", RestartButton.x, RestartButton.y - 50);
+    text("Click anywhere to start", width / 2, height / 2 + 50);
     return;
   }
   game.timer += deltaTime;
@@ -215,10 +212,18 @@ async function mousePressed() {
 
 function keyPressed() {
   // press q to enable pointer lock
-  if (keyCode === 81) {
-    pointerLock();
-  }
+  if (keyCode === 81) pointerLock();
 }
+
+window.addEventListener("keydown", function (event) {
+  if (game.running && event.code === "Space") {
+    event.preventDefault();
+  }
+});
+
+window.addEventListener("resize", function () {
+  resizeCanvas(window.innerWidth, HEIGHT);
+});
 
 window.preload = preloadAssets;
 window.setup = setup;
