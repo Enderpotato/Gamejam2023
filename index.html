@@ -4,6 +4,10 @@
     <script src="libaries/quaternion.min.js"></script>
     <script src="index.js" type="module"></script>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    />
     <title>Trophy Haunt</title>
   </head>
   <body>
@@ -33,6 +37,30 @@
             <div><span id="camera-rot"></span></div>
             <div><span id="camera-look"></span></div>
           </div>
+        </div>
+      </div>
+      <div id="controls">
+        <div class="controls--movement">
+          <button id="move-up"><i class="fas fa-arrow-up"></i></button>
+          <button id="move-left"><i class="fas fa-arrow-left"></i></button>
+          <button id="move-down"><i class="fas fa-arrow-down"></i></button>
+          <button id="move-right"><i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <button id="jump"><i class="fas fa-arrow-circle-up"></i></button>
+        <div class="controls--look">
+          <button id="look-up">
+            <i class="fas fa-eye"></i><i class="fas fa-arrow-up"></i>
+          </button>
+          <button id="look-left">
+            <i class="fas fa-eye"></i><i class="fas fa-arrow-left"></i>
+          </button>
+          <button id="look-down">
+            <i class="fas fa-eye"></i><i class="fas fa-arrow-down"></i>
+          </button>
+          <button id="look-right">
+            <i class="fas fa-eye"></i><i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </div>
 

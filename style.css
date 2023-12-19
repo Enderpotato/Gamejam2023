@@ -76,3 +76,68 @@ footer {
 #debug-screen.show {
   display: block;
 }
+#controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+}
+
+#controls > div > button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ccc;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#jump {
+  width: 200px;
+  height: 50px;
+  border: none;
+  background-color: #ccc;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#controls > button:active,
+#controls > div > button:active {
+  background-color: darkgray;
+}
+
+.controls--movement,
+.controls--look {
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left . right"
+    ". down .";
+  gap: 0px;
+}
+#move-up,
+#look-up {
+  grid-area: up;
+}
+
+#move-left,
+#look-left {
+  grid-area: left;
+}
+
+#move-down,
+#look-down {
+  grid-area: down;
+}
+
+#move-right,
+#look-right {
+  grid-area: right;
+}

@@ -215,10 +215,14 @@ async function mousePressed() {
 
 function keyPressed() {
   // press q to enable pointer lock
-  if (keyCode === 81) {
-    pointerLock();
-  }
+  if (keyCode === 81) pointerLock();
 }
+
+window.addEventListener("keydown", function (event) {
+  if (game.running && event.code === "Space") {
+    event.preventDefault();
+  }
+});
 
 window.preload = preloadAssets;
 window.setup = setup;
