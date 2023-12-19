@@ -110,6 +110,11 @@ lightFollow.update = function (dt) {
   if (timeSinceLastFlash > timeBetweenFlashes + flashDuration) {
     this.lit = false;
     timeSinceLastFlash = 0;
+
+    // sigma ^ 2 = variance
+    // reparameterization trick: N(mu, sigma^2) = mu + sigma * N(0, 1)
+    // nerd stuff on top 🤓🤓🤓 ^^^
+
     flashDuration = boxMullerRandom() * 1 + 2.5; // ~ N(2.5, 1^2)
     timeBetweenFlashes = boxMullerRandom() * 5 + 6; // ~ N(6, 5^2)
   }
