@@ -26,6 +26,17 @@ addMouseDownEvent(document.getElementById("look-right"), 6);
 addMouseDownEvent(document.getElementById("look-up"), 7);
 addMouseDownEvent(document.getElementById("look-down"), 8);
 
+document
+  .getElementById("toggle-controls")
+  .addEventListener("click", function () {
+    var controls = document.getElementById("controls");
+    if (controls.style.display === "none") {
+      controls.style.display = "flex";
+    } else {
+      controls.style.display = "none";
+    }
+  });
+
 export default class Player extends GameObject {
   constructor(position, camera) {
     super(position ? position : new Vector3(0, 0, 0));
@@ -81,8 +92,8 @@ Player.prototype.playerControl = function (dt) {
     this.velocity.y = -7;
   }
 
-  rotationSpeed = 0.05 * deltaTime; // 2 radians per second
-  const arrowKeyRotationSpeed = 2 * deltaTime;
+  rotationSpeed = 0.075 * deltaTime; // 2 radians per second
+  const arrowKeyRotationSpeed = 1 * deltaTime;
 
   // left and right arrow key for rotation
   if (keyIsDown(LEFT_ARROW) || controls[5]) {
