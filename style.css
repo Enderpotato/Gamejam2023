@@ -43,6 +43,7 @@ footer {
 #performance-info {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   margin: 0;
 }
@@ -75,7 +76,9 @@ footer {
 
 #debug-screen.show {
   display: block;
+  text-align: center;
 }
+
 #controls {
   display: flex;
   flex-direction: row;
