@@ -13,12 +13,12 @@ GhostSpawner.prototype.update = function (dt) {
   this.cooldown -= dt;
   if (this.cooldown < 0) {
     this.spawnGhost();
-    this.cooldown = boxMullerRandom() * 5 + 35; // ~ N (35, 5)
+    this.cooldown = boxMullerRandom() * 5 + 35; // ~ N (35, 5^2)
   }
 };
 
 GhostSpawner.prototype.spawnGhost = function () {
   let ghost = new Ghost(this.position.clone(), ghostMesh);
-  ghost.lifetime = boxMullerRandom() * 10 + 30; // ~ N(30, 10)
+  ghost.lifetime = boxMullerRandom() * 10 + 30; // ~ N(30, 10^2)
   scene.addObjects([ghost]);
 };
