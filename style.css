@@ -152,3 +152,15 @@ footer {
 #look-right {
   grid-area: right;
 }
+
+#toggle-fullscreen,
+#toggle-controls {
+  background-color: #ccc;
+  color: #333;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
