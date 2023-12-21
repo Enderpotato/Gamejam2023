@@ -19,9 +19,19 @@ import Vector2 from "./structs/Vector2.js";
 const FPSElement = document.getElementById("fps-debug");
 const CurrentTrophiesElement = document.getElementById("current-trophies");
 const TotalTrophiesElement = document.getElementById("total-trophies");
+const ToggleFullscreenElement = document.getElementById("toggle-fullscreen");
+
 document.getElementById("toggle-debug").addEventListener("click", function () {
   var debugScreen = document.getElementById("debug-screen");
   debugScreen.classList.toggle("show");
+});
+
+ToggleFullscreenElement.addEventListener("click", function () {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    document.documentElement.requestFullscreen();
+  }
 });
 
 const renderer = new Renderer();
